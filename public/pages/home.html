@@ -1,80 +1,106 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<title>proyecto</title>
-<link rel="stylesheet" href="../src/styles/home.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Municipalidad de Escazú</title>
+    <link rel="stylesheet" href="../src/styles/home.css">
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
 
-<img src="../src/img/Gemini_Generated_Image_i4mz70i4mz70i4mz.png" alt="municipalidad" width="200" height="200"> <h1>Municipalidad <br> del sol</h1>
+    <!-- navbar -->
+    <header class="encabezado">
+        <div class="contenedor contenedorEncabezado">
+            <div class="cajaLogo">
+                <img src="../src/img/Logo_Municipalidad_Escazu.png" alt="Municipalidad de Escazú" class="logoImagen">
+                <div class="textoLogo">
+                    <h1>MUNICIPALIDAD</h1>
+                    <h2>DE ESCAZÚ</h2>
+                </div>
+            </div>
 
-<nav class="navbar">
-    <ul class="menu">
+            <div class="navegacion">
+                <div class="barraSuperior">
+                    <a href="#" class="enlaceSuperior"><i class="iconoBuscar"></i> Directorio Comercial</a>
+                    <div class="redesSociales">
+                        <a href="#"><i class="iconoFacebook"></i></a>
+                        <a href="#"><i class="iconoInstagram"></i></a>
+                        <a href="#"><i class="iconoTwitter"></i></a>
+                        <a href="#"><i class="iconoYoutube"></i></a>
+                    </div>
+                </div>
+                <nav class="menuPrincipal">
+                    <ul class="listaMenu">
+                        <li class="desplegable">
+                            <a href="#">Reportes de la comunidad <i class="iconoFlechaAbajo"></i></a>
+                            <ul class="submenu">
+                                <li><a href="../pages/informesHechosPorElPueblo.html">Todos los reportes</a></li>
+                                <li><a href="#">Escazú Centro</a></li>
+                                <li><a href="#">San Antonio</a></li>
+                                <li><a href="#">San Rafael</a></li>
+                            </ul>
+                        </li>
+                        <li class="desplegable">
+                            <a href="#">Trámites y servicios <i class="iconoFlechaAbajo"></i></a>
+                            <ul class="submenu">
+                                <li><a href="#">Trámites en línea</a></li>
+                                <li><a href="#">Estadísticas</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="botonIngresar">Ingresar</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-        <li class="dropdown">
-            <a href="#">La Muni ▾</a>
-            <ul class="submenu">
-                <li><a href="#">Nuestro comienzo</a></li>
-                <li><a href="#">Misión y visión</a></li>
-                <li><a href="#">Organizadores</a></li>
-            </ul>
-        </li>
+    <main>
+        <section class="seccionInicio">
+            <div class="fondoFormaSuperior"></div>
 
-        <li class="dropdown">
-            <a href="#">Trámites y servicios ▾</a>
-            <ul class="submenu">
-                <li><a href="#">Licencias</a></li>
-                <li><a href="#">Permisos</a></li>
-                <li><a href="#">Pagos</a></li>
-            </ul>
-        </li>
+            <div class="contenedor contenidoInicio">
+                <div class="textoInicio">
+                    <h1 class="tituloPrincipal">Cada día <br> <span class="resaltadoMorado">más seguros</span></h1>
+                    <h2 class="subtitulo">Nuevo sistema de <br> alerta temprana</h2>
+                    <p class="descripcion">Con tecnología innovadora.</p>
+                    <a href="#" class="botonAccion">LEER <i class="iconoFlechaDerecha"></i></a>
+                </div>
 
-        <li class="dropdown">
-            <a href="#">Bienestar social ▾</a>
-            <ul class="submenu">
-                <li><a href="#">Programas</a></li>
-                <li><a href="#">Ayudas</a></li>
-            </ul>
-        </li>
+                <div class="visualInicio">
+                    <div class="fondoCirculo"></div>
+                    <div class="circuloFlotante"></div>
+                    <div class="contenedorIlustracion">
+                        <img src="https://escazu.go.cr/wp-content/uploads/2023/06/mapa.png" alt="Ilustración Seguridad"
+                            class="imagenInicio">
+                    </div>
 
-        <li class="dropdown">
-            <a href="#">Transparencia ▾</a>
-            <ul class="submenu">
-                <li><a href="informesHechosPorElPueblo.html">Informes hechos <br> por el pueblo</a></li>
-            </ul>
-        </li>
+                </div>
+            </div>
+            <div class="circuloAmarillo"></div>
+        </section>
 
-        <li><a href="#">Noticias</a></li>
-        <li><a href="#">Contactanos</a></li>
+        <section class="seccionReportes contenedor" id="contenedorReportes">
+            <!-- Contenedor para reportes dinámicos -->
+        </section>
 
-    </ul>
-</nav>
+    </main>
 
-<h1>Bienvenido a la pagina de la municipalidad</h1>
+    <div class="widgetChat">
+        <div class="iconoChat whatsapp"><i class="iconoWhatsapp"></i></div>
+        <div class="iconoChat mensaje"><i class="iconoMensaje"></i><span class="notificacion">1</span></div>
+    </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <script type="module" src="../src/js/home.js"></script>
 </body>
+
 </html>
