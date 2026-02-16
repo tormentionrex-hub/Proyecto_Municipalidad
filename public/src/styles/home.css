@@ -1,0 +1,552 @@
+/* Reset y Tipografia global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #4A4A4A;
+    background-color: #fdfdfd;
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Variables */
+:root {
+    --moradoPrincipal: #3e206f;
+    --verdeSecundario: #56b974;
+    --amarilloAcento: #f8b400;
+    --textoOscuro: #2c2c2c;
+    --textoClaro: #666;
+    --fondoClaro: #f9f9fb;
+    --blanco: #ffffff;
+}
+
+.contenedor {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* --- Iconos Personalizados (Mapeo a FontAwesome) --- */
+/* Base para todos los iconos */
+[class^="icono"]::before {
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Iconos Sólidos (fas) */
+.iconoBuscar::before,
+.iconoFlechaAbajo::before,
+.iconoFlechaDerecha::before,
+.iconoEstrella::before,
+.iconoMensaje::before {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+/* Iconos de Marcas (fab) */
+.iconoFacebook::before,
+.iconoInstagram::before,
+.iconoTwitter::before,
+.iconoYoutube::before,
+.iconoWhatsapp::before {
+    font-family: "Font Awesome 6 Brands";
+    font-weight: 400;
+}
+
+/* Contenido de los iconos (Códigos Unicode) */
+.iconoBuscar::before {
+    content: "\f002";
+}
+
+.iconoFacebook::before {
+    content: "\f39e";
+}
+
+.iconoInstagram::before {
+    content: "\f16d";
+}
+
+.iconoTwitter::before {
+    content: "\f099";
+}
+
+.iconoYoutube::before {
+    content: "\f167";
+}
+
+.iconoFlechaAbajo::before {
+    content: "\f0d7";
+}
+
+.iconoFlechaDerecha::before {
+    content: "\f054";
+}
+
+.iconoEstrella::before {
+    content: "\f005";
+}
+
+.iconoWhatsapp::before {
+    content: "\f232";
+}
+
+.iconoMensaje::before {
+    content: "\f4ad";
+}
+
+
+/* --- Encabezado --- */
+.encabezado {
+    background-color: var(--blanco);
+    padding: 10px 0;
+    /* Reduced padding for tighter look */
+    position: relative;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    /* Softer shadow */
+}
+
+.contenedorEncabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    /* Wider container for navbar */
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.cajaLogo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logoImagen {
+    height: 60px;
+    width: auto;
+}
+
+.textoLogo h1 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--moradoPrincipal);
+    line-height: 1.1;
+    letter-spacing: 0.5px;
+}
+
+.textoLogo h2 {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--moradoPrincipal);
+    line-height: 1.1;
+}
+
+/* Navegacion */
+.navegacion {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.barraSuperior {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 0.9rem;
+    color: var(--textoClaro);
+}
+
+.enlaceSuperior {
+    text-decoration: none;
+    color: var(--textoClaro);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s;
+}
+
+.enlaceSuperior:hover {
+    color: var(--moradoPrincipal);
+}
+
+.redesSociales {
+    display: flex;
+    gap: 10px;
+}
+
+.redesSociales a {
+    color: var(--textoClaro);
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.redesSociales a:hover {
+    color: var(--moradoPrincipal);
+}
+
+/* Menu Principal */
+.menuPrincipal>ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.menuPrincipal a {
+    text-decoration: none;
+    color: var(--moradoPrincipal);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.menuPrincipal a i {
+    font-size: 0.7rem;
+    color: #999;
+}
+
+.menuPrincipal a:hover {
+    color: var(--verdeSecundario);
+}
+
+/* Submenu */
+.submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--blanco);
+    min-width: 220px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 1000;
+    padding: 10px 0;
+    list-style: none;
+    /* Removed bullet points */
+}
+
+.desplegable {
+    position: relative;
+}
+
+/* Clase para mostrar el submenu (activado por JS) */
+.desplegable.activo .submenu {
+    display: block;
+}
+
+.submenu li a {
+    padding: 10px 20px;
+    color: var(--textoOscuro);
+    font-weight: 500;
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    /* Ensure no underline */
+}
+
+.submenu li a:hover {
+    background-color: var(--fondoClaro);
+    color: #9b72cf;
+    /* Light purple */
+}
+
+
+.botonIngresar {
+    border: 1px solid var(--moradoPrincipal);
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+.botonIngresar:hover {
+    background-color: var(--moradoPrincipal);
+    color: var(--blanco) !important;
+}
+
+/* --- Seccion Inicio --- */
+.seccionInicio {
+    position: relative;
+    padding: 80px 0;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    background: var(--blanco);
+    overflow: hidden;
+}
+
+.fondoFormaSuperior {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 320' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='none' stroke='%23e0e0e0' stroke-width='2' d='M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,122.7C672,96,768,96,864,112C960,128,1056,160,1152,165.3C1248,171,1344,149,1392,138.7L1440,128' /%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 1;
+}
+
+.contenidoInicio {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+    z-index: 5;
+}
+
+/* Columna Izquierda */
+.textoInicio {
+    flex: 1;
+    max-width: 500px;
+}
+
+.tituloPrincipal {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--moradoPrincipal);
+    margin-bottom: 20px;
+}
+
+.resaltadoMorado {
+    color: var(--moradoPrincipal);
+}
+
+.subtitulo {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--verdeSecundario);
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+.descripcion {
+    font-size: 1.1rem;
+    color: var(--textoOscuro);
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.botonAccion {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--moradoPrincipal);
+    color: var(--blanco);
+    padding: 12px 35px;
+    border-radius: 30px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.botonAccion:hover {
+    background-color: #2a095f;
+    transform: translateY(-3px);
+}
+
+/* Columna Derecha */
+.visualInicio {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 500px;
+}
+
+.fondoCirculo {
+    display: none;
+}
+
+.circuloFlotante {
+    position: absolute;
+    width: 140px;
+    /* Larger like in the image */
+    height: 140px;
+    background-color: var(--moradoPrincipal);
+    border-radius: 50%;
+    top: 20px;
+    right: 5%;
+    /* Top right corner */
+    z-index: 0;
+    /* Behind the green circle */
+}
+
+.contenedorIlustracion {
+    position: absolute;
+    width: 480px;
+    /* Slightly larger main circle */
+    height: 480px;
+    background-color: var(--verdeSecundario);
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    right: 15%;
+    /* Centered better relative to decoration */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.imagenInicio {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.circuloAmarillo {
+    position: absolute;
+    bottom: -40px;
+    left: 10%;
+    /* Bottom left */
+    width: 220px;
+    /* Larger */
+    height: 220px;
+    background-color: var(--amarilloAcento);
+    border-radius: 50%;
+    z-index: 2;
+    /* Overlapping slightly or as per image */
+}
+
+/* Widget de Reseña */
+.widgetResena {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    background-color: var(--blanco);
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    font-size: 0.8rem;
+    max-width: 250px;
+}
+
+.widgetResena p {
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--textoOscuro);
+}
+
+.estrellas {
+    color: #ffc107;
+}
+
+/* --- Widgets de Chat --- */
+.widgetChat {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.iconoChat {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.iconoChat:hover {
+    transform: scale(1.1);
+}
+
+.whatsapp {
+    background-color: #25d366;
+}
+
+.mensaje {
+    background-color: var(--moradoPrincipal);
+    position: relative;
+}
+
+.notificacion {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #ff3b30;
+    color: white;
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .contenedorEncabezado {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .navegacion {
+        align-items: center;
+    }
+
+    .menuPrincipal ul {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .contenidoInicio {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .textoInicio {
+        max-width: 100%;
+        margin-bottom: 50px;
+    }
+
+    .tituloPrincipal {
+        font-size: 2.5rem;
+    }
+
+    .fondoCirculo {
+        width: 300px;
+        height: 300px;
+    }
+
+    .circuloAmarillo {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
