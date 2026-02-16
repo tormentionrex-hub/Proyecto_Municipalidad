@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     configurarBotonIngresar();
 });
 
+
 //Botón para el ingreso a login
 function configurarBotonIngresar() {
     const boton = document.querySelector(".botonIngresar");
