@@ -2,9 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Dashboard Admin de la Municipalidad de Escazú cargado');
 
     // Lógica para el botón de cierre de sesión
-    const btnLogout = document.getElementById('btnLogout');
-    if (btnLogout) {
-        btnLogout.addEventListener('click', () => {
+    const botonCerrarSesion = document.getElementById('botonCerrarSesion');
+    if (botonCerrarSesion) {
+        botonCerrarSesion.addEventListener('click', () => {
             if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
                 // Aquí iría la lógica de limpiar tokens o login state
                 window.location.href = './login.html';
@@ -12,25 +12,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Cambio de Tabs
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    tabButtons.forEach(btn => {
+    // Cambio de Pestañas (Tabs)
+    const botonesPestana = document.querySelectorAll('.botonPestana');
+    botonesPestana.forEach(btn => {
         btn.addEventListener('click', () => {
             // Remover activo de todos
-            tabButtons.forEach(b => b.classList.remove('active'));
+            botonesPestana.forEach(b => b.classList.remove('activo'));
             // Agregar activo al seleccionado
-            btn.classList.add('active');
+            btn.classList.add('activo');
 
-            const tabName = btn.getAttribute('data-tab');
-            console.log(`Cambiando a la pestaña: ${tabName}`);
+            const nombrePestana = btn.getAttribute('data-tab');
+            console.log(`Cambiando a la pestaña: ${nombrePestana}`);
             // Aquí se filtraría el contenido dinámicamente
         });
     });
 
     // Lógica para el selector de periodo
-    const periodoSelect = document.getElementById('periodoSelect');
-    if (periodoSelect) {
-        periodoSelect.addEventListener('change', (e) => {
+    const selectorPeriodo = document.getElementById('selectorPeriodo');
+    if (selectorPeriodo) {
+        selectorPeriodo.addEventListener('change', (e) => {
             const dias = e.target.value;
             console.log(`Actualizando datos para los últimos ${dias} días`);
             // Simulación de recarga de datos
