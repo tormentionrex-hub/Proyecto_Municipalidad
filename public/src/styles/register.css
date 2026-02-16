@@ -115,7 +115,7 @@ body {
     text-decoration: underline;
 }
 
-Responsive (movil)
+/* Responsive (movil) */
 @media (max-width: 500px) {
     .cardRegister {
         padding: 32px 22px;
