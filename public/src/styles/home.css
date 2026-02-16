@@ -454,60 +454,6 @@ h6 {
     color: #ffc107;
 }
 
-/* --- Widgets de Chat --- */
-.widgetChat {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    z-index: 1000;
-}
-
-.iconoChat {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s;
-}
-
-.iconoChat:hover {
-    transform: scale(1.1);
-}
-
-.whatsapp {
-    background-color: #25d366;
-}
-
-.mensaje {
-    background-color: var(--moradoPrincipal);
-    position: relative;
-}
-
-.notificacion {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background-color: #ff3b30;
-    color: white;
-    font-size: 0.7rem;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid white;
-}
-
 /* Responsivo */
 @media (max-width: 768px) {
     .contenedorEncabezado {
