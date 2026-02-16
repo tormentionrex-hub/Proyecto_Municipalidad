@@ -1,3 +1,6 @@
+/* =========================
+   RESET GENERAL
+========================= */
 *{
     margin:0;
     padding:0;
@@ -5,10 +8,16 @@
     font-family:"Segoe UI", Arial, sans-serif;
 }
 
+/* =========================
+   BODY
+========================= */
 body{
     background-color:#f4f6f9;
 }
 
+/* =========================
+   NAVBAR
+========================= */
 .navbar{
     background-color:transparent;
     border:none;
@@ -26,16 +35,18 @@ body{
     font-size:20px;
 }
 
-.navbar .btn{
-    border-color:#2b579a;
-    color:#2b579a;
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+.container{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
-.navbar .btn:hover{
-    background-color:#2b579a;
-    color:white;
-}
-
+/* =========================
+   TITULO PRINCIPAL
+========================= */
 .titulo-principal{
     color:#2b579a;
     margin-bottom:40px;
@@ -44,28 +55,30 @@ body{
     display:inline-block;
 }
 
-.container{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
-
+/* =========================
+   TARJETA REPORTE
+========================= */
 .reporte{
     width:700px;
     margin-bottom:40px;
 }
 
+/* TITULO REPORTE */
 .reporte h2{
     padding:15px 20px 5px 20px;
     color:#1f3c6d;
     font-size:22px;
     background-color:white;
+
     border-left:6px solid #2b579a;
+
     border-top-left-radius:8px;
     border-top-right-radius:8px;
+
     box-shadow:0px 3px 8px rgba(0,0,0,0.1);
 }
 
+/* DESCRIPCION REPORTE */
 .reporte h3{
     padding:10px 20px 15px 20px;
     color:#444;
@@ -73,35 +86,59 @@ body{
     line-height:1.6;
     font-size:16px;
     background-color:white;
+
     box-shadow:0px 3px 8px rgba(0,0,0,0.1);
 }
 
-.reporte img{
-    display:block;
-    width:700px;
+/* =========================
+   CONTENEDOR IMAGEN
+========================= */
+.contenedor-imagen{
+    width:100%;
     height:300px;
-    object-fit:cover;
-    padding:0 20px 20px 20px;
     background-color:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+
     border-bottom-left-radius:8px;
     border-bottom-right-radius:8px;
+
     box-shadow:0px 3px 8px rgba(0,0,0,0.1);
-    transition:0.3s;
+
+    overflow:hidden;
 }
 
-.reporte img:hover{
-    transform:scale(1.02);
+/* IMAGEN */
+.contenedor-imagen img{
+    max-width:400%;
+    max-height:100%;
+    width:400%;
+    height:100%;
+
+    transition:0.3s ease;
 }
 
+/* EFECTO HOVER */
+.contenedor-imagen img:hover{
+    transform:scale(1.03);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
 @media(max-width:768px){
 
     .reporte{
-        width:100%;
+        width:95%;
     }
 
-    .reporte img{
-        width:100%;
+    .contenedor-imagen{
         height:220px;
+        padding:15px;
     }
 
 }
