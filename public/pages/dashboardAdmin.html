@@ -1,11 +1,264 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard Administrador - Municipalidad de Escazú</title>
+    <link rel="stylesheet" href="../src/styles/dashboardAdmin.css">
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body>
-    
+
+<<<<<<< HEAD
+<body class="cuerpoDashboard">
+
+    <!-- Barra lateral -->
+    <aside class="barraLateral">
+        <div class="logoBarraLateral">
+            <a href="../pages/home.html">
+                <img src="../src/img/Logo_Municipalidad_Escazu.png" alt="Logo Escazú">
+            </a>
+        </div>
+        <nav class="navegacionBarraLateral">
+            <ul>
+                <li class="activo"><a href="#"><i class="iconoInicio"></i> <span>Dashboard</span></a></li>
+                <li><a href="#"><i class="iconoTramites"></i> <span>Trámites</span></a></li>
+                <li><a href="#"><i class="iconoUsuarios"></i> <span>Usuarios</span></a></li>
+                <li><a href="#"><i class="iconoMapaReportes"></i> <span>Reportes</span></a></li>
+                <li><a href="#"><i class="iconoConfiguracion"></i> <span>Configuración</span></a></li>
+            </ul>
+        </nav>
+        <div class="pieBarraLateral">
+            <button class="botonCerrarSesion" id="botonCerrarSesion"><i class="iconoSalir"></i> <span>Cerrar
+=======
+<body class="cuerpo-dashboard">
+
+    <!-- Sidebar lateral -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <a href="./home.html">
+                <img src="../src/img/Logo_Municipalidad_Escazu.png" alt="Logo Escazú">
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="active"><a href="#"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                <li><a href="#"><i class="fas fa-file-alt"></i> <span>Trámites</span></a></li>
+                <li><a href="#"><i class="fas fa-users"></i> <span>Usuarios</span></a></li>
+                <li><a href="#"><i class="fas fa-map-marked-alt"></i> <span>Reportes</span></a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> <span>Configuración</span></a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" id="btnLogout"><i class="fas fa-sign-out-alt"></i> <span>Cerrar
+>>>>>>> origin/Yosimar
+                    Sesión</span></button>
+        </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+<<<<<<< HEAD
+    <main class="contenidoPrincipal">
+        <!-- Encabezado del Dashboard -->
+        <header class="encabezadoDashboard">
+            <div class="infoEncabezado">
+                <h1><i class="iconoMundo"></i> Dashboard de Administración</h1>
+                <p>Supervisión completa de la Municipalidad de Escazú</p>
+            </div>
+            <div class="accionesEncabezado">
+                <div class="selectorPeriodoContenedor">
+                    <i class="iconoReloj"></i>
+                    <select id="selectorPeriodo">
+=======
+    <main class="dashboard-main">
+        <!-- Header del Dashboard -->
+        <header class="dashboard-header">
+            <div class="header-info">
+                <h1><i class="fas fa-globe"></i> Dashboard de Administración</h1>
+                <p>Supervisión completa de la Municipalidad de Escazú</p>
+            </div>
+            <div class="header-actions">
+                <div class="select-periodo">
+                    <i class="far fa-clock"></i>
+                    <select id="periodoSelect">
+>>>>>>> origin/Yosimar
+                        <option value="30">Últimos 30 días</option>
+                        <option value="7">Últimos 7 días</option>
+                        <option value="365">Último año</option>
+                    </select>
+                </div>
+<<<<<<< HEAD
+                <button class="botonRefrescar"><i class="iconoRefrescar"></i></button>
+=======
+                <button class="btn-refresh"><i class="fas fa-sync-alt"></i></button>
+>>>>>>> origin/Yosimar
+            </div>
+        </header>
+
+        <!-- Sección de Estadísticas Rápidas -->
+<<<<<<< HEAD
+        <section class="estadisticasDashboard">
+            <div class="tarjetaEstadistica">
+                <div class="iconoEstadistica azul"><i class="iconoDinero"></i></div>
+                <div class="detallesEstadistica">
+                    <h3>Ingresos Totales</h3>
+                    <p class="valorEstadistica">₡285.4M</p>
+                    <span class="etiquetaEstadistica">en el periodo seleccionado</span>
+                </div>
+            </div>
+
+            <div class="tarjetaEstadistica">
+                <div class="iconoEstadistica morado"><i class="iconoCajas"></i></div>
+                <div class="detallesEstadistica">
+                    <h3>Trámites Procesados</h3>
+                    <p class="valorEstadistica">1,248</p>
+                    <span class="etiquetaEstadistica">total en periodo</span>
+                </div>
+            </div>
+
+            <div class="tarjetaEstadistica">
+                <div class="iconoEstadistica verde"><i class="iconoGraficoLinea"></i></div>
+                <div class="detallesEstadistica">
+                    <h3>Eficiencia Promedio</h3>
+                    <p class="valorEstadistica">94%</p>
+                    <span class="etiquetaEstadistica">casos resueltos</span>
+                </div>
+            </div>
+
+            <div class="tarjetaEstadistica">
+                <div class="iconoEstadistica naranja"><i class="iconoUbicacion"></i></div>
+                <div class="detallesEstadistica">
+                    <h3>Barrio Top</h3>
+                    <p class="valorEstadistica resaltado">San Rafael</p>
+                    <span class="etiquetaEstadistica">mayor movimiento</span>
+=======
+        <section class="dashboard-stats">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                <div class="stat-details">
+                    <h3>Ingresos Totales</h3>
+                    <p class="stat-value">₡285.4M</p>
+                    <span class="stat-label">en el periodo seleccionado</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon purple"><i class="fas fa-boxes"></i></div>
+                <div class="stat-details">
+                    <h3>Trámites Procesados</h3>
+                    <p class="stat-value">1,248</p>
+                    <span class="stat-label">total en periodo</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="fas fa-chart-line"></i></div>
+                <div class="stat-details">
+                    <h3>Eficiencia Promedio</h3>
+                    <p class="stat-value">94%</p>
+                    <span class="stat-label">casos resueltos</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="stat-details">
+                    <h3>Barrio Top</h3>
+                    <p class="stat-value highlight">San Rafael</p>
+                    <span class="stat-label">mayor movimiento</span>
+>>>>>>> origin/Yosimar
+                </div>
+            </div>
+        </section>
+
+        <!-- Filtros de Contenido -->
+<<<<<<< HEAD
+        <nav class="pestanasDashboard">
+            <button class="botonPestana activo" data-tab="resumen"><i class="iconoLista"></i> Resumen</button>
+            <button class="botonPestana" data-tab="geografia"><i class="iconoMapa"></i> Geografía</button>
+            <button class="botonPestana" data-tab="servicios"><i class="iconoServicios"></i> Servicios</button>
+        </nav>
+
+        <!-- Sección de Gráficos y Detalles -->
+        <section class="contenidoDashboard">
+            <div class="filaContenido">
+                <!-- Gráfico de Tendencia -->
+                <div class="contenedorGrafico rejillaGrande">
+                    <div class="encabezadoGrafico">
+                        <h2><i class="iconoGraficoArea"></i> Tendencia de Trámites</h2>
+                    </div>
+                    <div class="cajaGrafico graficoTemporal">
+                        <!-- Aquí se renderizaría el gráfico con JS -->
+                        <div class="maquetaGrafico">
+                            <div class="barra barraNivel1"></div>
+                            <div class="barra barraNivel2"></div>
+                            <div class="barra barraNivel3"></div>
+                            <div class="barra barraNivel4"></div>
+                            <div class="barra barraNivel5"></div>
+                            <div class="barra barraNivel6"></div>
+=======
+        <nav class="dashboard-tabs">
+            <button class="tab-btn active" data-tab="resumen"><i class="fas fa-list-alt"></i> Resumen</button>
+            <button class="tab-btn" data-tab="geografia"><i class="fas fa-map"></i> Geografía</button>
+            <button class="tab-btn" data-tab="servicios"><i class="fas fa-concierge-bell"></i> Servicios</button>
+        </nav>
+
+        <!-- Sección de Gráficos y Detalles -->
+        <section class="dashboard-content">
+            <div class="content-row">
+                <!-- Gráfico de Tendencia -->
+                <div class="chart-container grid-large">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-chart-area"></i> Tendencia de Trámites</h2>
+                    </div>
+                    <div class="chart-box placeholder-chart">
+                        <!-- Aquí se renderizaría el gráfico con JS -->
+                        <div class="chart-mockup">
+                            <div class="bar" style="height: 40%;"></div>
+                            <div class="bar" style="height: 60%;"></div>
+                            <div class="bar" style="height: 50%;"></div>
+                            <div class="bar" style="height: 80%;"></div>
+                            <div class="bar" style="height: 70%;"></div>
+                            <div class="bar" style="height: 90%;"></div>
+>>>>>>> origin/Yosimar
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Métodos de Solicitud -->
+<<<<<<< HEAD
+                <div class="contenedorGrafico rejillaPequena">
+                    <div class="encabezadoGrafico">
+                        <h2><i class="iconoPortatil"></i> Canales de Recepción</h2>
+                    </div>
+                    <div class="cajaGrafico">
+                        <ul class="listaCanales">
+=======
+                <div class="chart-container grid-small">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-laptop"></i> Canales de Recepción</h2>
+                    </div>
+                    <div class="chart-box">
+                        <ul class="canal-list">
+>>>>>>> origin/Yosimar
+                            <li><span>Presencial</span> <strong>45%</strong></li>
+                            <li><span>Web Municipal</span> <strong>35%</strong></li>
+                            <li><span>App Escazú</span> <strong>20%</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="../src/js/dashboardAdmin.js"></script>
 </body>
+
 </html>
