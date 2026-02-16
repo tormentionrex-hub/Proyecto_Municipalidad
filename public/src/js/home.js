@@ -21,9 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     configurarBotonIngresar();
 });
 
-// =============================
-// CARGAR REPORTES EN HOME (GET)
-// =============================
+// Carga de reportes (get)
 async function cargarReportes() {
     try {
         const response = await fetch(`${API_URL}/reportes`);
