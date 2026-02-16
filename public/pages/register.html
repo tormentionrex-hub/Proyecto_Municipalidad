@@ -3,9 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Register</title>
+    <link rel="stylesheet" href="../src/styles/register.css">
 </head>
 <body>
-    
+     <div class="contenedorRegister">
+        <div class="cardRegister">
+            <h2>Registro de Ciudadano</h2>
+
+            <form id="formRegister">
+
+                <div class="grupoInput">
+                    <label for="nombre">Nombre completo</label>
+                    <input type="text" id="nombre" placeholder="Ingrese su nombre completo">
+                </div>
+
+                <div class="grupoInput">
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo" placeholder="Ingrese su correo">
+                </div>
+
+                <div class="grupoInput">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Ingrese su contraseña">
+                </div>
+
+                <div class="grupoInput">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" placeholder="Ej: 88888888">
+                </div>
+
+                <button type="submit" class="botonRegister">Registrarse</button>
+
+                <p id="mensajeError" class="mensajeError"></p>
+                <p id="mensajeExito" class="mensajeExito"></p>
+
+                <p class="loginLink">
+                    ¿Ya tiene cuenta?
+                    <a href="login.html">Iniciar sesión</a>
+                </p>
+
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../src/js/register.js"></script>
+
+
+
 </body>
 </html>

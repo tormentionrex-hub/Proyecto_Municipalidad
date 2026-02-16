@@ -1,0 +1,108 @@
+/* Fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/* HTML y BODY ocupan toda la pantalla */
+html, body{
+    height:100%;
+    font-family:'Montserrat', sans-serif;
+}
+
+/* BODY centra todo */
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg, #e6e6e6 0%, #f9f9f9 100%);
+}
+
+/* Contenedor principal */
+.contenedorLogin{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Tarjeta */
+.cardLogin{
+    background:#fff;
+    padding:40px 30px;
+    border-radius:10px;
+    box-shadow:0px 4px 15px rgba(0,0,0,0.1);
+    width:100%;
+    max-width:380px;
+    text-align:center;
+}
+
+/* Título */
+.cardLogin h2{
+    margin-bottom:20px;
+    font-size:28px;
+    font-weight:700;
+}
+
+/* Grupo input */
+.grupoInput{
+    margin-bottom:18px;
+    text-align:left;
+}
+
+.grupoInput label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:600;
+}
+
+.grupoInput input{
+    width:100%;
+    padding:12px;
+    border:2px solid #ccc;
+    border-radius:6px;
+    font-size:16px;
+}
+
+/* Botón */
+.botonLogin{
+    width:100%;
+    padding:12px;
+    background:#6558f5;
+    border:none;
+    border-radius:6px;
+    color:white;
+    font-weight:700;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+.botonLogin:hover{
+    background:#5346c9;
+}
+
+/* Error */
+.mensajeError{
+    margin-top:10px;
+    color:red;
+}
+
+/* Link */
+.registroLink{
+    margin-top:15px;
+}
+
+.registroLink a{
+    color:#6558f5;
+    font-weight:600;
+    text-decoration:none;
+}
+
+.registroLink a:hover{
+    text-decoration:underline;
+}

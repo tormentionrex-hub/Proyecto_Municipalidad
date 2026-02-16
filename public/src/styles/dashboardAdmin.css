@@ -1,0 +1,394 @@
+/* Variables de Dashboard - Extendiendo las del home */
+:root {
+    --moradoPrincipal: #3e206f;
+    --moradoSuave: #9b72cf;
+    --verdeSecundario: #56b974;
+    --amarilloAcento: #f8b400;
+    --textoOscuro: #2c2c2c;
+    --textoClaro: #666;
+    --fondoClaro: #f4f7f6;
+    --blanco: #ffffff;
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --sidebar-width: 260px;
+    --transition-fast: 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.cuerpo-dashboard {
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--fondoClaro);
+    color: var(--textoOscuro);
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--blanco);
+    border-right: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    z-index: 100;
+}
+
+.sidebar-logo {
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.sidebar-logo img {
+    height: 60px;
+    width: auto;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 20px 0;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+}
+
+.sidebar-nav li {
+    padding: 5px 20px;
+}
+
+.sidebar-nav li a {
+    text-decoration: none;
+    color: var(--textoClaro);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 15px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: var(--transition-fast);
+}
+
+.sidebar-nav li.active a,
+.sidebar-nav li a:hover {
+    background-color: #f0ebf8;
+    color: var(--moradoPrincipal);
+}
+
+.sidebar-nav li a i {
+    font-size: 1.2rem;
+    width: 25px;
+    text-align: center;
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid #eee;
+}
+
+.btn-logout {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: #fff0f0;
+    color: #ff5c5c;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: var(--transition-fast);
+}
+
+.btn-logout:hover {
+    background-color: #ff5c5c;
+    color: white;
+}
+
+/* --- Main Content --- */
+.dashboard-main {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    padding: 40px;
+    max-width: 1400px;
+}
+
+/* Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.header-info h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    color: var(--moradoPrincipal);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-info p {
+    color: var(--textoClaro);
+    font-size: 0.95rem;
+    margin-top: 5px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.select-periodo {
+    background: white;
+    padding: 8px 15px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--textoClaro);
+}
+
+.select-periodo select {
+    border: none;
+    font-weight: 600;
+    color: var(--textoOscuro);
+    outline: none;
+    cursor: pointer;
+}
+
+.btn-refresh {
+    background: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-soft);
+    cursor: pointer;
+    color: var(--textoClaro);
+    transition: var(--transition-fast);
+}
+
+.btn-refresh:hover {
+    color: var(--moradoPrincipal);
+    transform: rotate(180deg);
+}
+
+/* Stats Cards */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #e8f4fd;
+    color: #3498db;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.stat-icon.purple {
+    background-color: #f3ebff;
+    color: #9b59b6;
+}
+
+.stat-icon.green {
+    background-color: #ebfaf0;
+    color: #2ecc71;
+}
+
+.stat-icon.orange {
+    background-color: #fff5eb;
+    color: #e67e22;
+}
+
+.stat-details h3 {
+    font-size: 0.85rem;
+    color: var(--textoClaro);
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--textoOscuro);
+}
+
+.stat-value.highlight {
+    color: #e67e22;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #999;
+}
+
+/* Tabs */
+.dashboard-tabs {
+    display: flex;
+    background: white;
+    padding: 5px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+    width: fit-content;
+    margin-bottom: 30px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--textoClaro);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: var(--transition-fast);
+}
+
+.tab-btn:hover {
+    color: var(--moradoPrincipal);
+}
+
+.tab-btn.active {
+    background-color: var(--fondoClaro);
+    color: var(--moradoPrincipal);
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Gráficos */
+.dashboard-content {
+    margin-bottom: 40px;
+}
+
+.content-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+}
+
+.chart-container {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
+}
+
+.chart-header {
+    margin-bottom: 25px;
+}
+
+.chart-header h2 {
+    font-size: 1.2rem;
+    color: var(--moradoPrincipal);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chart-box {
+    min-height: 300px;
+}
+
+/* Mockup de barras */
+.chart-mockup {
+    height: 250px;
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    padding: 20px 0;
+}
+
+.bar {
+    flex: 1;
+    background: linear-gradient(to top, var(--moradoPrincipal), var(--moradoSuave));
+    border-radius: 8px 8px 0 0;
+    min-width: 30px;
+    animation: grow 1s ease-out;
+}
+
+@keyframes grow {
+    from {
+        height: 0;
+    }
+}
+
+.canal-list {
+    list-style: none;
+}
+
+.canal-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.canal-list li:last-child {
+    border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+    .content-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+    }
+
+    .sidebar span,
+    .sidebar-logo img {
+        display: none;
+    }
+
+    .dashboard-main {
+        margin-left: 70px;
+        padding: 20px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+}
