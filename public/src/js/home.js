@@ -21,6 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
     configurarBotonIngresar();
 });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/Yosimar
 //Botón para el ingreso a login
 function configurarBotonIngresar() {
     const boton = document.querySelector(".botonIngresar");
