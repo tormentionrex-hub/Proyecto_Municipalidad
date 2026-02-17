@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "http://localhost:3001";
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("formLogin");
@@ -23,7 +23,7 @@ async function iniciarSesion(e) {
 
     try {
         //Validación de las credenciales (GET)
-        const response = await fetch(`${API_URL}/usuarios?correo=${correo}&password=${password}`);
+        const response = await fetch(`${API_URL}/usuarios?correo=${correo}&contraseña=${password}`);
         const usuarios = await response.json();
 
         if (usuarios.length === 0) {
@@ -36,12 +36,8 @@ async function iniciarSesion(e) {
         // Guardar sesión en localStorage
         localStorage.setItem("usuarioActivo", JSON.stringify(usuario));
 
-        //Redirección según los roles
-        if (usuario.rol === "admin") {
-            window.location.href = "dashboard.html";
-        } else {
-            window.location.href = "home.html";
-        }
+        //Redirección general
+        window.location.href = "home.html";
 
     } catch (error) {
         console.error("Error en el login:", error);

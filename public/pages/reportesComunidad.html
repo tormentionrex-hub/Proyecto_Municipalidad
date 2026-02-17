@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes de la Comunidad - Municipalidad de Escazú</title>
+    <link rel="stylesheet" href="../src/styles/home.css">
+    <link rel="stylesheet" href="../src/styles/reportesComunidad.css">
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <!-- Iconos FontAwesome -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+    <!-- navbar -->
+    <header class="encabezado">
+        <div class="contenedor contenedorEncabezado">
+            <div class="cajaLogo">
+                <a href="../pages/home.html"><img src="../src/img/logo muni.png" alt="logo de la muni" width="100"
+                        height="100"></a>
+                <div class="textoLogo">
+                    <h1>MUNICIPALIDAD</h1>
+                    <h2>DE ESCAZÚ</h2>
+                </div>
+            </div>
+
+            <div class="navegacion">
+                <div class="barraSuperior">
+                    <div class="redesSociales">
+                        <a href="https://www.facebook.com/Municipalidaddeescazu"><i class="iconoFacebook"></i></a>
+                        <a href="https://www.instagram.com/muniescazu"><i class="iconoInstagram"></i></a>
+                        <a href="https://www.x.com/MEscazu"><i class="iconoTwitter"></i></a>
+                        <a href="https://www.youtube.com/@MunicipalidaddeEscazuOFICIAL"><i class="iconoYoutube"></i></a>
+                    </div>
+                </div>
+                <nav class="menuPrincipal">
+                    <ul class="listaMenu">
+                        <li><a href="../pages/reportesComunidad.html">Reportes de la comunidad</a></li>
+                        <li class="desplegable">
+                            <a href="#">Trámites y servicios <i class="iconoFlechaAbajo"></i></a>
+                            <ul class="submenu">
+                                <li><a href="../pages/Tramites-de-servicios.html">Trámites en línea</a></li>
+                                <li><a href="../pages/stats.html">Estadísticas</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="../pages/login.html" class="botonIngresar">Ingresar</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-4">
+
+        <h1 class="titulo-principal">Reportes recibidos</h1>
+
+        <!-- Filtros -->
+        <div class="contenedor-filtros">
+            <div class="grupo-filtro">
+                <h3>Ubicación:</h3>
+                <div class="filtros-comunidad" id="filtrosUbicacion">
+                    <button class="btn-filtro activo" data-filtro="todos">Todos</button>
+                    <button class="btn-filtro" data-filtro="Escazú Centro">Escazú Centro</button>
+                    <button class="btn-filtro" data-filtro="San Antonio">San Antonio</button>
+                    <button class="btn-filtro" data-filtro="San Rafael">San Rafael</button>
+                </div>
+            </div>
+
+            <div class="grupo-filtro">
+                <h3>Tipo de Problema:</h3>
+                <div class="filtros-comunidad" id="filtrosTipo">
+                    <button class="btn-filtro btn-tipo activo" data-tipo="todos">Todos</button>
+                    <button class="btn-filtro btn-tipo" data-tipo="Baches">Baches</button>
+                    <button class="btn-filtro btn-tipo" data-tipo="Alcantarillado">Alcantarillado</button>
+                    <button class="btn-filtro btn-tipo" data-tipo="Señalización">Señalización</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="listaReportes">
+            <!-- Cargado dinámicamente -->
+        </div>
+
+    </div>
+
+    <!-- Botón Flotante -->
+    <button id="btnNuevoReporte" class="boton-flotante">
+        <i class="fas fa-plus"></i> <span class="texto-flotante">Nuevo Reporte</span>
+    </button>
+
+    <!-- Modal Formulario -->
+    <div id="modalReporte" class="modal-overlay oculto">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" id="cerrarModal">&times;</span>
+            <h2 style="color: #3e206f; text-align: center; margin-bottom: 20px;">Reportar un Problema</h2>
+            <form id="formReporteCiudadano">
+                <div class="campo-formulario">
+                    <label>Título / Tipo de Problema:</label>
+                    <select id="tituloReporte" class="input-modal" required>
+                        <option value="" disabled selected>Seleccione el tipo de problema...</option>
+                        <option value="Baches">Baches</option>
+                        <option value="Alcantarillado">Alcantarillado</option>
+                        <option value="Señalización">Señalización</option>
+                    </select>
+                </div>
+
+                <div class="campo-formulario">
+                    <label>Descripción:</label>
+                    <textarea id="descripcionReporte" class="input-modal" rows="4"
+                        placeholder="Describa el problema detalladamente..." required></textarea>
+                </div>
+
+                <div class="campo-formulario">
+                    <label>Ubicación:</label>
+                    <select id="ubicacionReporte" class="input-modal" required>
+                        <option value="" disabled selected>Seleccione la ubicación...</option>
+                        <option value="Escazú Centro">Escazú Centro</option>
+                        <option value="San Antonio">San Antonio</option>
+                        <option value="San Rafael">San Rafael</option>
+                    </select>
+                </div>
+
+                <div class="campo-formulario">
+                    <label>Tu Nombre (Opcional):</label>
+                    <input type="text" id="usuarioReporte" class="input-modal" placeholder="Nombre del ciudadano">
+                </div>
+
+                <div class="campo-formulario" style="margin-bottom: 20px;">
+                    <label>Foto (Opcional):</label>
+                    <input type="file" id="fotoReporte" accept="image/*" style="width: 100%;">
+                </div>
+
+                <button type="submit" class="boton-submit">Enviar Reporte</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../src/js/reportesComunidad.js"></script>
+</body>
+
+</html>
