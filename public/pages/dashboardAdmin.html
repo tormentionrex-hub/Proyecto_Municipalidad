@@ -30,7 +30,7 @@
                 <li class="activo" id="navDashboard"><a href="#"><i class="iconoInicio"></i> <span>Dashboard</span></a>
                 </li>
                 <li><a href="#"><i class="iconoTramites"></i> <span>Trámites</span></a></li>
-                <li><a href="#"><i class="iconoUsuarios"></i> <span>Usuarios</span></a></li>
+
                 <li id="navReportes"><a href="#"><i class="iconoMapaReportes"></i> <span>Reportes</span></a></li>
                 <li><a href="#"><i class="iconoConfiguracion"></i> <span>Configuración</span></a></li>
             </ul>
@@ -199,9 +199,27 @@
                 </table>
             </div>
         </div>
-    </main>
 
-    <script type="module" src="../src/js/dashboardAdmin.js"></script>
+
+
+        <!-- Modal Ver Reporte -->
+        <div id="modalVerReporte" class="modal oculto">
+            <div class="contenidoModal modalDetalle">
+                <span class="cerrarModal" id="cerrarModalVer">&times;</span>
+                <h2 style="margin-bottom: 20px; color: var(--moradoPrincipal);">Detalles del Reporte</h2>
+
+                <div id="detalleContenido">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <div style="margin-top: 20px; text-align: right;">
+                    <button class="botonGuardar" id="btnCerrarVer"
+                        style="width: auto; padding: 10px 25px;">Cerrar</button>
+                </div>
+            </div>
+        </div>
+
+        <script type="module" src="../src/js/dashboardAdmin.js"></script>
 </body>
 
 </html>

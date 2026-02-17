@@ -16,10 +16,24 @@ document.addEventListener("click", (e) => {
 
 const API_URL = "http://localhost:3000";
 
+import { getReportes } from '../services/services.js';
+
 document.addEventListener("DOMContentLoaded", () => {
     cargarReportes();
     configurarBotonIngresar();
+    // configurarFormularioReporte();
 });
+
+
+
+async function cargarReportes() {
+    const contenedor = document.getElementById('contenedorReportes');
+    if (!contenedor) return;
+
+    // Si quisieras mostrar los reportes públicos aquí
+    // const reportes = await getReportes();
+    // ... lógica de renderizado ...
+}
 
 //Botón para el ingreso a login
 function configurarBotonIngresar() {

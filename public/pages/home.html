@@ -14,6 +14,7 @@
         rel="stylesheet">
     <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -41,15 +42,8 @@
                 </div>
                 <nav class="menuPrincipal">
                     <ul class="listaMenu">
-                        <li class="desplegable">
-                            <a href="#">Reportes de la comunidad <i class="iconoFlechaAbajo"></i></a>
-                            <ul class="submenu">
-                                <li><a href="../pages/informesHechosPorElPueblo.html">Todos los reportes</a></li>
-                                <li><a href="../pages/reportes-escazu-centro.html">Escazú Centro</a></li>
-                                <li><a href="../pages/reportes-san-antonio.html">San Antonio</a></li>
-                                <li><a href="../pages/reportes-san-rafael.html">San Rafael</a></li>
-                            </ul>
-                        </li>
+                        <a href="../pages/dashboardAdmin.html">Admin<i class="iconoFlechaAbajo"></i></a>
+                        <li><a href="../pages/reportesComunidad.html">Reportes de la comunidad</a></li>
                         <li class="desplegable">
                             <a href="#">Trámites y servicios <i class="iconoFlechaAbajo"></i></a>
                             <ul class="submenu">
@@ -92,6 +86,8 @@
         <section class="seccionReportes contenedor" id="contenedorReportes">
             <!-- Contenedor para reportes dinámicos -->
         </section>
+
+
 
     </main>
     <script type="module" src="../src/js/home.js"></script>
