@@ -772,3 +772,337 @@ body.cuerpo-dashboard {
         gap: 20px;
     }
 }
+
+/* --- Vista Reportes --- */
+.oculto {
+    display: none !important;
+}
+
+.encabezadoReportes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: var(--sombraSuave);
+}
+
+.iconoEncabezadoReporte {
+    width: 50px;
+    height: 50px;
+    background-color: #ffe0b2;
+    color: #f57c00;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-right: 20px;
+}
+
+.infoEncabezado {
+    display: flex;
+    align-items: center;
+}
+
+.botonNuevoReporte {
+    background-color: #f57c00;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(245, 124, 0, 0.3);
+    transition: var(--transicionRapida);
+}
+
+.displayNone {
+    display: none;
+}
+
+.botonNuevoReporte:hover {
+    background-color: #ef6c00;
+    transform: translateY(-2px);
+}
+
+/* Herramientas (Búsqueda y Filtros) */
+.contenedorHerramientas {
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: var(--sombraSuave);
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+}
+
+.barraBusqueda {
+    flex: 2;
+    background-color: var(--fondoClaro);
+    padding: 12px 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: var(--textoClaro);
+}
+
+.barraBusqueda input {
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 1rem;
+    width: 100%;
+    color: var(--textoOscuro);
+}
+
+.filaFiltros {
+    display: flex;
+    gap: 10px;
+}
+
+.botonFiltro {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--textoClaro);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transicionRapida);
+}
+
+.botonFiltro:hover {
+    background-color: var(--fondoClaro);
+    color: var(--textoOscuro);
+}
+
+.botonRecargar {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--textoClaro);
+    transition: var(--transicionRapida);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.botonRecargar:hover {
+    color: var(--moradoPrincipal);
+    transform: rotate(180deg);
+}
+
+.pestañasVista {
+    display: flex;
+    background-color: var(--fondoClaro);
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.botonVista {
+    border: none;
+    background: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    color: var(--textoClaro);
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.botonVista.activo {
+    background-color: white;
+    color: var(--moradoPrincipal);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.infoResultados {
+    margin-left: auto;
+    font-size: 0.9rem;
+    color: var(--textoClaro);
+}
+
+/* Tabla de Reportes */
+.contenedorTabla {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: var(--sombraSuave);
+    overflow: hidden;
+    overflow-x: auto;
+}
+
+.tablaReportes {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+    /* Asegura scroll horizontal en móviles */
+}
+
+.tablaReportes th {
+    background-color: #f9fafb;
+    text-align: left;
+    padding: 20px;
+    font-size: 0.85rem;
+    color: var(--textoClaro);
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+}
+
+.tablaReportes td {
+    padding: 20px;
+    border-bottom: 1px solid #f5f5f5;
+    vertical-align: middle;
+}
+
+.tablaReportes tr:last-child td {
+    border-bottom: none;
+}
+
+.tablaReportes tr:hover {
+    background-color: #fafbfc;
+}
+
+/* Estilos de Celdas */
+.celdaReporte {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.iconoTipoReporte {
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+/* Colores por tipo de reporte (ejemplo) */
+.tipo-infraestructura {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.tipo-seguridad {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.tipo-ambiental {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.tipo-otro {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.infoReporte h4 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+    color: var(--textoOscuro);
+}
+
+.badgeEstado {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.estado-pendiente {
+    background-color: #fff8e1;
+    color: #ffa000;
+}
+
+.estado-en-proceso {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.estado-resuelto {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.celdaContacto,
+.celdaUbicacion,
+.celdaFecha {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+.celdaContacto i,
+.celdaUbicacion i,
+.celdaFecha i {
+    width: 20px;
+    color: #999;
+}
+
+.celdaAcciones {
+    display: flex;
+    gap: 10px;
+}
+
+.btnAccion {
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transicionRapida);
+    font-size: 1rem;
+}
+
+.btnVer {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.btnVer:hover {
+    background-color: #f57c00;
+    color: white;
+}
+
+.btnEditar {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.btnEditar:hover {
+    background-color: #f57c00;
+    color: white;
+}
+
+.btnEliminar {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.btnEliminar:hover {
+    background-color: #d32f2f;
+    color: white;
+}
