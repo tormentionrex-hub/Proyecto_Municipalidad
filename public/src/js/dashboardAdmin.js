@@ -14,6 +14,121 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // Cargar gráfico del dashboard principal
+    fetchAndLoadChart();
+
+    async function fetchAndLoadChart() {
+        try {
+            const reportes = await getReportes();
+            actualizarGraficoTendencia(reportes);
+            actualizarGraficoGeografia(reportes);
+        } catch (error) {
+            console.error("Error cargando datos para el gráfico:", error);
+        }
+    }
+
+    // --- Gráfico Geografía (Horizontal) ---
+    let chartGeografiaInstance = null;
+
+    function actualizarGraficoGeografia(reportes) {
+        const ctx = document.getElementById('graficoGeografia');
+        if (!ctx) return;
+
+        // Reutilizamos la lógica de procesamiento pero adaptada si es necesario
+        // Cantones: San Antonio, San Rafael, Escazú Centro
+        const cantonesObjetivo = ['San Antonio', 'San Rafael', 'Escazú Centro'];
+        const datosProcesados = {
+            'San Antonio': { baches: 0, alcantarillado: 0, senalizacion: 0 },
+            'San Rafael': { baches: 0, alcantarillado: 0, senalizacion: 0 },
+            'Escazú Centro': { baches: 0, alcantarillado: 0, senalizacion: 0 }
+        };
+
+        reportes.forEach(r => {
+            const ubicacion = r.ubicacion || '';
+            const tipo = (r.tipo_obstruccion || '').toLowerCase();
+
+            let cantonKey = null;
+            if (ubicacion.includes('Antonio')) cantonKey = 'San Antonio';
+            else if (ubicacion.includes('Rafael')) cantonKey = 'San Rafael';
+            else if (ubicacion.includes('Centro') || ubicacion.includes('Escazú')) cantonKey = 'Escazú Centro';
+
+            if (cantonKey) {
+                if (tipo.includes('bache')) datosProcesados[cantonKey].baches++;
+                else if (tipo.includes('alcantarilla')) datosProcesados[cantonKey].alcantarillado++;
+                else if (tipo.includes('señal') || tipo.includes('seña')) datosProcesados[cantonKey].senalizacion++;
+            }
+        });
+
+        const datasets = [
+            {
+                label: 'Ingresos (Baches)', // Usando nombres inspirados en imagen pero con datos reales
+                data: cantonesObjetivo.map(c => datosProcesados[c].baches),
+                backgroundColor: '#fd7e14', // Naranja (Ingresos style)
+                borderRadius: 5,
+                barPercentage: 0.6
+            },
+            {
+                label: 'Paquetes (Alcantarillado)', // Usando nombres inspirados en imagen
+                data: cantonesObjetivo.map(c => datosProcesados[c].alcantarillado),
+                backgroundColor: '#0d6efd', // Azul (Paquetes style)
+                borderRadius: 5,
+                barPercentage: 0.6
+            },
+            {
+                label: 'Otros (Señalización)',
+                data: cantonesObjetivo.map(c => datosProcesados[c].senalizacion),
+                backgroundColor: '#20c997',
+                borderRadius: 5,
+                barPercentage: 0.6
+            }
+        ];
+
+        if (chartGeografiaInstance) {
+            chartGeografiaInstance.destroy();
+        }
+
+        chartGeografiaInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: cantonesObjetivo,
+                datasets: datasets
+            },
+            options: {
+                indexAxis: 'y', // Barra Horizontal
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end'
+                    },
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     // --- Lógica del Dashboard Original ---
 
     // Botón de cierre de sesión
@@ -28,12 +143,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cambio de Pestañas (Tabs)
     const botonesPestana = document.querySelectorAll('.botonPestana');
+    // Elementos de Paneles
+    const panelResumen = document.getElementById('panelResumen');
+    const panelGeografia = document.getElementById('panelGeografia');
+
     botonesPestana.forEach(btn => {
         btn.addEventListener('click', () => {
-            botonesPestana.forEach(b => b.classList.remove('activo'));
-            btn.classList.add('activo');
             const nombrePestana = btn.getAttribute('data-tab');
-            console.log(`Cambiando a la pestaña: ${nombrePestana}`);
+
+            // Sincronizar estado activo en todos los botones (Dashboard y Reportes)
+            botonesPestana.forEach(b => {
+                b.classList.remove('activo');
+                if (b.getAttribute('data-tab') === nombrePestana) {
+                    b.classList.add('activo');
+                }
+            });
+
+            // Ocultar todos los paneles primero
+            if (panelResumen) panelResumen.classList.add('oculto');
+            if (panelGeografia) panelGeografia.classList.add('oculto');
+
+            // Mostrar el seleccionado
+            if (nombrePestana === 'resumen') {
+                if (panelResumen) panelResumen.classList.remove('oculto');
+            } else if (nombrePestana === 'geografia') {
+                if (panelGeografia) panelGeografia.classList.remove('oculto');
+            }
+            // Servicios podría ir aquí en el futuro
+
+            // Lógica para volver al Dashboard si estamos en otra vista (ej: Reportes)
+            const vistaDashboard = document.getElementById('vistaDashboard');
+            const vistaReportes = document.getElementById('vistaReportes');
+            const navDashboard = document.getElementById('navDashboard');
+            const navReportes = document.getElementById('navReportes');
+
+            if (nombrePestana === 'resumen' || nombrePestana === 'geografia') {
+                if (vistaReportes && !vistaReportes.classList.contains('oculto')) {
+                    vistaReportes.classList.add('oculto');
+                    if (vistaDashboard) vistaDashboard.classList.remove('oculto');
+
+                    // Actualizar Sidebar
+                    if (navReportes) navReportes.classList.remove('activo');
+                    if (navDashboard) navDashboard.classList.add('activo');
+                }
+            }
         });
     });
 
@@ -116,11 +269,110 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const reportes = await getReportes();
             renderizarReportes(reportes);
+            actualizarGraficoTendencia(reportes);
         } catch (error) {
             console.error("Error cargando reportes:", error);
             cuerpoTabla.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Error al cargar reportes.</td></tr>';
         }
     }
+
+    // Variable global para el gráfico de tendencia
+    let chartTendenciaInstance = null;
+
+    function actualizarGraficoTendencia(reportes) {
+        const ctx = document.getElementById('graficoTendencia');
+        if (!ctx) return;
+
+        // Procesar datos para obtener conteos por cantón y tipo
+        // Cantones objetivo: San Antonio, San Rafael, Escazú Centro
+        const cantonesObjetivo = ['San Antonio', 'San Rafael', 'Escazú Centro'];
+        const datosProcesados = {
+            'San Antonio': { baches: 0, alcantarillado: 0, senalizacion: 0 },
+            'San Rafael': { baches: 0, alcantarillado: 0, senalizacion: 0 },
+            'Escazú Centro': { baches: 0, alcantarillado: 0, senalizacion: 0 }
+        };
+
+        reportes.forEach(r => {
+            const ubicacion = r.ubicacion;
+            const tipo = (r.tipo_obstruccion || '').toLowerCase();
+
+            // Normalizar ubicación para coincidir con objetivos
+            let cantonKey = null;
+            if (ubicacion.includes('Antonio')) cantonKey = 'San Antonio';
+            else if (ubicacion.includes('Rafael')) cantonKey = 'San Rafael';
+            else if (ubicacion.includes('Centro') || ubicacion.includes('Escazú')) cantonKey = 'Escazú Centro';
+
+            if (cantonKey) {
+                if (tipo.includes('bache')) datosProcesados[cantonKey].baches++;
+                else if (tipo.includes('alcantarilla')) datosProcesados[cantonKey].alcantarillado++;
+                else if (tipo.includes('señal') || tipo.includes('seña')) datosProcesados[cantonKey].senalizacion++;
+            }
+        });
+
+        // Asegurar que haya datos distintos (simulación si es necesario para demo, pero basado en real)
+        // El usuario pidió: "no deben ser iguales cada uno debe tener un numero o cantidad distinta"
+        // Si los datos reales son 0, podríamos mostrar 0, pero para cumplir el requerimiento visual
+        // verificaremos y si está muy vacío, quizás el usuario quiera ver el potencial.
+        // Por ahora, usamos los datos reales. Si db.json tiene pocos datos, se verá reflejado.
+
+        const datasets = [
+            {
+                label: 'Baches',
+                data: cantonesObjetivo.map(c => datosProcesados[c].baches),
+                backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Alcantarillado',
+                data: cantonesObjetivo.map(c => datosProcesados[c].alcantarillado),
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Señalización',
+                data: cantonesObjetivo.map(c => datosProcesados[c].senalizacion),
+                backgroundColor: 'rgba(255, 206, 86, 0.7)',
+                borderColor: 'rgba(255, 206, 86, 1)',
+                borderWidth: 1
+            }
+        ];
+
+        if (chartTendenciaInstance) {
+            chartTendenciaInstance.destroy();
+        }
+
+        chartTendenciaInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: cantonesObjetivo,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Incidencias por Cantón'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    }
+
 
     function renderizarReportes(reportes) {
         cuerpoTabla.innerHTML = '';
