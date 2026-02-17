@@ -1,4 +1,7 @@
 // Menu desplegable
+
+import { getReportes } from "../services/services.js";
+
 document.querySelectorAll(".desplegable > a").forEach(link => {
     link.addEventListener("click", (e) => {
         e.preventDefault();
@@ -17,9 +20,21 @@ document.addEventListener("click", (e) => {
 const API_URL = "http://localhost:3000";
 
 document.addEventListener("DOMContentLoaded", () => {
-    cargarReportes();
+   cargarReportes();
     configurarBotonIngresar();
 });
+
+
+
+async function cargarReportes() {
+
+    const reportes=await getReportes()
+    console.log(reportes);
+    
+    
+}
+
+
 
 
 //Botón para el ingreso a login
