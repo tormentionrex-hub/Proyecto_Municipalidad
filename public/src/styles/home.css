@@ -5,7 +5,7 @@
     box-sizing: border-box;
 }
 
-html{
+html {
     scroll-behavior: smooth;
 }
 
@@ -14,11 +14,9 @@ body {
     color: #4A4A4A;
     overflow-x: hidden;
 
-    background-image: 
-        linear-gradient(
-            rgba(255,255,255,0.85),
-            rgba(255,255,255,0.85)
-        ),
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.85),
+            rgba(255, 255, 255, 0.85)),
         url("/src/img/ciudad.png");
 
     background-size: cover;
@@ -308,7 +306,8 @@ h6 {
     display: flex;
     align-items: center;
     background: var(--blanco);
-    overflow: visible; /* ← ESTA es la solución real */
+    overflow: visible;
+    /* ← ESTA es la solución real */
 }
 
 
@@ -517,20 +516,265 @@ h6 {
         transform: translateX(-50%);
     }
 
-    
+
 
 }
+
+/* =========================
+   CARRUSEL TIPO TARJETA HORIZONTAL
+========================= */
+
+.contenedorCarrusel {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.contenedorCarrusel .carousel {
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: none;
+    background-color: var(--blanco);
+    position: relative;
+}
+
+/* --- Tarjeta del slide (horizontal) --- */
+.slideCard {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--blanco);
+    min-height: 360px;
+}
+
+/* --- Imagen de la tarjeta --- */
+.slideCardImagen {
+    width: 55%;
+    min-height: 360px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.slideCardImagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.contenedorCarrusel .carousel:hover .carousel-item.active .slideCardImagen img {
+    transform: scale(1.03);
+}
+
+/* --- Texto de la tarjeta --- */
+.slideCardTexto {
+    width: 45%;
+    padding: 40px 35px;
+    background-color: var(--blanco);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.slideCardTexto h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--moradoPrincipal);
+    margin-bottom: 14px;
+    line-height: 1.25;
+}
+
+.slideCardTexto p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--textoClaro);
+    line-height: 1.6;
+    margin-bottom: 22px;
+}
+
+.slideCardEnlace {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--moradoPrincipal);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.3s ease, gap 0.3s ease;
+}
+
+.slideCardEnlace:hover {
+    color: var(--verdeSecundario);
+    gap: 8px;
+}
+
+/* --- Indicadores --- */
+.contenedorCarrusel .carousel-indicators {
+    position: absolute;
+    bottom: 12px;
+    margin-bottom: 0;
+    z-index: 5;
+    gap: 6px;
+}
+
+.contenedorCarrusel .carousel-indicators button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--textoClaro);
+    background-color: transparent;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.contenedorCarrusel .carousel-indicators button.active {
+    background-color: var(--moradoPrincipal);
+    border-color: var(--moradoPrincipal);
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+.contenedorCarrusel .carousel-indicators button:hover {
+    opacity: 0.8;
+    background-color: rgba(62, 32, 111, 0.3);
+}
+
+/* --- Flechas de navegación --- */
+.contenedorCarrusel .carousel-control-prev,
+.contenedorCarrusel .carousel-control-next {
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    bottom: auto;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.contenedorCarrusel .carousel-control-prev {
+    left: 12px;
+}
+
+.contenedorCarrusel .carousel-control-next {
+    right: 12px;
+}
+
+.contenedorCarrusel .carousel:hover .carousel-control-prev,
+.contenedorCarrusel .carousel:hover .carousel-control-next {
+    opacity: 1;
+}
+
+.contenedorCarrusel .carousel-control-prev:hover,
+.contenedorCarrusel .carousel-control-next:hover {
+    background-color: var(--blanco);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.contenedorCarrusel .carousel-control-prev-icon,
+.contenedorCarrusel .carousel-control-next-icon {
+    width: 16px;
+    height: 16px;
+    filter: invert(20%) sepia(30%) saturate(2000%) hue-rotate(240deg);
+}
+
+/* Transición suave */
+.contenedorCarrusel .carousel-item {
+    transition: transform 0.6s ease-in-out;
+}
+
+/* --- Responsive: vuelve a vertical en móvil --- */
+@media (max-width: 768px) {
+    .contenedorCarrusel {
+        max-width: 100%;
+        padding: 30px 15px 40px;
+    }
+
+    .contenedorCarrusel .carousel {
+        border-radius: 14px;
+    }
+
+    .slideCard {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .slideCardImagen {
+        width: 100%;
+        min-height: 220px;
+        height: 220px;
+    }
+
+    .slideCardTexto {
+        width: 100%;
+        padding: 22px 20px 28px;
+    }
+
+    .slideCardTexto h3 {
+        font-size: 1.25rem;
+    }
+
+    .contenedorCarrusel .carousel-control-prev,
+    .contenedorCarrusel .carousel-control-next {
+        width: 36px;
+        height: 36px;
+        opacity: 0.8;
+    }
+
+    .contenedorCarrusel .carousel-control-prev {
+        left: 8px;
+    }
+
+    .contenedorCarrusel .carousel-control-next {
+        right: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .slideCardImagen {
+        height: 180px;
+        min-height: 180px;
+    }
+
+    .slideCardTexto {
+        padding: 18px 16px 24px;
+    }
+
+    .slideCardTexto h3 {
+        font-size: 1.1rem;
+    }
+
+    .slideCardTexto p {
+        font-size: 0.88rem;
+    }
+
+    .contenedorCarrusel .carousel-indicators button {
+        width: 8px;
+        height: 8px;
+    }
+}
+
 /* =========================
    SECCION NOTICIAS CLEAN
 ========================= */
 
-.seccionNoticias{
+.seccionNoticias {
     padding: 120px 20px;
-    background-color: #ffffff; /* fondo blanco limpio */
+    background-color: #ffffff;
+    /* fondo blanco limpio */
 }
 
 /* TITULO PRINCIPAL */
-.tituloNoticias{
+.tituloNoticias {
     font-family: "Montserrat", sans-serif;
     font-size: 42px;
     font-weight: 800;
@@ -540,7 +784,7 @@ h6 {
 }
 
 /* LINEA DECORATIVA */
-.tituloNoticias::after{
+.tituloNoticias::after {
     content: "";
     width: 80px;
     height: 5px;
@@ -551,24 +795,24 @@ h6 {
 }
 
 /* CARD */
-.cardNoticia{
+.cardNoticia {
     background-color: #ffffff;
     max-width: 850px;
     margin: 0 auto 50px auto;
     padding: 30px;
     border-radius: 16px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
     transition: all 0.25s ease;
 }
 
 /* HOVER SUAVE */
-.cardNoticia:hover{
+.cardNoticia:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.10);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.10);
 }
 
 /* TITULO CARD */
-.tituloCard{
+.tituloCard {
     font-family: "Montserrat", sans-serif;
     font-size: 22px;
     font-weight: 600;
@@ -578,24 +822,24 @@ h6 {
 }
 
 /* IMAGEN */
-.imagenCard{
+.imagenCard {
     width: 100%;
     border-radius: 12px;
     display: block;
 }
 
 /* RESPONSIVE */
-@media (max-width:768px){
+@media (max-width:768px) {
 
-    .seccionNoticias{
+    .seccionNoticias {
         padding: 80px 15px;
     }
 
-    .tituloNoticias{
+    .tituloNoticias {
         font-size: 30px;
     }
 
-    .tituloCard{
+    .tituloCard {
         font-size: 18px;
     }
 
@@ -605,13 +849,13 @@ h6 {
    SECCION NOTICIAS GRID
 ========================= */
 
-.seccionNoticias{
+.seccionNoticias {
     padding: 120px 20px;
     background-color: #ffffff;
 }
 
 /* TITULO */
-.tituloNoticias{
+.tituloNoticias {
     font-family: "Montserrat", sans-serif;
     font-size: 42px;
     font-weight: 800;
@@ -620,7 +864,7 @@ h6 {
     margin-bottom: 60px;
 }
 
-.tituloNoticias::after{
+.tituloNoticias::after {
     content: "";
     width: 70px;
     height: 5px;
@@ -631,7 +875,7 @@ h6 {
 }
 
 /* GRID 2 COLUMNAS */
-.gridNoticias{
+.gridNoticias {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 40px;
@@ -640,23 +884,23 @@ h6 {
 }
 
 /* CARD */
-.cardNoticia{
+.cardNoticia {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 16px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
     transition: 0.3s ease;
     text-align: center;
 }
 
 /* HOVER */
-.cardNoticia:hover{
+.cardNoticia:hover {
     transform: translateY(-6px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
 /* IMAGEN */
-.imagenCard{
+.imagenCard {
     width: 100%;
     height: 220px;
     object-fit: cover;
@@ -665,7 +909,7 @@ h6 {
 }
 
 /* TITULO */
-.tituloCard{
+.tituloCard {
     font-family: "Montserrat", sans-serif;
     font-size: 20px;
     font-weight: 700;
@@ -674,16 +918,16 @@ h6 {
 }
 
 /* TEXTO */
-.textoCard{
+.textoCard {
     font-family: "Open Sans", sans-serif;
     font-size: 15px;
     color: #6c757d;
 }
 
 /* RESPONSIVE */
-@media (max-width:768px){
+@media (max-width:768px) {
 
-    .gridNoticias{
+    .gridNoticias {
         grid-template-columns: 1fr;
     }
 
@@ -693,25 +937,25 @@ h6 {
    COMPARATIVA HORIZONTAL
 ========================= */
 
-.comparativaHorizontal{
+.comparativaHorizontal {
     display: flex;
     gap: 20px;
     margin: 20px 0;
 }
 
-.bloqueImagen{
+.bloqueImagen {
     position: relative;
     flex: 1;
 }
 
-.bloqueImagen img{
+.bloqueImagen img {
     width: 100%;
     height: 250px;
     object-fit: cover;
     border-radius: 12px;
 }
 
-.etiqueta{
+.etiqueta {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -722,17 +966,17 @@ h6 {
     color: white;
 }
 
-.antes{
+.antes {
     background-color: #e74c3c;
 }
 
-.despues{
+.despues {
     background-color: #2ecc71;
 }
 
 /* Responsive */
-@media (max-width:768px){
-    .comparativaHorizontal{
+@media (max-width:768px) {
+    .comparativaHorizontal {
         flex-direction: column;
     }
 }
