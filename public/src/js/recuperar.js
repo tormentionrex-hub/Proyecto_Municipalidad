@@ -1,13 +1,13 @@
 // Configuración de EmailJS (Placeholder - El usuario debe configurar estos valores)
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // Reemplazar con la llave pública
-const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID"; // Reemplazar con el ID del servicio
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID"; // Reemplazar con el ID de la plantilla
+const EMAILJS_PUBLIC_KEY = "qUlvQrT1jvUYVC0jD"; // Llave pública proporcionada por el usuario
+const EMAILJS_SERVICE_ID = "service_5p3x2vj"; // ID del servicio proporcionado por el usuario
+const EMAILJS_TEMPLATE_ID = "template_vo1l64o"; // ID de la plantilla proporcionado por el usuario
 
 // Inicializar EmailJS
-(function() {
+(function () {
     if (typeof emailjs !== 'undefined') {
         emailjs.init({
-          publicKey: EMAILJS_PUBLIC_KEY,
+            publicKey: EMAILJS_PUBLIC_KEY,
         });
     }
 })();
@@ -36,9 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Enviar correo vía EmailJS
-            // Se asocia con los parámetros de la plantilla de EmailJS
+            // Se añaden múltiples variantes para el destinatario y el link de recuperación
+            const recoveryLink = `${window.location.origin}/public/pages/reset-password.html?token=${btoa(email)}`;
+
             const templateParams = {
+                user_email: email,
                 to_email: email,
+                email: email,
+                link: recoveryLink, // El parámetro que espera tu plataforma
                 message: "Se ha solicitado un restablecimiento de contraseña para tu cuenta en la Municipalidad de Escazú.",
                 reply_to: "no-reply@escazu.go.cr"
             };

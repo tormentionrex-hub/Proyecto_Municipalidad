@@ -10,20 +10,21 @@ async function iniciarSesion(e) {
     e.preventDefault();
 
     const correo = document.getElementById("correo").value.trim();
-    const password = document.getElementById("contraseña").value.trim();
+    const passwordInput = document.getElementById("password").value.trim();
     const mensajeError = document.getElementById("mensajeError");
 
     mensajeError.textContent = "";
 
     //Validar los campos obligatorios
-    if (!correo || !password) {
+    if (!correo || !passwordInput) {
         mensajeError.textContent = "Todos los campos son obligatorios.";
         return;
     }
 
     try {
         //Validación de las credenciales (GET)
-        const response = await fetch(`${API_URL}/usuarios?correo=${correo}&contraseña=${password}`);
+        // Nota: El campo en la base de datos se llama "contraseña"
+        const response = await fetch(`${API_URL}/usuarios?correo=${correo}&contraseña=${passwordInput}`);
         const usuarios = await response.json();
 
         if (usuarios.length === 0) {
@@ -45,14 +46,14 @@ async function iniciarSesion(e) {
     }
 }
 
-
-
 //Mostrar y ocultar contraseña:
 const togglePassword = document.getElementById("togglePassword");
-const password = document.getElementById("password");
+const passwordField = document.getElementById("password");
 
-togglePassword.addEventListener("click", () => {
-    const type = password.type === "password" ? "text" : "password";
-    password.type = type;
-    togglePassword.classList.toggle("fa-eye-slash");
-});
+if (togglePassword && passwordField) {
+    togglePassword.addEventListener("click", () => {
+        const type = passwordField.type === "password" ? "text" : "password";
+        passwordField.type = type;
+        togglePassword.classList.toggle("fa-eye-slash");
+    });
+}
