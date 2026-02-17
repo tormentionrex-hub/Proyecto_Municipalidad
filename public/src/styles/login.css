@@ -1,108 +1,229 @@
-/* Fuentes */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+:root {
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --input-border: #d1d5db;
+    --input-focus: #4f46e5;
+    --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
 
 /* RESET */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
 }
 
-/* HTML y BODY ocupan toda la pantalla */
-html, body{
-    height:100%;
-    font-family:'Montserrat', sans-serif;
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg-gradient);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    padding: 20px;
 }
 
-/* BODY centra todo */
-body{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background: linear-gradient(135deg, #e6e6e6 0%, #f9f9f9 100%);
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* Contenedor principal */
-.contenedorLogin{
-    width:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.contenedorLogin {
+    width: 100%;
+    max-width: 420px;
+    perspective: 1000px;
 }
 
-/* Tarjeta */
-.cardLogin{
-    background:#fff;
-    padding:40px 30px;
-    border-radius:10px;
-    box-shadow:0px 4px 15px rgba(0,0,0,0.1);
-    width:100%;
-    max-width:380px;
-    text-align:center;
+/* Tarjeta con Glassmorphism */
+.cardLogin {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-premium);
+    width: 100%;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Título */
-.cardLogin h2{
-    margin-bottom:20px;
-    font-size:28px;
-    font-weight:700;
+@keyframes cardEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(30px) rotateX(-10deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
 }
 
-/* Grupo input */
-.grupoInput{
-    margin-bottom:18px;
-    text-align:left;
+.cardLogin h2 {
+    margin-bottom: 24px;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
 }
 
-.grupoInput label{
-    display:block;
-    margin-bottom:6px;
-    font-weight:600;
+/* Form Styles */
+#formLogin {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.grupoInput input{
-    width:100%;
-    padding:12px;
-    border:2px solid #ccc;
-    border-radius:6px;
-    font-size:16px;
+.grupoInput {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-/* Botón */
-.botonLogin{
-    width:100%;
-    padding:12px;
-    background:#6558f5;
-    border:none;
-    border-radius:6px;
-    color:white;
-    font-weight:700;
-    font-size:16px;
-    cursor:pointer;
-    margin-top:10px;
+.grupoInput label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
 }
 
-.botonLogin:hover{
-    background:#5346c9;
+/* Inputs */
+.grupoInput input[type="email"],
+.grupoInput input[type="password"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--input-border);
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: white;
 }
 
-/* Error */
-.mensajeError{
-    margin-top:10px;
-    color:red;
+.grupoInput input:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    outline: none;
 }
 
-/* Link */
-.registroLink{
-    margin-top:15px;
+/* Password Container and Toggle */
+.password-container {
+    position: relative;
 }
 
-.registroLink a{
-    color:#6558f5;
-    font-weight:600;
-    text-decoration:none;
+.inputPassword {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
-.registroLink a:hover{
-    text-decoration:underline;
+.inputPassword i {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+    padding: 5px;
+}
+
+.inputPassword i:hover {
+    color: var(--primary-color);
+}
+
+/* Login Options (Remember me & Forgot password) */
+.opcionesLogin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.opcionesLogin label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.opcionesLogin input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary-color);
+}
+
+.olvidePassword a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.olvidePassword a:hover {
+    text-decoration: underline;
+}
+
+/* Button */
+.botonLogin {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+}
+
+.botonLogin:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+}
+
+.botonLogin:active {
+    transform: translateY(0);
+}
+
+/* Error Message */
+.mensajeError {
+    min-height: 20px;
+    font-size: 14px;
+    color: #ef4444;
+    font-weight: 500;
+}
+
+/* Register Link */
+.registroLink {
+    margin-top: 10px;
+    font-size: 15px;
+    color: var(--text-muted);
+}
+
+.registroLink a {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.registroLink a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .cardLogin {
+        padding: 30px 20px;
+    }
 }

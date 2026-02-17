@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña - Municipalidad de Escazú</title>
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../src/styles/login.css">
+    <link rel="stylesheet" href="../src/styles/recuperar.css">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+
+<body>
+    <div class="contenedorLogin">
+        <main class="cardLogin recovery-card">
+            <div class="header-recovery">
+                <a href="login.html" class="back-link" title="Volver al login">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h2>Recuperar acceso</h2>
+            </div>
+
+            <p class="description">Ingresa tu correo electrónico para recibir las instrucciones de restablecimiento.</p>
+
+            <form id="formRecuperar">
+                <div class="grupoInput">
+                    <label for="recovery-email">Correo electrónico</label>
+                    <input type="email" id="recovery-email" name="user_email" placeholder="ejemplo@correo.com" required
+                        autocomplete="email">
+                </div>
+
+                <button type="submit" class="botonLogin" id="btnRecuperar">
+                    <span class="btn-text">Enviar instrucciones</span>
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+
+                <p class="mensajeFeedback" id="mensajeFeedback"></p>
+
+                <p class="loginLink">
+                    ¿Recordaste tu contraseña?
+                    <a href="login.html">Inicia sesión</a>
+                </p>
+            </form>
+        </main>
+    </div>
+
+    <script type="module" src="../src/js/recuperar.js"></script>
+</body>
+
+</html>
