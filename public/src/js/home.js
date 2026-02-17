@@ -1,4 +1,7 @@
 // Menu desplegable
+
+import { getReportes } from "../services/services.js";
+
 document.querySelectorAll(".desplegable > a").forEach(link => {
     link.addEventListener("click", (e) => {
         e.preventDefault();
@@ -19,7 +22,7 @@ const API_URL = "http://localhost:3000";
 import { getReportes } from '../services/services.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    cargarReportes();
+   cargarReportes();
     configurarBotonIngresar();
     // configurarFormularioReporte();
 });
@@ -29,11 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
 async function cargarReportes() {
     const contenedor = document.getElementById('contenedorReportes');
     if (!contenedor) return;
-
     // Si quisieras mostrar los reportes públicos aquí
     // const reportes = await getReportes();
     // ... lógica de renderizado ...
+  const reportes=await getReportes()
+    console.log(reportes);
 }
+    
 
 //Botón para el ingreso a login
 function configurarBotonIngresar() {
@@ -43,4 +48,3 @@ function configurarBotonIngresar() {
         window.location.href = "../pages/login.html";
     });
 }
-
