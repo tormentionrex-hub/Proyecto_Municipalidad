@@ -19,23 +19,26 @@ document.addEventListener("click", (e) => {
 
 const API_URL = "http://localhost:3000";
 
+import { getReportes } from '../services/services.js';
+
 document.addEventListener("DOMContentLoaded", () => {
    cargarReportes();
     configurarBotonIngresar();
+    // configurarFormularioReporte();
 });
 
 
 
 async function cargarReportes() {
-
-    const reportes=await getReportes()
+    const contenedor = document.getElementById('contenedorReportes');
+    if (!contenedor) return;
+    // Si quisieras mostrar los reportes públicos aquí
+    // const reportes = await getReportes();
+    // ... lógica de renderizado ...
+  const reportes=await getReportes()
     console.log(reportes);
-    
-    
 }
-
-
-
+    
 
 //Botón para el ingreso a login
 function configurarBotonIngresar() {
@@ -45,4 +48,3 @@ function configurarBotonIngresar() {
         window.location.href = "../pages/login.html";
     });
 }
-

@@ -1,0 +1,360 @@
+/* =========================
+   RESET GENERAL
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+    background-color: #f4f6f9;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.navbar .container {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand {
+    color: #2b579a !important;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* =========================
+   TITULO PRINCIPAL
+========================= */
+.titulo-principal {
+    color: #2b579a;
+    margin-bottom: 40px;
+    border-left: 6px solid #2b579a;
+    padding-left: 15px;
+    display: inline-block;
+}
+
+/* =========================
+   TARJETA REPORTE
+========================= */
+.reporte {
+    width: 700px;
+    margin-bottom: 40px;
+}
+
+/* TITULO REPORTE */
+.reporte h2 {
+    padding: 15px 20px 5px 20px;
+    color: #1f3c6d;
+    font-size: 22px;
+    background-color: white;
+
+    border-left: 6px solid #2b579a;
+
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* DESCRIPCION REPORTE */
+.reporte h3 {
+    padding: 10px 20px 15px 20px;
+    color: #444;
+    font-weight: normal;
+    line-height: 1.6;
+    font-size: 16px;
+    background-color: white;
+
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* =========================
+   CONTENEDOR IMAGEN
+========================= */
+.contenedor-imagen {
+    width: 100%;
+    height: 300px;
+    background-color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+
+    overflow: hidden;
+}
+
+/* IMAGEN */
+.contenedor-imagen img {
+    max-width: 400%;
+    max-height: 100%;
+    width: 400%;
+    height: 100%;
+
+    transition: 0.3s ease;
+}
+
+/* EFECTO HOVER */
+.contenedor-imagen img:hover {
+    transform: scale(1.03);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width:768px) {
+
+    .reporte {
+        width: 95%;
+    }
+
+    .contenedor-imagen {
+        height: 220px;
+        padding: 15px;
+
+    }
+
+}
+
+/* =========================
+   FILTROS
+========================= */
+.contenedor-filtros {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.grupo-filtro {
+    margin-bottom: 20px;
+}
+
+.grupo-filtro h3 {
+    font-size: 1.1rem;
+    color: #3e206f;
+    margin-bottom: 10px;
+}
+
+.filtros-comunidad {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn-filtro {
+    padding: 8px 16px;
+    border: 1px solid #3e206f;
+    background-color: white;
+    color: #3e206f;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.btn-filtro:hover,
+.btn-filtro.activo {
+    background-color: #3e206f;
+    color: white;
+}
+
+/* =========================
+   INFO EXTRA REPORTE
+========================= */
+.info-extra {
+    padding: 15px 20px;
+    background-color: #fff;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info-extra p {
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.info-extra i {
+    color: #3e206f;
+    margin-right: 8px;
+    width: 20px;
+    text-align: center;
+}
+
+.etiqueta-estado {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.estado-pendiente {
+    background-color: #ffeb3b;
+    color: #856404;
+}
+
+.estado-aprobado {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.estado-rechazado {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+
+/* =========================
+   BOTÓN FLOTANTE (FAB)
+========================= */
+.boton-flotante {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #3e206f;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.boton-flotante:hover {
+    background-color: #2b1650;
+    transform: translateY(-3px);
+}
+
+/* =========================
+   MODAL
+========================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.oculto {
+    display: none;
+    opacity: 0;
+}
+
+.modal-contenido {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.cerrar-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s;
+}
+
+.cerrar-modal:hover {
+    color: #000;
+}
+
+/* =========================
+   FORMULARIO MODAL
+========================= */
+.campo-formulario {
+    margin-bottom: 15px;
+}
+
+.campo-formulario label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.input-modal {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.input-modal:focus {
+    border-color: #3e206f;
+    outline: none;
+}
+
+.boton-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #3e206f;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.boton-submit:hover {
+    background-color: #2b1650;
+}

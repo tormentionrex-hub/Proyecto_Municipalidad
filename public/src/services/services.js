@@ -127,7 +127,7 @@ async function getReportes() {
 
     try {
 
-        const respuestaServidor = await fetch("http://localhost:3001/reportes")
+        const respuestaServidor = await fetch("http://localhost:3001/publicaciones")
 
 
         const datosReportes = await respuestaServidor.json();
@@ -154,7 +154,7 @@ async function postReportes(reporte) {
 
     try {
 
-        const respuesta = await fetch("http://localhost:3001/reportes", {
+        const respuesta = await fetch("http://localhost:3001/publicaciones", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -186,7 +186,7 @@ async function patchReportes(reporte, id) {
 
     try {
 
-        const respuesta = await fetch("http://localhost:3001/reportes/" + id, {
+        const respuesta = await fetch("http://localhost:3001/publicaciones/" + id, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
@@ -222,7 +222,7 @@ async function deleteReportes(id) {
 
     try {
 
-        const respuesta = await fetch("http://localhost:3001/reportes/" + id, {
+        const respuesta = await fetch("http://localhost:3001/publicaciones/" + id, {
             method: "DELETE",
         })
 
@@ -237,3 +237,5 @@ async function deleteReportes(id) {
 }
 
 export { deleteReportes }
+
+

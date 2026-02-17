@@ -1,7 +1,11 @@
 import {
     getReportes,
     deleteReportes,
-    patchReportes
+    patchReportes,
+    getColaboradores,
+    postColaboradores,
+    patchColaboradores,
+    deleteColaboradores
 } from '../services/services.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -68,18 +72,22 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             vistaDashboard.classList.remove('oculto');
             vistaReportes.classList.add('oculto');
+            if (document.getElementById('vistaColaboradores')) document.getElementById('vistaColaboradores').classList.add('oculto');
 
             navDashboard.classList.add('activo');
             navReportes.classList.remove('activo');
+            if (document.getElementById('navColaboradores')) document.getElementById('navColaboradores').classList.remove('activo');
         });
 
         navReportes.addEventListener('click', (e) => {
             e.preventDefault();
             vistaDashboard.classList.add('oculto');
             vistaReportes.classList.remove('oculto');
+            if (document.getElementById('vistaColaboradores')) document.getElementById('vistaColaboradores').classList.add('oculto');
 
             navDashboard.classList.remove('activo');
             navReportes.classList.add('activo');
+            if (document.getElementById('navColaboradores')) document.getElementById('navColaboradores').classList.remove('activo');
 
             cargarReportes(); // Cargar datos al entrar
         });
@@ -125,60 +133,103 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderizarReportes(reportes) {
         cuerpoTabla.innerHTML = '';
-        const contadorElem = document.getElementById('contadorReportes');
-        if (contadorElem) contadorElem.textContent = `${reportes.length} reportes encontrados`;
 
         if (reportes.length === 0) {
-            cuerpoTabla.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay reportes registrados.</td></tr>';
+            const tr = document.createElement('tr');
+            const td = document.createElement('td');
+            td.colSpan = 5;
+            td.textContent = 'No hay reportes registrados';
+            td.style.textAlign = 'center';
+            tr.appendChild(td);
+            cuerpoTabla.appendChild(tr);
             return;
         }
 
         reportes.forEach(reporte => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>
-                    <div class="celdaReporte">
-                        <div class="iconoTipoReporte ${getClaseTipo(reporte.tipo)}">
-                            <i class="${getIconoTipo(reporte.tipo)}"></i>
-                        </div>
-                        <div class="infoReporte">
-                            <h4>${reporte.titulo || 'Reporte Comunal'}</h4>
-                            <span class="badgeEstado ${getClaseEstado(reporte.estado)}">${reporte.estado || 'Pendiente'}</span>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="celdaContacto">
-                        <div><strong>${reporte.usuario || 'Anónimo'}</strong></div>
-                        <div style="font-size: 0.85rem; color: #888;">${reporte.contacto || 'Sin contacto'}</div>
-                    </div>
-                </td>
-                <td>
-                     <div class="celdaUbicacion">
-                         <i class="fas fa-map-marker-alt"></i> ${reporte.ubicacion || 'Sin ubicación específica'}
-                     </div>
-                </td>
-                <td>
-                     <div class="celdaFecha">
-                         <i class="far fa-calendar-alt"></i> ${reporte.fecha || '01/01/2026'}
-                     </div>
-                </td>
-                <td>
-                    <div class="celdaAcciones">
-                        <button class="btnAccion btnEditar" data-id="${reporte.id}" title="Cambiar Estado"><i class="fas fa-edit"></i></button>
-                        <button class="btnAccion btnEliminar" data-id="${reporte.id}" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </td>
-            `;
+
+            // Columna 1 - Reporte
+            const tdReporte = document.createElement('td');
+            const titulo = document.createElement('h4');
+            titulo.textContent = reporte.tipo_obstruccion; // Mapeo a tipo_obstruccion
+
+            const descripcion = document.createElement('small');
+            descripcion.textContent = reporte.comentario || ''; // Mapeo a comentario
+
+            const estado = document.createElement('span');
+            estado.className = `badgeEstado ${getClaseEstado(reporte.estado)}`;
+            estado.textContent = reporte.estado;
+
+            tdReporte.appendChild(titulo);
+            tdReporte.appendChild(descripcion);
+            tdReporte.appendChild(estado);
+
+            // Columna 2 - Usuario
+            const tdUsuario = document.createElement('td');
+            const nombre = document.createElement('strong');
+            nombre.textContent = reporte.usuario || 'Anónimo';
+
+            const contacto = document.createElement('div');
+            contacto.textContent = `ID: ${reporte.user_id}`; // Mostrar ID como referencia
+
+            tdUsuario.appendChild(nombre);
+            tdUsuario.appendChild(contacto);
+
+            // Columna 3 - Ubicación
+            const tdUbicacion = document.createElement('td');
+            tdUbicacion.textContent = reporte.ubicacion;
+
+            // Columna 4 - Fecha
+            const tdFecha = document.createElement('td');
+            tdFecha.textContent = reporte.fecha;
+
+            // Columna 5 - Acciones
+            const tdAcciones = document.createElement('td');
+
+            const btnVer = document.createElement('button');
+            btnVer.className = 'btnAccion btnVer';
+            btnVer.dataset.id = reporte.id;
+            btnVer.innerHTML = '<i class="fas fa-eye"></i>';
+
+            const btnEditar = document.createElement('button');
+            btnEditar.className = 'btnAccion btnEditar';
+            btnEditar.dataset.id = reporte.id;
+            btnEditar.innerHTML = '<i class="fas fa-edit"></i>';
+
+            const btnEliminar = document.createElement('button');
+            btnEliminar.className = 'btnAccion btnEliminar';
+            btnEliminar.dataset.id = reporte.id;
+            btnEliminar.innerHTML = '<i class="fas fa-trash-alt"></i>';
+
+            tdAcciones.appendChild(btnVer);
+            tdAcciones.appendChild(btnEditar);
+            tdAcciones.appendChild(btnEliminar);
+
+            tr.appendChild(tdReporte);
+            tr.appendChild(tdUsuario);
+            tr.appendChild(tdUbicacion);
+            tr.appendChild(tdFecha);
+            tr.appendChild(tdAcciones);
+
             cuerpoTabla.appendChild(tr);
         });
     }
 
+
+
     // Event Delegation para Botones de la tabla
     if (cuerpoTabla) {
         cuerpoTabla.addEventListener('click', async (e) => {
+            const btnVer = e.target.closest('.btnVer');
             const btnEliminar = e.target.closest('.btnEliminar');
             const btnEditar = e.target.closest('.btnEditar');
+
+            if (btnVer) {
+                const id = btnVer.dataset.id;
+                const reportes = await getReportes();
+                const reporte = reportes.find(r => r.id == id);
+                if (reporte) abrirModalVer(reporte);
+            }
 
             if (btnEliminar) {
                 const id = btnEliminar.dataset.id;
@@ -212,7 +263,70 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Helpers de Estilo
+    // Modal Ver Reporte Logic
+    const modalVerReporte = document.getElementById('modalVerReporte');
+    const cerrarModalVer = document.getElementById('cerrarModalVer');
+    const btnCerrarVer = document.getElementById('btnCerrarVer');
+    const detalleContenido = document.getElementById('detalleContenido');
+
+    function abrirModalVer(reporte) {
+        if (!modalVerReporte || !detalleContenido) return;
+
+        // Construir contenido del modal
+        const imagenHtml = reporte.foto ?
+            `<img src="${reporte.foto}" alt="Evidencia" class="detalleImagen">` :
+            '<div style="padding: 20px; background: #eee; text-align: center; border-radius: 10px; margin-bottom: 15px; color: #777;">Sin imagen adjunta</div>';
+
+        detalleContenido.innerHTML = `
+            ${imagenHtml}
+            <div class="detalleInfo">
+                <h3>${reporte.tipo_obstruccion}</h3>
+                <p>${reporte.comentario}</p>
+                
+                <div class="detalleMeta">
+                    <div class="metaItem">
+                        <strong>Usuario</strong>
+                        <span>${reporte.usuario || 'Anónimo'} (ID: ${reporte.user_id})</span>
+                    </div>
+                    <div class="metaItem">
+                        <strong>Fecha</strong>
+                        <span>${reporte.fecha}</span>
+                    </div>
+                    <div class="metaItem">
+                        <strong>Ubicación</strong>
+                        <span>${reporte.ubicacion}</span>
+                    </div>
+                    <div class="metaItem">
+                        <strong>Estado</strong>
+                        <span class="badgeEstado ${getClaseEstado(reporte.estado)}">${reporte.estado}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        modalVerReporte.classList.remove('oculto');
+    }
+
+    if (cerrarModalVer) {
+        cerrarModalVer.addEventListener('click', () => {
+            modalVerReporte.classList.add('oculto');
+        });
+    }
+
+    if (btnCerrarVer) {
+        btnCerrarVer.addEventListener('click', () => {
+            modalVerReporte.classList.add('oculto');
+        });
+    }
+
+    // Cerrar al click fuera
+    window.addEventListener('click', (e) => {
+        if (e.target === modalVerReporte) {
+            modalVerReporte.classList.add('oculto');
+        }
+    });
+
+
     function getClaseTipo(tipo) {
         if (!tipo) return 'tipo-otro';
         const t = tipo.toLowerCase();
