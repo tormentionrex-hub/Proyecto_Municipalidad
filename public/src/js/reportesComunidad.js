@@ -139,6 +139,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         const reportes = await getReportes();
+        console.log('Reportes cargados en Comunidad:', reportes);
         todosLosReportes = reportes.reverse(); // Guardar en variable global
         renderizarInformes(todosLosReportes);
     } catch (error) {
@@ -176,7 +177,8 @@ function renderizarInformes(reportes) {
         const div = document.createElement('div');
         div.className = 'reporte';
 
-        const imagenHtml = reporte.foto ?
+        const tieneFotoValida = reporte.foto && (reporte.foto.startsWith('data:image') || reporte.foto.startsWith('http'));
+        const imagenHtml = tieneFotoValida ?
             `<div class="contenedor-imagen">
                 <img src="${reporte.foto}" alt="Evidencia del reporte">
              </div>` : '';

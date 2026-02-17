@@ -8,15 +8,9 @@
     --textoClaro: #666;
     --fondoClaro: #f4f7f6;
     --blanco: #ffffff;
-<<<<<<< HEAD
     --sombraSuave: 0 4px 20px rgba(0, 0, 0, 0.05);
     --anchoBarraLateral: 260px;
     --transicionRapida: 0.3s ease;
-=======
-    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
-    --sidebar-width: 260px;
-    --transition-fast: 0.3s ease;
->>>>>>> origin/Yosimar
 }
 
 * {
@@ -25,11 +19,7 @@
     box-sizing: border-box;
 }
 
-<<<<<<< HEAD
 body.cuerpoDashboard {
-=======
-body.cuerpo-dashboard {
->>>>>>> origin/Yosimar
     font-family: 'Open Sans', sans-serif;
     background-color: var(--fondoClaro);
     color: var(--textoOscuro);
@@ -37,7 +27,6 @@ body.cuerpo-dashboard {
     min-height: 100vh;
 }
 
-<<<<<<< HEAD
 /* --- Iconos Personalizados (Mapeo a FontAwesome) --- */
 /* Base para todos los iconos */
 [class^="icono"]::before {
@@ -125,11 +114,6 @@ body.cuerpo-dashboard {
 /* --- Barra Lateral --- */
 .barraLateral {
     width: var(--anchoBarraLateral);
-=======
-/* --- Sidebar --- */
-.sidebar {
-    width: var(--sidebar-width);
->>>>>>> origin/Yosimar
     background-color: var(--blanco);
     border-right: 1px solid #e0e0e0;
     display: flex;
@@ -139,34 +123,21 @@ body.cuerpo-dashboard {
     z-index: 100;
 }
 
-<<<<<<< HEAD
 .logoBarraLateral {
-=======
-.sidebar-logo {
->>>>>>> origin/Yosimar
     padding: 30px 20px;
     text-align: center;
 }
 
-<<<<<<< HEAD
 .logoBarraLateral img {
-=======
-.sidebar-logo img {
->>>>>>> origin/Yosimar
     height: 60px;
     width: auto;
 }
 
-<<<<<<< HEAD
 .navegacionBarraLateral {
-=======
-.sidebar-nav {
->>>>>>> origin/Yosimar
     flex: 1;
     padding: 20px 0;
 }
 
-<<<<<<< HEAD
 .navegacionBarraLateral ul {
     list-style: none;
 }
@@ -176,17 +147,6 @@ body.cuerpo-dashboard {
 }
 
 .navegacionBarraLateral li a {
-=======
-.sidebar-nav ul {
-    list-style: none;
-}
-
-.sidebar-nav li {
-    padding: 5px 20px;
-}
-
-.sidebar-nav li a {
->>>>>>> origin/Yosimar
     text-decoration: none;
     color: var(--textoClaro);
     display: flex;
@@ -195,47 +155,27 @@ body.cuerpo-dashboard {
     padding: 12px 15px;
     border-radius: 12px;
     font-weight: 600;
-<<<<<<< HEAD
     transition: var(--transicionRapida);
 }
 
 .navegacionBarraLateral li.activo a,
 .navegacionBarraLateral li a:hover {
-=======
-    transition: var(--transition-fast);
-}
-
-.sidebar-nav li.active a,
-.sidebar-nav li a:hover {
->>>>>>> origin/Yosimar
     background-color: #f0ebf8;
     color: var(--moradoPrincipal);
 }
 
-<<<<<<< HEAD
 .navegacionBarraLateral li a i {
-=======
-.sidebar-nav li a i {
->>>>>>> origin/Yosimar
     font-size: 1.2rem;
     width: 25px;
     text-align: center;
 }
 
-<<<<<<< HEAD
 .pieBarraLateral {
-=======
-.sidebar-footer {
->>>>>>> origin/Yosimar
     padding: 20px;
     border-top: 1px solid #eee;
 }
 
-<<<<<<< HEAD
 .botonCerrarSesion {
-=======
-.btn-logout {
->>>>>>> origin/Yosimar
     width: 100%;
     padding: 12px;
     border: none;
@@ -248,53 +188,31 @@ body.cuerpo-dashboard {
     align-items: center;
     justify-content: center;
     gap: 10px;
-<<<<<<< HEAD
     transition: var(--transicionRapida);
 }
 
 .botonCerrarSesion:hover {
-=======
-    transition: var(--transition-fast);
-}
-
-.btn-logout:hover {
->>>>>>> origin/Yosimar
     background-color: #ff5c5c;
     color: white;
 }
 
-<<<<<<< HEAD
 /* --- Contenido Principal --- */
 .contenidoPrincipal {
     margin-left: var(--anchoBarraLateral);
-=======
-/* --- Main Content --- */
-.dashboard-main {
-    margin-left: var(--sidebar-width);
->>>>>>> origin/Yosimar
     flex: 1;
     padding: 40px;
     max-width: 1400px;
 }
 
-<<<<<<< HEAD
 /* Encabezado */
 .encabezadoDashboard {
-=======
-/* Header */
-.dashboard-header {
->>>>>>> origin/Yosimar
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
 }
 
-<<<<<<< HEAD
 .infoEncabezado h1 {
-=======
-.header-info h1 {
->>>>>>> origin/Yosimar
     font-family: 'Montserrat', sans-serif;
     font-size: 1.8rem;
     color: var(--moradoPrincipal);
@@ -303,50 +221,30 @@ body.cuerpo-dashboard {
     gap: 12px;
 }
 
-<<<<<<< HEAD
 .infoEncabezado p {
-=======
-.header-info p {
->>>>>>> origin/Yosimar
     color: var(--textoClaro);
     font-size: 0.95rem;
     margin-top: 5px;
 }
 
-<<<<<<< HEAD
 .accionesEncabezado {
-=======
-.header-actions {
->>>>>>> origin/Yosimar
     display: flex;
     gap: 15px;
     align-items: center;
 }
 
-<<<<<<< HEAD
 .selectorPeriodoContenedor {
     background: white;
     padding: 8px 15px;
     border-radius: 10px;
     box-shadow: var(--sombraSuave);
-=======
-.select-periodo {
-    background: white;
-    padding: 8px 15px;
-    border-radius: 10px;
-    box-shadow: var(--shadow-soft);
->>>>>>> origin/Yosimar
     display: flex;
     align-items: center;
     gap: 10px;
     color: var(--textoClaro);
 }
 
-<<<<<<< HEAD
 .selectorPeriodoContenedor select {
-=======
-.select-periodo select {
->>>>>>> origin/Yosimar
     border: none;
     font-weight: 600;
     color: var(--textoOscuro);
@@ -354,17 +252,12 @@ body.cuerpo-dashboard {
     cursor: pointer;
 }
 
-<<<<<<< HEAD
 .botonRefrescar {
-=======
-.btn-refresh {
->>>>>>> origin/Yosimar
     background: white;
     border: none;
     width: 40px;
     height: 40px;
     border-radius: 10px;
-<<<<<<< HEAD
     box-shadow: var(--sombraSuave);
     cursor: pointer;
     color: var(--textoClaro);
@@ -372,64 +265,34 @@ body.cuerpo-dashboard {
 }
 
 .botonRefrescar:hover {
-=======
-    box-shadow: var(--shadow-soft);
-    cursor: pointer;
-    color: var(--textoClaro);
-    transition: var(--transition-fast);
-}
-
-.btn-refresh:hover {
->>>>>>> origin/Yosimar
     color: var(--moradoPrincipal);
     transform: rotate(180deg);
 }
 
-<<<<<<< HEAD
 /* Tarjetas de Estadísticas */
 .estadisticasDashboard {
-=======
-/* Stats Cards */
-.dashboard-stats {
->>>>>>> origin/Yosimar
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 25px;
     margin-bottom: 40px;
 }
 
-<<<<<<< HEAD
 .tarjetaEstadistica {
     background: white;
     padding: 25px;
     border-radius: 20px;
     box-shadow: var(--sombraSuave);
-=======
-.stat-card {
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: var(--shadow-soft);
->>>>>>> origin/Yosimar
     display: flex;
     align-items: center;
     gap: 20px;
     transition: transform 0.3s;
 }
 
-<<<<<<< HEAD
 .tarjetaEstadistica:hover {
     transform: translateY(-5px);
 }
 
 .iconoEstadistica {
-=======
-.stat-card:hover {
-    transform: translateY(-5px);
-}
-
-.stat-icon {
->>>>>>> origin/Yosimar
     width: 60px;
     height: 60px;
     background-color: #e8f4fd;
@@ -441,101 +304,60 @@ body.cuerpo-dashboard {
     font-size: 1.5rem;
 }
 
-<<<<<<< HEAD
 .iconoEstadistica.azul {
     background-color: #e8f4fd;
     color: #3498db;
 }
 
 .iconoEstadistica.morado {
-=======
-.stat-icon.purple {
->>>>>>> origin/Yosimar
     background-color: #f3ebff;
     color: #9b59b6;
 }
 
-<<<<<<< HEAD
 .iconoEstadistica.verde {
-=======
-.stat-icon.green {
->>>>>>> origin/Yosimar
     background-color: #ebfaf0;
     color: #2ecc71;
 }
 
-<<<<<<< HEAD
 .iconoEstadistica.naranja {
-=======
-.stat-icon.orange {
->>>>>>> origin/Yosimar
     background-color: #fff5eb;
     color: #e67e22;
 }
 
-<<<<<<< HEAD
 .detallesEstadistica h3 {
-=======
-.stat-details h3 {
->>>>>>> origin/Yosimar
     font-size: 0.85rem;
     color: var(--textoClaro);
     font-weight: 600;
     margin-bottom: 5px;
 }
 
-<<<<<<< HEAD
 .valorEstadistica {
-=======
-.stat-value {
->>>>>>> origin/Yosimar
     font-size: 1.5rem;
     font-weight: 800;
     color: var(--textoOscuro);
 }
 
-<<<<<<< HEAD
 .valorEstadistica.resaltado {
     color: #e67e22;
 }
 
 .etiquetaEstadistica {
-=======
-.stat-value.highlight {
-    color: #e67e22;
-}
-
-.stat-label {
->>>>>>> origin/Yosimar
     font-size: 0.75rem;
     color: #999;
 }
 
-<<<<<<< HEAD
 /* Pestañas */
 .pestanasDashboard {
-=======
-/* Tabs */
-.dashboard-tabs {
->>>>>>> origin/Yosimar
     display: flex;
     background: white;
     padding: 5px;
     border-radius: 12px;
-<<<<<<< HEAD
     box-shadow: var(--sombraSuave);
-=======
-    box-shadow: var(--shadow-soft);
->>>>>>> origin/Yosimar
     width: fit-content;
     margin-bottom: 30px;
 }
 
-<<<<<<< HEAD
 .botonPestana {
-=======
-.tab-btn {
->>>>>>> origin/Yosimar
     background: none;
     border: none;
     padding: 10px 25px;
@@ -546,7 +368,6 @@ body.cuerpo-dashboard {
     display: flex;
     align-items: center;
     gap: 10px;
-<<<<<<< HEAD
     transition: var(--transicionRapida);
 }
 
@@ -555,41 +376,22 @@ body.cuerpo-dashboard {
 }
 
 .botonPestana.activo {
-=======
-    transition: var(--transition-fast);
-}
-
-.tab-btn:hover {
-    color: var(--moradoPrincipal);
-}
-
-.tab-btn.active {
->>>>>>> origin/Yosimar
     background-color: var(--fondoClaro);
     color: var(--moradoPrincipal);
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
 }
 
 /* Gráficos */
-<<<<<<< HEAD
 .contenidoDashboard {
     margin-bottom: 40px;
 }
 
 .filaContenido {
-=======
-.dashboard-content {
-    margin-bottom: 40px;
-}
-
-.content-row {
->>>>>>> origin/Yosimar
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 25px;
 }
 
-<<<<<<< HEAD
 .contenedorGrafico {
     background: white;
     padding: 25px;
@@ -602,20 +404,6 @@ body.cuerpo-dashboard {
 }
 
 .encabezadoGrafico h2 {
-=======
-.chart-container {
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: var(--shadow-soft);
-}
-
-.chart-header {
-    margin-bottom: 25px;
-}
-
-.chart-header h2 {
->>>>>>> origin/Yosimar
     font-size: 1.2rem;
     color: var(--moradoPrincipal);
     display: flex;
@@ -623,21 +411,12 @@ body.cuerpo-dashboard {
     gap: 10px;
 }
 
-<<<<<<< HEAD
 .cajaGrafico {
     min-height: 300px;
 }
 
 /* Maqueta de barras */
 .maquetaGrafico {
-=======
-.chart-box {
-    min-height: 300px;
-}
-
-/* Mockup de barras */
-.chart-mockup {
->>>>>>> origin/Yosimar
     height: 250px;
     display: flex;
     align-items: flex-end;
@@ -645,32 +424,20 @@ body.cuerpo-dashboard {
     padding: 20px 0;
 }
 
-<<<<<<< HEAD
 .barra {
-=======
-.bar {
->>>>>>> origin/Yosimar
     flex: 1;
     background: linear-gradient(to top, var(--moradoPrincipal), var(--moradoSuave));
     border-radius: 8px 8px 0 0;
     min-width: 30px;
-<<<<<<< HEAD
     animation: aparecer 1s ease-out;
 }
 
 @keyframes aparecer {
-=======
-    animation: grow 1s ease-out;
-}
-
-@keyframes grow {
->>>>>>> origin/Yosimar
     from {
         height: 0;
     }
 }
 
-<<<<<<< HEAD
 .barraNivel1 {
     height: 40%;
 }
@@ -700,20 +467,12 @@ body.cuerpo-dashboard {
 }
 
 .listaCanales li {
-=======
-.canal-list {
-    list-style: none;
-}
-
-.canal-list li {
->>>>>>> origin/Yosimar
     display: flex;
     justify-content: space-between;
     padding: 15px 0;
     border-bottom: 1px solid #f0f0f0;
 }
 
-<<<<<<< HEAD
 .listaCanales li:last-child {
     border-bottom: none;
 }
@@ -721,21 +480,11 @@ body.cuerpo-dashboard {
 /* Responsivo */
 @media (max-width: 1100px) {
     .filaContenido {
-=======
-.canal-list li:last-child {
-    border-bottom: none;
-}
-
-/* Responsive */
-@media (max-width: 1100px) {
-    .content-row {
->>>>>>> origin/Yosimar
         grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 768px) {
-<<<<<<< HEAD
     .barraLateral {
         width: 70px;
     }
@@ -746,27 +495,11 @@ body.cuerpo-dashboard {
     }
 
     .contenidoPrincipal {
-=======
-    .sidebar {
-        width: 70px;
-    }
-
-    .sidebar span,
-    .sidebar-logo img {
-        display: none;
-    }
-
-    .dashboard-main {
->>>>>>> origin/Yosimar
         margin-left: 70px;
         padding: 20px;
     }
 
-<<<<<<< HEAD
     .encabezadoDashboard {
-=======
-    .dashboard-header {
->>>>>>> origin/Yosimar
         flex-direction: column;
         align-items: flex-start;
         gap: 20px;

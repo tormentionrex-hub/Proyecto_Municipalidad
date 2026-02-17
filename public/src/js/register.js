@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "http://localhost:3001";
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("formRegister");
@@ -11,7 +11,7 @@ async function registrarUsuario(e) {
 
     const nombre = document.getElementById("nombre").value.trim();
     const correo = document.getElementById("correo").value.trim();
-    const password = document.getElementById("password").value.trim();
+    const contraseña = document.getElementById("password").value.trim();
     const telefono = document.getElementById("telefono").value.trim();
 
     const mensajeError = document.getElementById("mensajeError");
@@ -22,7 +22,7 @@ async function registrarUsuario(e) {
 
     //Validaciones
 
-    if (!nombre || !correo || !password || !telefono) {
+    if (!nombre || !correo || !contraseña || !telefono) {
         mensajeError.textContent = "Todos los campos son obligatorios.";
         return;
     }
@@ -32,7 +32,7 @@ async function registrarUsuario(e) {
         return;
     }
 
-    if (password.length < 4) {
+    if (contraseña.length < 4) {
         mensajeError.textContent = "La contraseña debe tener al menos 4 caracteres.";
         return;
     }
@@ -43,20 +43,12 @@ async function registrarUsuario(e) {
     }
 
     try {
-//Verificación de correo existente
-        const verificar = await fetch(`${API_URL}/usuarios?correo=${correo}`);
-        const usuariosExistentes = await verificar.json();
-
-        if (usuariosExistentes.length > 0) {
-            mensajeError.textContent = "Este correo ya está registrado.";
-            return;
-        }
 
      //Crear usuario (post)
         const nuevoUsuario = {
             nombre,
             correo,
-            password,
+            contraseña,
             telefono,
             rol: "ciudadano"
         };

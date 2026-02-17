@@ -2,21 +2,21 @@ import {
     getReportes,
     deleteReportes,
     patchReportes,
-    getColaboradores,
-    postColaboradores,
-    patchColaboradores,
-    deleteColaboradores
 } from '../services/services.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Dashboard Admin de la Municipalidad de Escazú cargado');
 
+    // Validación de Rol de Administrador
+    const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
+    if (!usuarioActivo || usuarioActivo.rol !== 'admin') {
+        window.location.href = 'home.html';
+        return;
+    }
+
     // --- Lógica del Dashboard Original ---
 
     // Botón de cierre de sesión
-    const botonCerrarSesion = document.getElementById('botonCerrarSesion');
-    if (botonCerrarSesion) {
-        botonCerrarSesion.addEventListener('click', () => {
     const btnLogout = document.getElementById('btnLogout');
     if (btnLogout) {
         btnLogout.addEventListener('click', () => {
@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Cambio de Pestañas (Tabs de Dashboard)
     // Cambio de Pestañas (Tabs)
     const botonesPestana = document.querySelectorAll('.botonPestana');
     botonesPestana.forEach(btn => {
@@ -39,14 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Selector de periodo
-            // Aquí se filtraría el contenido dinámicamente
-        });
-    });
-
-    // Lógica para el selector de periodo
-    const selectorPeriodo = document.getElementById('selectorPeriodo');
-    if (selectorPeriodo) {
-        selectorPeriodo.addEventListener('change', (e) => {
     const periodoSelect = document.getElementById('periodoSelect');
     if (periodoSelect) {
         periodoSelect.addEventListener('change', (e) => {
@@ -215,8 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
-
     // Event Delegation para Botones de la tabla
     if (cuerpoTabla) {
         cuerpoTabla.addEventListener('click', async (e) => {
@@ -326,7 +315,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
     function getClaseTipo(tipo) {
         if (!tipo) return 'tipo-otro';
         const t = tipo.toLowerCase();
@@ -352,5 +340,4 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.includes('resuelto') || e.includes('finalizado')) return 'estado-resuelto';
         return 'estado-pendiente';
     }
-
 });
