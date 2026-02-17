@@ -1,120 +1,115 @@
-:root {
-    --primary-color: #4f46e5;
-    --primary-hover: #4338ca;
-    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --card-bg: rgba(255, 255, 255, 0.95);
-    --glass-bg: rgba(255, 255, 255, 0.8);
-    --text-main: #1f2937;
-    --text-muted: #6b7280;
-    --input-border: #d1d5db;
-    --input-focus: #4f46e5;
-    --shadow-premium: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
+/* Fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
-/* RESET */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
 }
 
 body {
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Contenedor principal - Split Screen */
+.contenedorLogin {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     min-height: 100vh;
+    width: 100%;
+}
+
+/* Lado izquierdo - Formulario */
+.contenedorLogin::before {
+    display: none;
+}
+
+.cardLogin {
+    grid-column: 1;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: var(--bg-gradient);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    padding: 20px;
-}
-
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Contenedor principal */
-.contenedorLogin {
-    width: 100%;
-    max-width: 420px;
-    perspective: 1000px;
-}
-
-/* Tarjeta con Glassmorphism */
-.cardLogin {
-    background: var(--card-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: var(--shadow-premium);
-    width: 100%;
+    padding: 120px 80px 60px;
+    background: #ffffff;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    max-width: 100%;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes cardEntrance {
-    from {
-        opacity: 0;
-        transform: translateY(30px) rotateX(-10deg);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) rotateX(0);
-    }
+/* Logo en la esquina superior izquierda */
+.cardLogin::before {
+    content: "Municipalidad de Escazú";
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
 }
 
 .cardLogin h2 {
-    margin-bottom: 24px;
+    margin-bottom: 32px;
     font-size: 32px;
     font-weight: 800;
-    color: var(--text-main);
-    letter-spacing: -0.5px;
+    color: #1f2937;
+    text-align: center;
+}
+
+.cardLogin h2::after {
+    content: "Por favor, introduce tus datos para continuar.";
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    color: #6b7280;
+    margin-top: 16px;
+    text-align: center;
 }
 
 /* Form Styles */
 #formLogin {
+    width: 100%;
+    max-width: 400px;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
 .grupoInput {
-    text-align: left;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    text-align: left;
+    width: 100%;
 }
 
 .grupoInput label {
     font-size: 14px;
     font-weight: 600;
-    color: var(--text-main);
+    color: #1f2937;
 }
 
-/* Inputs */
 .grupoInput input[type="email"],
 .grupoInput input[type="password"] {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid var(--input-border);
-    border-radius: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
     font-size: 16px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s;
     background: white;
 }
 
 .grupoInput input:focus {
-    border-color: var(--input-focus);
-    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     outline: none;
 }
 
-/* Password Container and Toggle */
+/* Password Container */
 .password-container {
     position: relative;
 }
@@ -129,22 +124,22 @@ body {
     position: absolute;
     right: 15px;
     cursor: pointer;
-    color: var(--text-muted);
+    color: #6b7280;
     transition: color 0.3s ease;
     padding: 5px;
 }
 
 .inputPassword i:hover {
-    color: var(--primary-color);
+    color: #3b82f6;
 }
 
-/* Login Options (Remember me & Forgot password) */
+/* Login Options */
 .opcionesLogin {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 14px;
-    margin: 5px 0;
+    margin: -5px 0 5px 0;
 }
 
 .opcionesLogin label {
@@ -152,17 +147,17 @@ body {
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    color: var(--text-muted);
+    color: #6b7280;
 }
 
 .opcionesLogin input[type="checkbox"] {
     width: 16px;
     height: 16px;
-    accent-color: var(--primary-color);
+    accent-color: #3b82f6;
 }
 
 .olvidePassword a {
-    color: var(--primary-color);
+    color: #3b82f6;
     text-decoration: none;
     font-weight: 600;
 }
@@ -175,25 +170,39 @@ body {
 .botonLogin {
     width: 100%;
     padding: 14px;
-    background: var(--primary-color);
+    background: #3b82f6;
     border: none;
-    border-radius: 12px;
+    border-radius: 8px;
     color: white;
     font-weight: 700;
     font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+    margin-top: 10px;
 }
 
 .botonLogin:hover {
-    background: var(--primary-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+    background: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .botonLogin:active {
     transform: translateY(0);
+}
+
+/* Google Button - Estilo outline */
+.botonLogin:nth-of-type(2) {
+    background: white;
+    color: #1f2937;
+    border: 1px solid #d1d5db;
+    margin-top: 12px;
+}
+
+.botonLogin:nth-of-type(2):hover {
+    background: #f9fafb;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Error Message */
@@ -206,13 +215,14 @@ body {
 
 /* Register Link */
 .registroLink {
-    margin-top: 10px;
-    font-size: 15px;
-    color: var(--text-muted);
+    margin-top: 20px;
+    font-size: 14px;
+    color: #6b7280;
+    text-align: center;
 }
 
 .registroLink a {
-    color: var(--primary-color);
+    color: #3b82f6;
     font-weight: 700;
     text-decoration: none;
 }
@@ -221,9 +231,46 @@ body {
     text-decoration: underline;
 }
 
+/* Lado derecho - Imagen motivacional */
+.contenedorLogin::after {
+    content: "";
+    grid-column: 2;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.75) 0%, rgba(37, 99, 235, 0.8) 100%),
+        url('../img/escazu.webp');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Responsive */
+@media (max-width: 968px) {
+    .contenedorLogin {
+        grid-template-columns: 1fr;
+    }
+
+    .contenedorLogin::after {
+        display: none;
+    }
+
+    .cardLogin {
+        padding: 40px 30px;
+    }
+
+    .cardLogin::before {
+        top: 20px;
+        left: 20px;
+        font-size: 20px;
+    }
+}
+
 @media (max-width: 480px) {
     .cardLogin {
         padding: 30px 20px;
+    }
+
+    .cardLogin h2 {
+        font-size: 28px;
     }
 }
