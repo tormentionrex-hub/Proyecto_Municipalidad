@@ -14,6 +14,8 @@
         rel="stylesheet">
     <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="cuerpoDashboard">
@@ -64,88 +66,87 @@
                 </div>
             </header>
 
-            <!-- Sección de Estadísticas Rápidas -->
-            <section class="estadisticasDashboard">
-                <div class="tarjetaEstadistica">
-                    <div class="iconoEstadistica azul"><i class="iconoDinero"></i></div>
-                    <div class="detallesEstadistica">
-                        <h3>Ingresos Totales</h3>
-                        <p class="valorEstadistica">₡285.4M</p>
-                        <span class="etiquetaEstadistica">en el periodo seleccionado</span>
-                    </div>
-                </div>
-
-                <div class="tarjetaEstadistica">
-                    <div class="iconoEstadistica morado"><i class="iconoCajas"></i></div>
-                    <div class="detallesEstadistica">
-                        <h3>Trámites Procesados</h3>
-                        <p class="valorEstadistica">1,248</p>
-                        <span class="etiquetaEstadistica">total en periodo</span>
-                    </div>
-                </div>
-
-                <div class="tarjetaEstadistica">
-                    <div class="iconoEstadistica verde"><i class="iconoGraficoLinea"></i></div>
-                    <div class="detallesEstadistica">
-                        <h3>Eficiencia Promedio</h3>
-                        <p class="valorEstadistica">94%</p>
-                        <span class="etiquetaEstadistica">casos resueltos</span>
-                    </div>
-                </div>
-
-                <div class="tarjetaEstadistica">
-                    <div class="iconoEstadistica naranja"><i class="iconoUbicacion"></i></div>
-                    <div class="detallesEstadistica">
-                        <h3>Barrio Top</h3>
-                        <p class="valorEstadistica resaltado">San Rafael</p>
-                        <span class="etiquetaEstadistica">mayor movimiento</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Filtros de Contenido -->
-            <nav class="pestanasDashboard">
+            <!-- Filtros de Contenido (Ahora fuera de panelResumen para ser visible siempre) -->
+            <nav class="pestanasDashboard" style="margin-bottom: 20px;">
                 <button class="botonPestana activo" data-tab="resumen"><i class="iconoLista"></i> Resumen</button>
                 <button class="botonPestana" data-tab="geografia"><i class="iconoMapa"></i> Geografía</button>
                 <button class="botonPestana" data-tab="servicios"><i class="iconoServicios"></i> Servicios</button>
             </nav>
 
-            <!-- Sección de Gráficos y Detalles -->
-            <section class="contenidoDashboard">
-                <div class="filaContenido">
-                    <!-- Gráfico de Tendencia -->
-                    <div class="contenedorGrafico rejillaGrande">
-                        <div class="encabezadoGrafico">
-                            <h2><i class="iconoGraficoArea"></i> Tendencia de Trámites</h2>
-                        </div>
-                        <div class="cajaGrafico graficoTemporal">
-                            <!-- Aquí se renderizaría el gráfico con JS -->
-                            <div class="maquetaGrafico">
-                                <div class="barra barraNivel1"></div>
-                                <div class="barra barraNivel2"></div>
-                                <div class="barra barraNivel3"></div>
-                                <div class="barra barraNivel4"></div>
-                                <div class="barra barraNivel5"></div>
-                                <div class="barra barraNivel6"></div>
-                            </div>
+            <!-- Contenedor de Paneles -->
+            <div id="panelResumen">
+                <!-- Sección de Estadísticas Rápidas -->
+                <section class="estadisticasDashboard">
+                    <div class="tarjetaEstadistica">
+                        <div class="iconoEstadistica azul"><i class="iconoDinero"></i></div>
+                        <div class="detallesEstadistica">
+                            <h3>Ingresos Totales</h3>
+                            <p class="valorEstadistica">₡285.4M</p>
+                            <span class="etiquetaEstadistica">en el periodo seleccionado</span>
                         </div>
                     </div>
 
-                    <!-- Métodos de Solicitud -->
-                    <div class="contenedorGrafico rejillaPequena">
-                        <div class="encabezadoGrafico">
-                            <h2><i class="iconoPortatil"></i> Canales de Recepción</h2>
-                        </div>
-                        <div class="cajaGrafico">
-                            <ul class="listaCanales">
-                                <li><span>Presencial</span> <strong>45%</strong></li>
-                                <li><span>Web Municipal</span> <strong>35%</strong></li>
-                                <li><span>App Escazú</span> <strong>20%</strong></li>
-                            </ul>
+                    <div class="tarjetaEstadistica">
+                        <div class="iconoEstadistica morado"><i class="iconoCajas"></i></div>
+                        <div class="detallesEstadistica">
+                            <h3>Trámites Procesados</h3>
+                            <p class="valorEstadistica">1,248</p>
+                            <span class="etiquetaEstadistica">total en periodo</span>
                         </div>
                     </div>
+
+                    <div class="tarjetaEstadistica">
+                        <div class="iconoEstadistica verde"><i class="iconoGraficoLinea"></i></div>
+                        <div class="detallesEstadistica">
+                            <h3>Eficiencia Promedio</h3>
+                            <p class="valorEstadistica">94%</p>
+                            <span class="etiquetaEstadistica">casos resueltos</span>
+                        </div>
+                    </div>
+
+                    <div class="tarjetaEstadistica">
+                        <div class="iconoEstadistica naranja"><i class="iconoUbicacion"></i></div>
+                        <div class="detallesEstadistica">
+                            <h3>Barrio Top</h3>
+                            <p class="valorEstadistica resaltado">San Rafael</p>
+                            <span class="etiquetaEstadistica">mayor movimiento</span>
+                        </div>
+                    </div>
+                </section>
+
+
+
+                <!-- Sección de Gráficos y Detalles -->
+                <section class="contenidoDashboard">
+                    <div class="filaContenido">
+                        <!-- Gráfico de Tendencia -->
+                        <div class="contenedorGrafico rejillaGrande">
+                            <div class="encabezadoGrafico">
+                                <h2><i class="iconoGraficoArea"></i> Estadísticas de Reportes por Cantón</h2>
+                            </div>
+                            <div class="cajaGrafico" style="position: relative; height: 400px; width: 100%;">
+                                <canvas id="graficoTendencia"></canvas>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </section>
+            </div> <!-- Fin panelResumen -->
+
+            <!-- Panel Geografía (Oculto por defecto) -->
+            <div id="panelGeografia" class="oculto" style="padding: 20px;">
+                <div class="contenedorGrafico"
+                    style="background: white; border-radius: 12px; padding: 20px; box-shadow: var(--sombraSuave);">
+                    <div class="encabezadoGrafico" style="margin-bottom: 20px;">
+                        <h2 style="color: var(--moradoPrincipal);"><i class="iconoUbicacion"></i> Reportes por Cantón
+                            (Detallado)</h2>
+                    </div>
+                    <div class="cajaGrafico" style="position: relative; height: 500px; width: 100%;">
+                        <canvas id="graficoGeografia"></canvas>
+                    </div>
                 </div>
-            </section>
+            </div>
         </div>
 
         <!-- VISTA REPORTES (Nueva) -->
@@ -160,6 +161,13 @@
                 </div>
                 <button class="botonNuevoReporte displayNone"><i class="fas fa-plus"></i> Registrar Nuevo</button>
             </header>
+
+            <!-- Pestañas de Navegación Global (Persistentes) -->
+            <nav class="pestanasDashboard" style="margin-bottom: 20px;">
+                <button class="botonPestana" data-tab="resumen"><i class="iconoLista"></i> Resumen</button>
+                <button class="botonPestana" data-tab="geografia"><i class="iconoMapa"></i> Geografía</button>
+                <button class="botonPestana" data-tab="servicios"><i class="iconoServicios"></i> Servicios</button>
+            </nav>
 
             <div class="contenedorHerramientas">
                 <div class="barraBusqueda">
