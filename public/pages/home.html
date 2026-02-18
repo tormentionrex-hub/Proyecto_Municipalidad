@@ -311,212 +311,29 @@
 
     <!-- Footer con ilustración de Escazú -->
     <footer class="footerEscazu">
-        <div class="footerIlustracion">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax meet"
-                class="footerSvg">
-                <!-- Fondo teal -->
-                <rect width="1440" height="400" fill="#4fb8a5" />
+        <div class="footerIlustracionContenedor">
+            <!-- Logo SVG en una esquina -->
+            <img src="../src/img/logo-blanco.svg" alt="Logo Municipalidad" class="footerLogoEsquina">
 
-                <!-- Montañas lejanas (línea blanca suave) -->
-                <polyline
-                    points="0,230 60,215 140,225 250,195 360,210 450,185 560,205 650,180 750,200 850,175 950,195 1050,180 1150,200 1250,185 1350,195 1440,210"
-                    fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" />
+            <!-- "cerros.png" que cubrirá gran parte del footer -->
+            <img src="../src/img/cerros.png" alt="Cerros de Escazú" class="footerCerros">
 
-                <!-- Montañas cercanas (línea blanca) -->
-                <polyline
-                    points="0,270 100,240 200,255 330,220 440,250 530,230 650,255 750,225 870,250 980,230 1100,255 1200,235 1320,250 1440,240"
-                    fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" />
+            <!-- Imagen "marca_cantonal" arriba de las montañas -->
+            <img src="../src/img/marca_cantonal.png" alt="Marca Cantonal" class="footerMarcaCantonal">
 
-                <!-- ====== PUEBLO (white line art) ====== -->
-
-                <!-- Iglesia central con campanario -->
-                <g fill="none" stroke="white" stroke-width="1.8">
-                    <!-- Cuerpo iglesia -->
-                    <rect x="670" y="285" width="100" height="75" />
-                    <!-- Campanario -->
-                    <rect x="700" y="245" width="40" height="40" />
-                    <!-- Techo campanario -->
-                    <polygon points="700,245 720,215 740,245" />
-                    <!-- Cruz -->
-                    <line x1="720" y1="200" x2="720" y2="215" />
-                    <line x1="714" y1="207" x2="726" y2="207" />
-                    <!-- Puerta arco -->
-                    <path d="M710,360 L710,335 Q720,320 730,335 L730,360" />
-                    <!-- Ventanas -->
-                    <rect x="680" y="305" width="14" height="18" rx="7" />
-                    <rect x="746" y="305" width="14" height="18" rx="7" />
-                    <!-- Ventana campanario -->
-                    <rect x="712" y="260" width="16" height="16" rx="8" />
-                </g>
-
-                <!-- Edificio alto (tipo municipal) -->
-                <g fill="none" stroke="white" stroke-width="1.8">
-                    <rect x="580" y="270" width="50" height="90" />
-                    <line x1="580" y1="290" x2="630" y2="290" />
-                    <line x1="580" y1="310" x2="630" y2="310" />
-                    <line x1="580" y1="330" x2="630" y2="330" />
-                    <line x1="580" y1="350" x2="630" y2="350" />
-                    <!-- Ventanas -->
-                    <rect x="588" y="275" width="8" height="10" />
-                    <rect x="602" y="275" width="8" height="10" />
-                    <rect x="616" y="275" width="8" height="10" />
-                    <rect x="588" y="295" width="8" height="10" />
-                    <rect x="602" y="295" width="8" height="10" />
-                    <rect x="616" y="295" width="8" height="10" />
-                    <rect x="588" y="315" width="8" height="10" />
-                    <rect x="602" y="315" width="8" height="10" />
-                    <rect x="616" y="315" width="8" height="10" />
-                    <rect x="588" y="335" width="8" height="10" />
-                    <rect x="602" y="335" width="8" height="10" />
-                    <rect x="616" y="335" width="8" height="10" />
-                </g>
-
-                <!-- Casa 1 izquierda -->
-                <g fill="none" stroke="white" stroke-width="1.5">
-                    <rect x="180" y="320" width="70" height="40" />
-                    <polygon points="175,320 215,290 255,320" />
-                    <rect x="205" y="338" width="14" height="22" />
-                    <rect x="186" y="328" width="10" height="12" />
-                    <rect x="234" y="328" width="10" height="12" />
-                </g>
-
-                <!-- Casa 2 -->
-                <g fill="none" stroke="white" stroke-width="1.5">
-                    <rect x="290" y="315" width="60" height="45" />
-                    <polygon points="285,315 320,285 355,315" />
-                    <rect x="310" y="338" width="12" height="22" />
-                    <rect x="295" y="325" width="10" height="10" />
-                    <rect x="337" y="325" width="10" height="10" />
-                </g>
-
-                <!-- Casa 3 (izq cerca iglesia) -->
-                <g fill="none" stroke="white" stroke-width="1.5">
-                    <rect x="420" y="310" width="55" height="50" />
-                    <polygon points="415,310 447,280 480,310" />
-                    <rect x="440" y="340" width="12" height="20" />
-                    <rect x="425" y="320" width="10" height="12" />
-                    <rect x="460" y="320" width="10" height="12" />
-                </g>
-
-                <!-- Casa 4 (der iglesia) -->
-                <g fill="none" stroke="white" stroke-width="1.5">
-                    <rect x="810" y="310" width="65" height="50" />
-                    <polygon points="805,310 842,278 880,310" />
-                    <rect x="832" y="338" width="14" height="22" />
-                    <rect x="816" y="320" width="10" height="12" />
-                    <rect x="860" y="320" width="10" height="12" />
-                </g>
-
-                <!-- Casa 5 -->
-                <g fill="none" stroke="white" stroke-width="1.5">
-                    <rect x="920" y="318" width="55" height="42" />
-                    <polygon points="915,318 947,290 980,318" />
-                    <rect x="940" y="340" width="12" height="20" />
-                    <rect x="925" y="326" width="10" height="10" />
-                    <rect x="960" y="326" width="10" height="10" />
-                </g>
-
-                <!-- Casa 6 -->
-                <g fill="none" stroke="white" stroke-width="1.5">
-                    <rect x="1030" y="315" width="60" height="45" />
-                    <polygon points="1025,315 1060,285 1095,315" />
-                    <rect x="1050" y="338" width="12" height="22" />
-                    <rect x="1035" y="325" width="10" height="10" />
-                    <rect x="1075" y="325" width="10" height="10" />
-                </g>
-
-                <!-- Casa 7 (extremo derecho) -->
-                <g fill="none" stroke="white" stroke-width="1.5">
-                    <rect x="1160" y="320" width="70" height="40" />
-                    <polygon points="1155,320 1195,292 1235,320" />
-                    <rect x="1185" y="338" width="14" height="22" />
-                    <rect x="1166" y="328" width="10" height="12" />
-                    <rect x="1218" y="328" width="10" height="12" />
-                </g>
-
-                <!-- Casa pequeña extremo izq -->
-                <g fill="none" stroke="white" stroke-width="1.5">
-                    <rect x="60" y="328" width="50" height="32" />
-                    <polygon points="55,328 85,305 115,328" />
-                    <rect x="78" y="343" width="10" height="17" />
-                </g>
-
-                <!-- ====== VEGETACION (white line art) ====== -->
-
-                <!-- Palmera izquierda -->
-                <g fill="none" stroke="white" stroke-width="1.5">
-                    <line x1="150" y1="360" x2="155" y2="300" />
-                    <path d="M155,300 Q170,285 185,295" />
-                    <path d="M155,300 Q140,280 125,290" />
-                    <path d="M155,300 Q155,275 160,280" />
-                    <path d="M155,300 Q168,278 175,288" />
-                    <path d="M155,300 Q142,282 135,294" />
-                </g>
-
-                <!-- Palmera derecha -->
-                <g fill="none" stroke="white" stroke-width="1.5">
-                    <line x1="1300" y1="360" x2="1295" y2="295" />
-                    <path d="M1295,295 Q1310,280 1325,290" />
-                    <path d="M1295,295 Q1280,275 1265,285" />
-                    <path d="M1295,295 Q1295,270 1300,275" />
-                    <path d="M1295,295 Q1308,273 1315,283" />
-                    <path d="M1295,295 Q1282,277 1275,289" />
-                </g>
-
-                <!-- Arbusto izq -->
-                <g fill="none" stroke="white" stroke-width="1.3">
-                    <path d="M350,360 Q340,345 350,340 Q360,335 370,340 Q380,345 370,360" />
-                </g>
-
-                <!-- Arbusto der -->
-                <g fill="none" stroke="white" stroke-width="1.3">
-                    <path d="M1100,360 Q1090,345 1100,338 Q1110,333 1120,338 Q1130,345 1120,360" />
-                </g>
-
-                <!-- Arbol pequeño -->
-                <g fill="none" stroke="white" stroke-width="1.3">
-                    <line x1="510" y1="360" x2="510" y2="330" />
-                    <circle cx="510" cy="322" r="12" />
-                </g>
-
-                <!-- Arbol pequeño der -->
-                <g fill="none" stroke="white" stroke-width="1.3">
-                    <line x1="790" y1="360" x2="790" y2="332" />
-                    <circle cx="790" cy="325" r="10" />
-                </g>
-
-                <!-- ====== BRUJA ANIMADA ====== -->
-                <g class="brujaVolando">
-                    <!-- Escoba -->
-                    <line x1="15" y1="5" x2="-25" y2="5" stroke="white" stroke-width="2" />
-                    <polygon points="-25,-2 -45,5 -25,12" fill="white" opacity="0.9" />
-                    <!-- Cuerpo -->
-                    <ellipse cx="0" cy="0" rx="8" ry="5" fill="white" opacity="0.9" />
-                    <!-- Cabeza -->
-                    <circle cx="12" cy="-7" r="5" fill="white" opacity="0.9" />
-                    <!-- Sombrero -->
-                    <polygon points="19,-10 12,-28 5,-10" fill="white" opacity="0.9" />
-                    <line x1="23" y1="-10" x2="1" y2="-10" stroke="white" stroke-width="2" />
-                    <!-- Capa -->
-                    <path d="M5,0 Q-5,10 10,14 Q18,8 8,-2" fill="white" opacity="0.6" />
-                </g>
-
-                <!-- Pájaro 1 -->
-                <g fill="none" stroke="white" stroke-width="1.2" opacity="0.5">
-                    <path d="M400,195 Q405,188 410,195 Q415,188 420,195" />
-                </g>
-                <!-- Pájaro 2 -->
-                <g fill="none" stroke="white" stroke-width="1.2" opacity="0.4">
-                    <path d="M1050,200 Q1055,193 1060,200 Q1065,193 1070,200" />
-                </g>
-
-                <!-- Línea del suelo -->
-                <line x1="0" y1="360" x2="1440" y2="360" stroke="rgba(255,255,255,0.3)" stroke-width="1" />
-
-            </svg>
+            <!-- Bruja volando (pasará por delante de marca_cantonal) -->
+            <div class="brujaNuevaContenedor">
+                <img src="../src/img/bruja.png" alt="Bruja Escazú" class="brujaImagenOficial">
+            </div>
         </div>
+
         <div class="footerTexto">
-            <p>Escazú, San José, Costa Rica — Todos los derechos reservados © 2026</p>
+            <div class="contenedor">
+                <p>Escazú, San José, Costa Rica — Todos los derechos reservados © 2026</p>
+                <div class="politicasFooter">
+                    <span>Politicas Municipales</span> / <span>Red de Responsabilidad Social</span>
+                </div>
+            </div>
         </div>
     </footer>
 
