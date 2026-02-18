@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Gráfico Geografía (Horizontal) ---
+    // Gráfico Geografía (Horizontal)
     let chartGeografiaInstance = null;
 
     function actualizarGraficoGeografia(reportes) {
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Lógica de Gestión de Reportes (Nueva) ---
+    //  Lógica de Gestión de Reportes
 
     const navDashboard = document.getElementById('navDashboard');
     const navReportes = document.getElementById('navReportes');

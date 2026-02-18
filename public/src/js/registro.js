@@ -3,6 +3,7 @@ const API_URL = "http://localhost:3001";
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("formRegister");
     const fotoInput = document.getElementById("foto");
+    const zonaFotoPerfil = document.getElementById("zonaFotoPerfil");
 
     const params = new URLSearchParams(window.location.search);
     const emailParam = params.get('email');
@@ -25,6 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     form.addEventListener("submit", registrarUsuario);
     fotoInput.addEventListener("change", mostrarVistaPrevia);
+
+    // Permitir clic en la zona circular para abrir el selector de archivos
+    if (zonaFotoPerfil) {
+        zonaFotoPerfil.addEventListener("click", () => {
+            fotoInput.click();
+        });
+    }
 });
 
 function convertirImagenABase64(file) {
