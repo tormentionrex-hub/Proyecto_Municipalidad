@@ -214,6 +214,7 @@ export { patchReportes }
 
 
 
+
 //DELETE REPORTES
 
 
@@ -239,3 +240,135 @@ async function deleteReportes(id) {
 export { deleteReportes }
 
 
+// ---------------------------------------------------------
+// CRUD PROYECTOS VIALES
+// ---------------------------------------------------------
+
+// GET PROYECTOS
+async function getProyectos() {
+    try {
+        const respuestaServidor = await fetch("http://localhost:3001/proyectosViales");
+        const datosProyectos = await respuestaServidor.json();
+        return datosProyectos;
+    } catch (error) {
+        console.error("Error al obtener los proyectos", error);
+    }
+}
+export { getProyectos };
+
+// POST PROYECTOS
+async function postProyectos(proyecto) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/proyectosViales", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(proyecto)
+        });
+        const datosProyectos = await respuesta.json();
+        return datosProyectos;
+    } catch (error) {
+        console.error("Error al crear el proyecto", error);
+    }
+}
+export { postProyectos };
+
+// PATCH PROYECTOS
+async function patchProyectos(proyecto, id) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/proyectosViales/" + id, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(proyecto)
+        });
+        const datosProyectos = await respuesta.json();
+        return datosProyectos;
+    } catch (error) {
+        console.error("Error al actualizar el proyecto", error);
+    }
+}
+export { patchProyectos };
+
+// DELETE PROYECTOS
+async function deleteProyectos(id) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/proyectosViales/" + id, {
+            method: "DELETE",
+        });
+        const datosProyectos = await respuesta.json();
+        return datosProyectos;
+    } catch (error) {
+        console.error("Error al eliminar el proyecto", error);
+    }
+}
+export { deleteProyectos };
+
+
+// ---------------------------------------------------------
+// CRUD SERVICIOS PÚBLICOS
+// ---------------------------------------------------------
+
+// GET SERVICIOS
+async function getServicios() {
+    try {
+        const respuestaServidor = await fetch("http://localhost:3001/serviciosPublicos");
+        const datosServicios = await respuestaServidor.json();
+        return datosServicios;
+    } catch (error) {
+        console.error("Error al obtener los servicios", error);
+    }
+}
+export { getServicios };
+
+// POST SERVICIOS
+async function postServicios(servicio) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/serviciosPublicos", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(servicio)
+        });
+        const datosServicios = await respuesta.json();
+        return datosServicios;
+    } catch (error) {
+        console.error("Error al crear el servicio", error);
+    }
+}
+export { postServicios };
+
+// PATCH SERVICIOS
+async function patchServicios(servicio, id) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/serviciosPublicos/" + id, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(servicio)
+        });
+        const datosServicios = await respuesta.json();
+        return datosServicios;
+    } catch (error) {
+        console.error("Error al actualizar el servicio", error);
+    }
+}
+export { patchServicios };
+
+// DELETE SERVICIOS
+async function deleteServicios(id) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/serviciosPublicos/" + id, {
+            method: "DELETE",
+        });
+        const datosServicios = await respuesta.json();
+        return datosServicios;
+    } catch (error) {
+        console.error("Error al eliminar el servicio", error);
+    }
+}
+export { deleteServicios };
