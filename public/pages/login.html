@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - Municipalidad de Escazú</title>
+
+
     <!-- Fuentes de Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +20,18 @@
 <body>
     <div class="contenedorLogin">
         <main class="cardLogin">
+
+            <div class="logo-container">
+                <a href="home.html">
+                    <img src="../src/img/logo muni.png" alt="Municipalidad de Escazú">
+                </a>
+                <div class="textoLogo">
+                    <h1>MUNICIPALIDAD</h1>
+                    <h2>DE ESCAZÚ</h2>
+                </div>
+            </div>
+
+
             <h2>¡Bienvenido!</h2>
 
             <form id="formLogin">
@@ -29,7 +43,8 @@
                 <div class="grupoInput password-container">
                     <label for="password">Contraseña</label>
                     <div class="inputPassword">
-                        <input type="password" id="password" placeholder="Tu contraseña" required autocomplete="current-password">
+                        <input type="password" id="password" placeholder="Tu contraseña" required
+                            autocomplete="current-password">
                         <i class="fa-solid fa-eye" id="togglePassword" title="Mostrar/Ocultar contraseña"></i>
                     </div>
                 </div>
