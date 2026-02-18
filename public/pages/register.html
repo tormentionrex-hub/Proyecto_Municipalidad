@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Registro - Municipalidad de Escazú</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../src/styles/register.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -16,20 +17,16 @@
 
             <form id="formRegister">
                 <div class="fotoSeccion">
-                    <div id="previewContainer" class="preview-container">
-                        <img id="imgPreview" src="" alt="Vista previa de la foto" style="display: none;">
-                        <span id="previewPlaceholder">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" class="user-icon">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
-                        </span>
+                    <div id="zonaFotoPerfil" class="zona-foto-perfil">
+                        <div id="previewContainer" class="preview-container">
+                            <img id="imgPreview" src="" alt="Vista previa" style="display: none;">
+                            <span id="previewPlaceholder">
+                                <i class="fas fa-user-plus icon-add"></i>
+                            </span>
+                        </div>
+                        <p class="foto-texto">Foto de Perfil</p>
                     </div>
-                    <div class="grupoInput fotoInput">
-                        <label for="foto">Foto de Perfil</label>
-                        <input type="file" id="foto" accept="image/*">
-                    </div>
+                    <input type="file" id="foto" accept="image/*" hidden>
                 </div>
                 <div class="grupoInput">
                     <label for="nombre">Nombre completo</label>

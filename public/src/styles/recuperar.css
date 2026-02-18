@@ -1,36 +1,68 @@
 /* Estilos específicos para Recuperación de Contraseña */
 
 .recovery-card {
-    max-width: 450px;
+    max-width: 450px !important;
+    margin: 0 auto !important;
     animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+}
+
+/* Ocultar el texto duplicado que viene de login.css */
+.recovery-card h2::after {
+    display: none !important;
 }
 
 .header-recovery {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
+    width: 100%;
     margin-bottom: 20px;
 }
 
 .back-link {
     position: absolute;
-    left: -10px;
-    top: 5px;
-    color: var(--text-muted);
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
     font-size: 18px;
     transition: all 0.3s ease;
     padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .back-link:hover {
-    color: var(--primary-color);
-    transform: translateX(-3px);
+    color: #3b82f6;
+    transform: translateY(-50%) translateX(-3px);
 }
 
 .description {
-    color: var(--text-muted);
+    color: #6b7280;
     font-size: 14px;
     line-height: 1.6;
     margin-bottom: 30px;
     padding: 0 10px;
+    text-align: center;
+}
+
+#formRecuperar {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.recovery-card h2 {
+    margin: 0;
 }
 
 /* Botón con Icono */
@@ -46,6 +78,7 @@
     font-size: 14px;
     margin-top: 15px;
     font-weight: 500;
+    text-align: center;
 }
 
 .mensajeFeedback.success {
@@ -59,11 +92,12 @@
 .loginLink {
     margin-top: 20px;
     font-size: 15px;
-    color: var(--text-muted);
+    color: #6b7280;
+    text-align: center;
 }
 
 .loginLink a {
-    color: var(--primary-color);
+    color: #3b82f6;
     font-weight: 700;
     text-decoration: none;
 }

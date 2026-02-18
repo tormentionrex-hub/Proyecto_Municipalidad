@@ -1,7 +1,7 @@
-// Configuración de EmailJS (Placeholder - El usuario debe configurar estos valores)
-const EMAILJS_PUBLIC_KEY = "qUlvQrT1jvUYVC0jD"; // Llave pública proporcionada por el usuario
-const EMAILJS_SERVICE_ID = "service_5p3x2vj"; // ID del servicio proporcionado por el usuario
-const EMAILJS_TEMPLATE_ID = "template_vo1l64o"; // ID de la plantilla proporcionado por el usuario
+// Configuración de EmailJS
+const EMAILJS_PUBLIC_KEY = "qUlvQrT1jvUYVC0jD"; 
+const EMAILJS_SERVICE_ID = "service_5p3x2vj"; 
+const EMAILJS_TEMPLATE_ID = "template_vo1l64o"; 
 
 // Inicializar EmailJS
 (function () {
