@@ -24,15 +24,17 @@ async function iniciarSesion(e) {
     try {
         //Validación de las credenciales (GET)
         // Nota: El campo en la base de datos se llama "contraseña"
-        const response = await fetch(`${API_URL}/usuarios?correo=${correo}&contraseña=${passwordInput}`);
+        //Validación de las credenciales (GET)
+        // Nota: El campo en la base de datos se llama "contraseña"
+        const response = await fetch(`${API_URL}/usuarios?correo=${encodeURIComponent(correo)}`);
         const usuarios = await response.json();
 
-        if (usuarios.length === 0) {
+        const usuario = usuarios.find(u => u.contraseña === passwordInput);
+
+        if (!usuario) {
             mensajeError.textContent = "Correo o contraseña incorrectos.";
             return;
         }
-
-        const usuario = usuarios[0];
 
         // Guardar sesión en localStorage
         localStorage.setItem("usuarioActivo", JSON.stringify(usuario));
