@@ -1281,7 +1281,7 @@ h6 {
     /* Ajustado para quedar arriba de las montañas */
     left: 50%;
     transform: translateX(-50%);
-    width: 180px;
+    width: 250px;
     height: auto;
     z-index: 3;
 }
