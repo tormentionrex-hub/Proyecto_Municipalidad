@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Perfil - Municipalidad de Escazú</title>
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <!-- Estilos específicos -->
+    <link rel="stylesheet" href="../src/styles/Gestionar-Usuario.css">
+</head>
+
+<body>
+
+    <div class="contenedor-perfil">
+
+        <h1 class="titulo-seccion">Editar Perfil</h1>
+
+        <div class="foto-perfil-container">
+            <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" alt="Foto de Perfil Default"
+                class="foto-preview">
+            <label class="boton-cambiar-foto">
+                Cambiar Foto
+                <input type="file" style="display: none;">
+            </label>
+        </div>
+
+        <div class="form-perfil">
+            <div class="grupo-input">
+                <label for="nombre">Nombre y Apellido</label>
+                <input type="text" id="nombre" value="Juan Pérez" placeholder="Ingrese su nombre completo">
+            </div>
+
+            <div class="grupo-input">
+                <label for="telefono">Número de Teléfono</label>
+                <input type="tel" id="telefono" value="8888-8888" placeholder="Ingrese su teléfono">
+            </div>
+
+            <div class="grupo-input">
+                <label for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" value="juan.perez@ejemplo.com" placeholder="ejemplo@correo.com">
+            </div>
+
+            <div class="seccion-password">
+                <h3>Cambiar Contraseña</h3>
+                <div class="form-perfil">
+                    <div class="grupo-input">
+                        <label for="pass-anterior">Contraseña Anterior</label>
+                        <input type="password" id="pass-anterior" placeholder="••••••••">
+                    </div>
+
+                    <div class="grupo-input">
+                        <label for="pass-nueva">Nueva Contraseña</label>
+                        <input type="password" id="pass-nueva" placeholder="••••••••">
+                    </div>
+
+                    <div class="grupo-input">
+                        <label for="pass-confirmar">Confirmar Nueva Contraseña</label>
+                        <input type="password" id="pass-confirmar" placeholder="••••••••">
+                    </div>
+                </div>
+            </div>
+
+            <div class="botones-form">
+                <button type="submit" class="btn-guardar">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón de Google en la esquina inferior derecha -->
+    <div class="google-inferior-container">
+        <button class="btn-google-texto">
+            <img src="https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png" alt="Google Logo">
+            <span>Continuar con Google</span>
+        </button>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,229 @@
+/* Variables del Proyecto */
+:root {
+    --moradoPrincipal: #3e206f;
+    --azulPrimario: #4362eb;
+    --azulSecundario: #4ca2f1;
+    --textoOscuro: #2c2c2c;
+    --textoClaro: #666;
+    --fondoClaro: #f4f7f6;
+    --blanco: #ffffff;
+    --error: #dc3545;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(rgba(178, 235, 242, 0.9), rgba(178, 235, 242, 0.9)),
+        url("../img/ciudad.png");
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.contenedor-perfil {
+    background-color: var(--blanco);
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.titulo-seccion {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--moradoPrincipal);
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 800;
+}
+
+/* Foto de Perfil */
+.foto-perfil-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.foto-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--azulSecundario);
+    margin-bottom: 15px;
+    background-color: #eee;
+}
+
+.boton-cambiar-foto {
+    background-color: var(--azulPrimario);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.boton-cambiar-foto:hover {
+    background-color: var(--moradoPrincipal);
+}
+
+/* Formulario */
+.form-perfil {
+    display: grid;
+    gap: 20px;
+}
+
+.grupo-input {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.grupo-input label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--textoOscuro);
+}
+
+.grupo-input input {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.grupo-input input:focus {
+    outline: none;
+    border-color: var(--azulSecundario);
+}
+
+/* Seccion Contraseña */
+.seccion-password {
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.seccion-password h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: var(--moradoPrincipal);
+}
+
+/* Botones de acción */
+.botones-form {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-guardar {
+    flex: 1;
+    background-color: var(--moradoPrincipal);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-guardar:hover {
+    background-color: var(--azulPrimario);
+    transform: translateY(-2px);
+}
+
+/* Botón Google en la esquina */
+.google-corner {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+}
+
+.btn-google {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.btn-google:hover {
+    transform: scale(1.1);
+}
+
+.btn-google img {
+    width: 24px;
+    height: 24px;
+}
+
+/* Botón Google Inferior Derecha */
+.google-inferior-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 100;
+}
+
+.btn-google-texto {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: var(--blanco);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-google-texto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+    background-color: #f8f9fa;
+}
+
+.btn-google-texto img {
+    width: 24px;
+    height: 24px;
+}
+
+.btn-google-texto span {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--textoOscuro);
+}
+
+@media (max-width: 480px) {
+    .contenedor-perfil {
+        padding: 25px;
+    }
+
+    .google-corner {
+        top: 10px;
+        right: 10px;
+    }
+}
