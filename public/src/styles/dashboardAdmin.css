@@ -1,9 +1,12 @@
-/* Variables de Dashboard - Extendiendo las del home */
 :root {
     --moradoPrincipal: #3e206f;
     --moradoSuave: #9b72cf;
     --verdeSecundario: #56b974;
+    /* Verde del home */
     --amarilloAcento: #f8b400;
+    /* Amarillo del logo */
+    --azulCielo: #009fe3;
+    /* Azul del logo */
     --textoOscuro: #2c2c2c;
     --textoClaro: #666;
     --fondoClaro: #f4f7f6;
@@ -55,6 +58,10 @@ body.cuerpoDashboard {
 
 .iconoMapaReportes::before {
     content: "\f5a0";
+}
+
+.iconoUsuarios::before {
+    content: "\f0c0";
 }
 
 .iconoConfiguracion::before {
@@ -197,11 +204,15 @@ body.cuerpoDashboard {
 }
 
 /* --- Contenido Principal --- */
+/* --- Contenido Principal --- */
 .contenidoPrincipal {
     margin-left: var(--anchoBarraLateral);
     flex: 1;
-    padding: 40px;
-    max-width: 1400px;
+    /* Esto está bien, pero para que sea más robusto */
+    width: calc(100% - var(--anchoBarraLateral));
+    padding: 30px;
+    max-width: 100%;
+    /* Habilitar uso de ancho completo */
 }
 
 /* Encabezado */
@@ -296,7 +307,7 @@ body.cuerpoDashboard {
     width: 60px;
     height: 60px;
     background-color: #e8f4fd;
-    color: #3498db;
+    color: var(--azulCielo);
     border-radius: 15px;
     display: flex;
     align-items: center;
@@ -305,23 +316,27 @@ body.cuerpoDashboard {
 }
 
 .iconoEstadistica.azul {
-    background-color: #e8f4fd;
-    color: #3498db;
+    background-color: rgba(0, 159, 227, 0.1);
+    /* Azul muy suave */
+    color: var(--azulCielo);
 }
 
 .iconoEstadistica.morado {
-    background-color: #f3ebff;
-    color: #9b59b6;
+    background-color: rgba(62, 32, 111, 0.1);
+    /* Morado muy suave */
+    color: var(--moradoPrincipal);
 }
 
 .iconoEstadistica.verde {
-    background-color: #ebfaf0;
-    color: #2ecc71;
+    background-color: rgba(86, 185, 116, 0.1);
+    /* Verde muy suave */
+    color: var(--verdeSecundario);
 }
 
 .iconoEstadistica.naranja {
-    background-color: #fff5eb;
-    color: #e67e22;
+    background-color: rgba(248, 180, 0, 0.1);
+    /* Amarillo muy suave */
+    color: var(--amarilloAcento);
 }
 
 .detallesEstadistica h3 {
@@ -525,8 +540,9 @@ body.cuerpoDashboard {
 .iconoEncabezadoReporte {
     width: 50px;
     height: 50px;
-    background-color: #ffe0b2;
-    color: #f57c00;
+    background-color: rgba(0, 159, 227, 0.1);
+    /* Azul suave */
+    color: var(--azulCielo);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -541,14 +557,14 @@ body.cuerpoDashboard {
 }
 
 .botonNuevoReporte {
-    background-color: #f57c00;
+    background-color: var(--verdeSecundario);
     color: white;
     border: none;
     padding: 12px 25px;
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(245, 124, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(86, 185, 116, 0.3);
     transition: var(--transicionRapida);
 }
 
@@ -557,7 +573,7 @@ body.cuerpoDashboard {
 }
 
 .botonNuevoReporte:hover {
-    background-color: #ef6c00;
+    background-color: #43a060;
     transform: translateY(-2px);
 }
 
@@ -889,12 +905,13 @@ body.cuerpoDashboard {
 
 
 .btnVer {
-    background-color: #fff3e0;
-    color: #f57c00;
+    background-color: rgba(0, 159, 227, 0.1);
+    /* Azul suave */
+    color: var(--azulCielo);
 }
 
 .btnVer:hover {
-    background-color: #f57c00;
+    background-color: var(--azulCielo);
     color: white;
 }
 
@@ -948,4 +965,775 @@ body.cuerpoDashboard {
 .metaItem span {
     font-weight: 600;
     color: var(--textoOscuro);
+}
+
+/* --- Estilos Vista Usuarios --- */
+.encabezadoUsuarios {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background-color: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: var(--sombraSuave);
+}
+
+.iconoEncabezadoUsuario {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(62, 32, 111, 0.1);
+    /* Morado suave */
+    color: var(--moradoPrincipal);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-right: 20px;
+}
+
+.infoEncabezado h1 {
+    font-size: 1.8rem;
+    color: var(--moradoPrincipal);
+    margin-bottom: 5px;
+}
+
+.botonInvitar {
+    background-color: var(--verdeSecundario);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(86, 185, 116, 0.3);
+    transition: var(--transicionRapida);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.botonInvitar:hover {
+    background-color: #43a060;
+    /* Verde un poco más oscuro */
+    transform: translateY(-2px);
+}
+
+.selectFiltro {
+    padding: 10px 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: white;
+    color: var(--textoClaro);
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    height: 42px;
+}
+
+.tablaUsuarios {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.tablaUsuarios th {
+    background-color: #f9fafb;
+    text-align: left;
+    padding: 15px 20px;
+    font-size: 0.85rem;
+    color: var(--textoClaro);
+    font-weight: 700;
+    border-bottom: 1px solid #eee;
+    text-transform: uppercase;
+}
+
+.tablaUsuarios td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #f5f5f5;
+    vertical-align: middle;
+}
+
+.usuarioInfo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatarPlaceholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #757575;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.0rem;
+}
+
+.avatarImg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.infoColaborador {
+    display: flex;
+    flex-direction: column;
+}
+
+.infoColaborador h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--textoOscuro);
+    font-weight: 600;
+}
+
+.infoColaborador span {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 2px;
+}
+
+.badgeRol {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.rol-admin {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.rol-ciudadano {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.rol-usuario {
+    background-color: #e8f5e9;
+    color: #388e3c;
+}
+
+.estado-activo {
+    color: #2e7d32;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Modal Perfil Usuario */
+.perfilUsuarioModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.imagenPerfilGrande {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--moradoPrincipal);
+    box-shadow: var(--sombraSuave);
+}
+
+.avatarPlaceholderGrande {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: var(--fondoClaro);
+    color: var(--moradoSuave);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    font-weight: bold;
+    border: 4px solid var(--moradoPrincipal);
+    box-shadow: var(--sombraSuave);
+}
+
+.infoPerfilUsuario {
+    text-align: center;
+    width: 100%;
+}
+
+.nombreGrande {
+    font-size: 1.8rem;
+    color: var(--textoOscuro);
+    margin-bottom: 10px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.badgeRolGrande {
+    font-size: 1rem;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.estadoActividad {
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.bolitaVerde {
+    width: 12px;
+    height: 12px;
+    background-color: #2e7d32;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 5px #2e7d32;
+}
+
+.detallesContacto {
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: 12px;
+    width: 100%;
+    margin-top: 10px;
+    text-align: left;
+    border: 1px solid #eee;
+}
+
+.tituloSeccionModal {
+    font-size: 0.9rem;
+    color: #999;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.itemContacto {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: var(--textoOscuro);
+}
+
+.itemContacto:last-child {
+    margin-bottom: 0;
+}
+
+.iconoContacto {
+    color: var(--moradoPrincipal);
+    width: 30px;
+    height: 30px;
+    background-color: #eeeaf5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.iconoEstado {
+    font-size: 0.6rem;
+}
+
+/* Vista Invitar Usuario */
+.contenedorFormularioInvitacion {
+    width: 100%;
+    max-width: none;
+    margin: 30px 0;
+}
+
+.tarjetaFormulario {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    /* Sombra suave manual si var no funciona */
+    margin-bottom: 25px;
+    padding: 30px;
+    border: 1px solid #eee;
+}
+
+.encabezadoTarjeta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.iconoTarjeta {
+    width: 45px;
+    height: 45px;
+    background-color: rgba(0, 159, 227, 0.1);
+    /* Azul claro fondo */
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--verdeSecundario);
+    /* Icono verde */
+    font-size: 1.2rem;
+}
+
+.encabezadoTarjeta h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--textoOscuro);
+}
+
+.encabezadoTarjeta p {
+    margin: 5px 0 0;
+    font-size: 0.9rem;
+    color: var(--textoClaro);
+}
+
+.cuerpoTarjeta {
+    padding: 0 10px;
+}
+
+.grupoInput {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.filaInput {
+    display: flex;
+    gap: 20px;
+}
+
+.grupoInput.mitad {
+    width: 50%;
+}
+
+.grupoInput label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--textoOscuro);
+    margin-bottom: 8px;
+}
+
+.asterisco {
+    color: red;
+}
+
+.grupoInput input,
+.grupoInput select,
+.grupoInput textarea {
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--textoOscuro);
+    outline: none;
+    transition: border-color 0.3s;
+    background-color: #fafafa;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.grupoInput input:focus,
+.grupoInput select:focus,
+.grupoInput textarea:focus {
+    border-color: #ef6c00;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(239, 108, 0, 0.1);
+}
+
+.grupoInput small {
+    margin-top: 6px;
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.accionesFormulario {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+#btnEnviarInvitacion {
+    background-color: #ef6c00;
+    padding: 12px 30px;
+    font-size: 1rem;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+#btnEnviarInvitacion:hover {
+    background-color: #e65100;
+}
+
+.botonVolver {
+    background-color: white;
+    border: 1px solid #ddd;
+    color: var(--textoClaro);
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.botonVolver:hover {
+    background-color: #f5f5f5;
+    color: var(--textoOscuro);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Ajuste para que se vea bien en el layout */
+.encabezadoUsuarios {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* --- Modo Cuadrícula para Tabla Usuarios --- */
+/* Transformamos la tabla en un grid */
+/* Nota: Esto es un truco CSS para convertir table en grid */
+
+.tablaUsuarios.modo-cuadricula {
+    display: block;
+    width: 100%;
+}
+
+.tablaUsuarios.modo-cuadricula tbody {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+.tablaUsuarios.modo-cuadricula thead {
+    display: none;
+}
+
+.tablaUsuarios.modo-cuadricula tr {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    gap: 15px;
+    border: 1px solid #eee;
+    transition: transform 0.2s, box-shadow 0.2s;
+    align-items: center;
+    position: relative;
+}
+
+.tablaUsuarios.modo-cuadricula .estado-activo {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 0.8rem;
+    background-color: #e8f5e9;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+
+.tablaUsuarios.modo-cuadricula tr:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tablaUsuarios.modo-cuadricula td {
+    display: block;
+    padding: 0;
+    border: none;
+    text-align: center;
+    width: 100%;
+}
+
+.tablaUsuarios.modo-cuadricula td:empty {
+    display: none;
+}
+
+/* Reorganizar contenido interno */
+.tablaUsuarios.modo-cuadricula .usuarioInfo {
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.tablaUsuarios.modo-cuadricula .avatarPlaceholder,
+.tablaUsuarios.modo-cuadricula .avatarImg {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.tablaUsuarios.modo-cuadricula .infoColaborador h4 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.tablaUsuarios.modo-cuadricula .infoColaborador span {
+    font-size: 0.9rem;
+}
+
+/* Ocultar iconos de contacto en grid si llenan mucho, o ajustarlos */
+.tablaUsuarios.modo-cuadricula .contactoInfo {
+    justify-content: center;
+}
+
+.tablaUsuarios.modo-cuadricula .badgeRol {
+    font-size: 0.9rem;
+    padding: 6px 14px;
+}
+
+.tablaUsuarios.modo-cuadricula .acciones {
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #f9f9f9;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Responsive para grid fijo */
+@media (max-width: 1200px) {
+    .tablaUsuarios.modo-cuadricula tbody {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .tablaUsuarios.modo-cuadricula tbody {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Estilos Vista Lista Reportes (Estilo Referencia Limpia) --- */
+.tablaReportes .infoReporteGrid {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+}
+
+.tablaReportes .imgReporteGrid,
+.tablaReportes .placeholderReporteGrid {
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+    border-radius: 6px;
+    object-fit: cover;
+    border: 1px solid #e0e0e0;
+    padding: 2px;
+    background: white;
+}
+
+.tablaReportes .textoReporte h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 2px 0;
+}
+
+.tablaReportes .textoReporte small {
+    font-size: 0.8rem;
+    color: #888;
+    display: block;
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Ajustes generales de celda para lista limpia */
+.tablaReportes td {
+    vertical-align: middle;
+    padding: 12px 10px;
+    color: #555;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tablaReportes .usuarioReporte,
+.tablaReportes .metaReporte {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    line-height: 1.3;
+}
+
+.tablaReportes .usuarioReporte span,
+.tablaReportes .metaReporte span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #666;
+}
+
+.tablaReportes i {
+    color: #999;
+    font-size: 0.85rem;
+    width: 16px;
+    text-align: center;
+}
+
+/* --- Modo Cuadrícula para Tabla Reportes --- */
+.tablaReportes.modo-cuadricula,
+.tablaReportes.modo-cuadricula tbody {
+    display: block;
+    width: 100%;
+}
+
+.tablaReportes.modo-cuadricula tbody {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.tablaReportes.modo-cuadricula thead {
+    display: none;
+}
+
+.tablaReportes.modo-cuadricula tr {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 15px;
+    border: 1px solid #eee;
+    transition: transform 0.2s;
+    position: relative;
+    height: 100%;
+}
+
+.tablaReportes.modo-cuadricula tr:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.tablaReportes.modo-cuadricula td {
+    display: block;
+    padding: 0;
+    border: none;
+    text-align: center;
+    width: 100%;
+}
+
+/* Imagen y Título */
+.tablaReportes.modo-cuadricula .infoReporteGrid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.tablaReportes.modo-cuadricula .imgReporteGrid,
+.tablaReportes.modo-cuadricula .placeholderReporteGrid {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    font-size: 3rem;
+}
+
+.tablaReportes.modo-cuadricula .textoReporte h4 {
+    font-size: 1.1rem;
+    color: var(--moradoPrincipal);
+    margin-bottom: 5px;
+}
+
+.tablaReportes.modo-cuadricula .textoReporte small {
+    color: #666;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Metadatos */
+.tablaReportes.modo-cuadricula .metaReporte {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.tablaReportes.modo-cuadricula .badgeEstado {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 0.8rem;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tablaReportes.modo-cuadricula .usuarioReporte {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.tablaReportes.modo-cuadricula .acciones {
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Responsive Reportes */
+@media (max-width: 1200px) {
+    .tablaReportes.modo-cuadricula tbody {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .tablaReportes.modo-cuadricula tbody {
+        grid-template-columns: 1fr;
+    }
 }

@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Enviar correo vía EmailJS
             // Se añaden múltiples variantes para el destinatario y el link de recuperación
-            const recoveryLink = `${window.location.origin}/public/pages/reset-password.html?token=${btoa(email)}`;
+            const recoveryLink = `${window.location.origin}/pages/reset-password.html?token=${btoa(email)}`;
 
             const templateParams = {
                 user_email: email,

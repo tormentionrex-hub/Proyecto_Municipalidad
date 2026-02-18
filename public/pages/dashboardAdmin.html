@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 
 <body class="cuerpoDashboard">
@@ -34,7 +38,7 @@
                 <li><a href="#"><i class="iconoTramites"></i> <span>Trámites</span></a></li>
 
                 <li id="navReportes"><a href="#"><i class="iconoMapaReportes"></i> <span>Reportes</span></a></li>
-                <li><a href="#"><i class="iconoConfiguracion"></i> <span>Configuración</span></a></li>
+                <li id="navUsuarios"><a href="#"><i class="iconoUsuarios"></i> <span>Usuarios</span></a></li>
             </ul>
         </nav>
         <div class="pieBarraLateral">
@@ -176,12 +180,20 @@
                 </div>
 
                 <div class="filaFiltros">
-                    <button class="botonFiltro"><i class="fas fa-filter"></i> Filtros</button>
+                    <select class="selectFiltro" id="filtroTipoReporte">
+                        <option value="">Todos los tipos</option>
+                        <option value="bache">Baches</option>
+                        <option value="alcantarilla">Alcantarillado</option>
+                        <option value="señal">Señalización</option>
+                    </select>
                     <button class="botonRecargar" id="btnRecargarReportes"><i class="fas fa-sync-alt"></i></button>
-                </div>
 
-                <div class="pestañasVista">
-                    <button class="botonVista activo"><i class="fas fa-list"></i> Vista de Lista</button>
+                    <div class="pestañasVista">
+                        <button class="botonVista activo" id="btnVistaListaReportes" title="Vista de Lista"><i
+                                class="fas fa-list"></i></button>
+                        <button class="botonVista" id="btnVistaCuadriculaReportes" title="Vista de Cuadrícula"><i
+                                class="fas fa-th-large"></i></button>
+                    </div>
                 </div>
 
                 <div class="infoResultados">
@@ -208,6 +220,152 @@
             </div>
         </div>
 
+        <!-- VISTA USUARIOS (Nueva) -->
+        <div id="vistaUsuarios" class="oculto">
+            <header class="encabezadoUsuarios">
+                <div class="infoEncabezado">
+                    <div class="iconoEncabezadoUsuario"><i class="iconoUsuarios"></i></div>
+                    <div>
+                        <h1>Gestión de Usuarios</h1>
+                        <p>Administre y supervise todos los usuarios del sistema.</p>
+                    </div>
+                </div>
+                <button class="botonInvitar"><i class="fas fa-plus"></i> Invitar usuario</button>
+            </header>
+
+            <div class="contenedorHerramientas">
+                <div class="barraBusqueda">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="buscadorUsuarios" placeholder="Buscar usuarios...">
+                </div>
+
+                <div class="filaFiltros">
+                    <select class="selectFiltro">
+                        <option value="">Todos los roles</option>
+                        <option value="admin">Admin</option>
+                        <option value="ciudadano">Ciudadano</option>
+                        <option value="usuario">Usuario</option>
+                    </select>
+                    <div class="pestañasVista">
+                        <button class="botonVista activo" id="btnVistaLista" title="Vista de Lista"><i
+                                class="fas fa-list"></i></button>
+                        <button class="botonVista" id="btnVistaCuadricula" title="Vista de Cuadrícula"><i
+                                class="fas fa-th-large"></i></button>
+                    </div>
+                </div>
+
+                <div class="infoResultados">
+                    <span id="contadorUsuarios">0 usuarios</span>
+                </div>
+            </div>
+
+            <!-- Tabla de Usuarios -->
+            <div class="contenedorTabla">
+                <table class="tablaUsuarios">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Contacto</th>
+                            <th>Rol</th>
+                            <th>Estado</th> <!-- Agregado visualmente aunque sea estatico -->
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaUsuarios">
+                        <!-- Se llena con JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- VISTA INVITAR USUARIO (Nueva) -->
+        <div id="vistaInvitarUsuario" class="oculto">
+            <header class="encabezadoUsuarios">
+                <div class="infoEncabezado">
+                    <div class="iconoEncabezadoUsuario"><i class="fas fa-user-plus"></i></div>
+                    <div>
+                        <h1>Invitar Nuevo Usuario</h1>
+                        <p>Envíe una invitación para que un nuevo usuario se una al sistema.</p>
+                    </div>
+                </div>
+                <button class="botonVolver" id="btnVolverUsuarios"><i class="fas fa-arrow-left"></i> Volver</button>
+            </header>
+
+            <div class="contenedorFormularioInvitacion">
+
+                <!-- Sección 1: Información Básica -->
+                <div class="tarjetaFormulario">
+                    <div class="encabezadoTarjeta">
+                        <div class="iconoTarjeta"><i class="fas fa-envelope-open-text"></i></div>
+                        <div>
+                            <h3>Información Básica del Usuario</h3>
+                            <p>Datos principales del nuevo usuario.</p>
+                        </div>
+                    </div>
+
+                    <div class="cuerpoTarjeta">
+                        <div class="grupoInput">
+                            <label>Email del Usuario <span class="asterisco">*</span></label>
+                            <input type="email" id="invitacionEmail" placeholder="usuario@ejemplo.com">
+                            <small>El usuario recibirá la invitación en este email.</small>
+                        </div>
+
+                        <div class="grupoInput">
+                            <label>Nombre Completo</label>
+                            <input type="text" id="invitacionNombre" placeholder="Juan Pérez">
+                            <small>Opcional</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 2: Rol y Permisos -->
+                <div class="tarjetaFormulario">
+                    <div class="encabezadoTarjeta">
+                        <div class="iconoTarjeta"><i class="fas fa-shield-alt"></i></div>
+                        <div>
+                            <h3>Rol y Permisos</h3>
+                            <p>Defina el rol y nivel de acceso del usuario.</p>
+                        </div>
+                    </div>
+
+                    <div class="cuerpoTarjeta">
+                        <div class="grupoInput">
+                            <label>Rol del Usuario <span class="asterisco">*</span></label>
+                            <select id="invitacionRol" class="selectFiltro fullWidth">
+                                <option value="" disabled selected>Seleccione un rol..</option>
+                                <option value="usuario">Usuario</option>
+                                <option value="ciudadano">Ciudadano</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 3: Mensaje -->
+                <div class="tarjetaFormulario">
+                    <div class="encabezadoTarjeta">
+                        <div class="iconoTarjeta"><i class="fas fa-paper-plane"></i></div>
+                        <div>
+                            <h3>Mensaje de Invitación (Opcional)</h3>
+                            <p>Añada un mensaje personalizado a la invitación.</p>
+                        </div>
+                    </div>
+
+                    <div class="cuerpoTarjeta">
+                        <div class="grupoInput">
+                            <textarea id="invitacionMensaje" rows="4"
+                                placeholder="¡Hola! Te invito a unirte al sistema de la Municipalidad..."></textarea>
+                        </div>
+
+                        <div class="accionesFormulario">
+                            <button class="botonGuardar" id="btnEnviarInvitacion">Enviar Invitación</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
 
 
         <!-- Modal Ver Reporte -->
@@ -222,6 +380,24 @@
 
                 <div style="margin-top: 20px; text-align: right;">
                     <button class="botonGuardar" id="btnCerrarVer"
+                        style="width: auto; padding: 10px 25px;">Cerrar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Ver Usuario -->
+        <div id="modalVerUsuario" class="modal oculto">
+            <div class="contenidoModal modalDetalle">
+                <span class="cerrarModal" id="cerrarModalVerUsuario">&times;</span>
+                <h2 style="margin-bottom: 20px; color: var(--moradoPrincipal); text-align: center;">Perfil de Usuario
+                </h2>
+
+                <div id="detalleUsuarioContenido" class="perfilUsuarioModal">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <div style="margin-top: 20px; text-align: right;">
+                    <button class="botonGuardar" id="btnCerrarVerUsuario"
                         style="width: auto; padding: 10px 25px;">Cerrar</button>
                 </div>
             </div>
