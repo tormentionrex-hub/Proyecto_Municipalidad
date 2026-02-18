@@ -1126,6 +1126,11 @@ body.cuerpoDashboard {
     color: #388e3c;
 }
 
+.rol-empleado {
+    background-color: #fff3e0;
+    color: #ef6c00;
+}
+
 .estado-activo {
     color: #2e7d32;
     font-weight: 600;
@@ -1860,4 +1865,45 @@ body.cuerpoDashboard {
     color: var(--textoClaro);
     max-width: 400px;
     line-height: 1.6;
+}
+
+/* --- Estilos Adicionales Planillas --- */
+:root {
+    --verdeFuerte: #2e7d32;
+}
+
+.iconoPlanillas::before {
+    content: "\f155";
+    /* Icono de Dinero */
+}
+
+.botonNuevaPlanilla {
+    background-color: var(--moradoPrincipal);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(62, 32, 111, 0.2);
+    transition: var(--transicionRapida);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.botonNuevaPlanilla:hover {
+    background-color: var(--moradoSuave);
+    transform: translateY(-2px);
+}
+
+.selectFiltro {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    outline: none;
+    background: white;
+    color: var(--textoClaro);
+    font-weight: 600;
+    cursor: pointer;
 }

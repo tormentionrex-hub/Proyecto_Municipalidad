@@ -4,7 +4,18 @@ import {
     patchReportes,
     getUsuarios,
     patchUsuarios,
-    deleteUsuarios
+    deleteUsuarios,
+    getPlanillas,
+    postPlanillas,
+    patchPlanillas,
+    deletePlanillas,
+    getUsuariosPlanillas,
+    postUsuariosPlanillas,
+    patchUsuariosPlanillas,
+    deleteUsuariosPlanillas,
+    getHistorialPagos,
+    postHistorialPago,
+    deleteHistorialPago
 } from '../services/services.js';
 
 // Configuración de EmailJS
@@ -47,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Gráfico Geografía (Horizontal) ---
+    // Gráfico Geografía (Horizontal)
     let chartGeografiaInstance = null;
 
     function actualizarGraficoGeografia(reportes) {
@@ -247,17 +258,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Lógica de Gestión de Reportes (Nueva) ---
+    //  Lógica de Gestión de Reportes
 
     const navDashboard = document.getElementById('navDashboard');
     const navReportes = document.getElementById('navReportes');
     const navTramites = document.getElementById('navTramites'); // Nuevo
     const navUsuarios = document.getElementById('navUsuarios');
 
-    const vistaDashboard = document.getElementById('vistaDashboard');
-    const vistaReportes = document.getElementById('vistaReportes');
     const vistaTramites = document.getElementById('vistaTramites'); // Nueva
     const vistaUsuarios = document.getElementById('vistaUsuarios');
+    const vistaPlanillas = document.getElementById('vistaPlanillas'); // Nueva
+    const vistaDetallePlanilla = document.getElementById('vistaDetallePlanilla'); // Nueva
     const vistaInvitarUsuario = document.getElementById('vistaInvitarUsuario');
 
     const cuerpoTabla = document.getElementById('cuerpoTablaReportes');
@@ -270,10 +281,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Función auxiliar para ocultar todas las vistas
     function ocultarTodasLasVistas() {
-        [vistaDashboard, vistaReportes, vistaTramites, vistaUsuarios, vistaInvitarUsuario].forEach(v => {
+        [vistaDashboard, vistaReportes, vistaTramites, vistaUsuarios, vistaPlanillas, vistaDetallePlanilla, vistaInvitarUsuario].forEach(v => {
             if (v) v.classList.add('oculto');
         });
-        [navDashboard, navReportes, navTramites, navUsuarios].forEach(n => {
+        [navDashboard, navReportes, navTramites, navUsuarios, navPlanillas].forEach(n => {
             if (n) n.classList.remove('activo');
         });
     }
@@ -314,6 +325,16 @@ document.addEventListener('DOMContentLoaded', () => {
             vistaUsuarios.classList.remove('oculto');
             navUsuarios.classList.add('activo');
             cargarUsuarios();
+        });
+    }
+
+    if (navPlanillas) {
+        navPlanillas.addEventListener('click', (e) => {
+            e.preventDefault();
+            ocultarTodasLasVistas();
+            vistaPlanillas.classList.remove('oculto');
+            navPlanillas.classList.add('activo');
+            cargarPlanillas();
         });
     }
 
@@ -1286,6 +1307,384 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Lógica de Gestión de Planillas (Nueva) ---
+
+    const cuerpoTablaPlanillas = document.getElementById('cuerpoTablaPlanillas');
+    const buscadorPlanillas = document.getElementById('buscadorPlanillas');
+    const filtroDeptoPlanillas = document.getElementById('filtroDeptoPlanillas');
+    const btnNuevaPlanilla = document.getElementById('btnNuevaPlanilla');
+    const modalPlanilla = document.getElementById('modalPlanilla');
+    const cerrarModalPlanilla = document.getElementById('cerrarModalPlanilla');
+    const formularioPlanilla = document.getElementById('formularioPlanilla');
+
+    async function cargarPlanillas() {
+        if (!cuerpoTablaPlanillas) return;
+
+        cuerpoTablaPlanillas.innerHTML = '<tr><td colspan="9" style="text-align:center;">Cargando planillas...</td></tr>';
+
+        try {
+            const [planillas, relaciones, usuarios] = await Promise.all([
+                getPlanillas(),
+                getUsuariosPlanillas(),
+                getUsuarios()
+            ]);
+
+            window.allPlanillas = planillas;
+            window.allUsuariosPlanillas = relaciones;
+            window.allUsuarios = usuarios;
+
+            renderizarPlanillas(planillas);
+        } catch (error) {
+            console.error("Error cargando planillas:", error);
+            cuerpoTablaPlanillas.innerHTML = '<tr><td colspan="8" style="text-align:center; color:red;">Error al cargar planillas.</td></tr>';
+        }
+    }
+
+    function renderizarPlanillas(planillas) {
+        if (!cuerpoTablaPlanillas) return;
+        cuerpoTablaPlanillas.innerHTML = '';
+
+        const contador = document.getElementById('contadorPlanillas');
+        if (contador) contador.textContent = `${planillas.length} planilla${planillas.length !== 1 ? 's' : ''} encontrada${planillas.length !== 1 ? 's' : ''}`;
+
+        if (planillas.length === 0) {
+            cuerpoTablaPlanillas.innerHTML = '<tr><td colspan="9" style="text-align:center;">No se encontraron planillas</td></tr>';
+            return;
+        }
+
+        planillas.forEach(p => {
+            const tr = document.createElement('tr');
+
+            // Calculamos salario neto con la nueva estructura
+            const pagoExtra = Number(p.cant_horas_extra || 0) * Number(p.pago_hora_extra || 0);
+            const neto = Number(p.salario_base || 0) + pagoExtra - Number(p.rebajos || 0);
+
+            // Buscar relación y nombre de usuario
+            const relacion = window.allUsuariosPlanillas ? window.allUsuariosPlanillas.find(r => r.planilla_id == p.id) : null;
+            let nombreUsuario = "No asignado";
+            if (relacion && window.allUsuarios) {
+                const user = window.allUsuarios.find(u => u.id == relacion.usuario_id);
+                if (user) nombreUsuario = user.nombre;
+            }
+
+            tr.innerHTML = `
+                <td><strong>${p.puesto}</strong></td>
+                <td>${p.departamento}</td>
+                <td>₡${Number(p.salario_base).toLocaleString()}</td>
+                <td>${p.cant_horas_extra || 0}</td>
+                <td>₡${Number(p.pago_hora_extra || 0).toLocaleString()}</td>
+                <td>₡${Number(p.rebajos || 0).toLocaleString()}</td>
+                <td><span style="font-weight: bold; color: var(--verdeFuerte);">₡${neto.toLocaleString()}</span></td>
+                <td class="acciones">
+                    <button class="btnAccion btnDetalle" title="Ver Usuarios Relacionados" style="color: var(--moradoPrincipal);"><i class="fas fa-eye"></i></button>
+                    <button class="btnAccion btnEditar" title="Editar"><i class="fas fa-edit"></i></button>
+                    <button class="btnAccion btnEliminar" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            `;
+
+            // Eventos de botones
+            const btnDetalle = tr.querySelector('.btnDetalle');
+            btnDetalle.onclick = () => mostrarDetallePlanilla(p);
+
+            // Eventos de botones
+            const btnEditar = tr.querySelector('.btnEditar');
+            btnEditar.onclick = () => abrirModalPlanilla(p);
+
+            const btnEliminar = tr.querySelector('.btnEliminar');
+            btnEliminar.onclick = () => confirmarEliminacionPlanilla(p.id);
+
+            cuerpoTablaPlanillas.appendChild(tr);
+        });
+    }
+
+    function filtrarPlanillas() {
+        if (!window.allPlanillas) return;
+
+        const termino = buscadorPlanillas ? buscadorPlanillas.value.toLowerCase() : '';
+        const depto = filtroDeptoPlanillas ? filtroDeptoPlanillas.value.toLowerCase() : '';
+
+        const filtradas = window.allPlanillas.filter(p => {
+            const coincideTexto = p.puesto.toLowerCase().includes(termino) ||
+                p.departamento.toLowerCase().includes(termino);
+            const coincideDepto = depto === '' || p.departamento.toLowerCase() === depto;
+            return coincideTexto && coincideDepto;
+        });
+
+        renderizarPlanillas(filtradas);
+    }
+
+    if (buscadorPlanillas) buscadorPlanillas.addEventListener('input', filtrarPlanillas);
+    if (filtroDeptoPlanillas) filtroDeptoPlanillas.addEventListener('change', filtrarPlanillas);
+
+    function abrirModalPlanilla(planilla = null) {
+        if (!modalPlanilla) return;
+
+        const titulo = document.getElementById('tituloModalPlanilla');
+        const form = document.getElementById('formularioPlanilla'); // Keep original form variable name
+
+        if (planilla) {
+            titulo.innerText = 'Editar Registro de Planilla';
+            form.dataset.id = planilla.id;
+            document.getElementById('planillaPuesto').value = planilla.puesto;
+            document.getElementById('planillaDepartamento').value = planilla.departamento; // Keep original ID
+            document.getElementById('planillaSalarioBase').value = planilla.salario_base; // Keep original ID
+            document.getElementById('planillaCantHorasExtra').value = planilla.cant_horas_extra || 0;
+            document.getElementById('planillaPagoHoraExtra').value = planilla.pago_hora_extra || 0;
+            document.getElementById('planillaRebajos').value = planilla.rebajos || 0;
+        } else {
+            titulo.innerText = 'Nueva Registro de Planilla';
+            form.reset();
+            delete form.dataset.id;
+        }
+
+        modalPlanilla.classList.remove('oculto');
+    }
+
+    if (btnNuevaPlanilla) {
+        btnNuevaPlanilla.onclick = () => abrirModalPlanilla();
+    }
+
+    if (cerrarModalPlanilla) {
+        cerrarModalPlanilla.onclick = () => modalPlanilla.classList.add('oculto');
+    }
+
+    if (formularioPlanilla) {
+        formularioPlanilla.onsubmit = async (e) => {
+            e.preventDefault();
+
+            const id = formularioPlanilla.dataset.id;
+
+            const dataPlanilla = {
+                puesto: document.getElementById('planillaPuesto').value,
+                departamento: document.getElementById('planillaDepartamento').value,
+                salario_base: Number(document.getElementById('planillaSalarioBase').value),
+                cant_horas_extra: Number(document.getElementById('planillaCantHorasExtra').value),
+                pago_hora_extra: Number(document.getElementById('planillaPagoHoraExtra').value),
+                rebajos: Number(document.getElementById('planillaRebajos').value)
+            };
+            // Salario neto para guardar consistency
+            dataPlanilla.salario_neto = dataPlanilla.salario_base + (dataPlanilla.cant_horas_extra * dataPlanilla.pago_hora_extra) - dataPlanilla.rebajos;
+
+            try {
+                if (id) {
+                    await patchPlanillas(dataPlanilla, id);
+                    Swal.fire('¡Éxito!', 'Planilla actualizada correctamente', 'success');
+                } else {
+                    await postPlanillas(dataPlanilla);
+                    Swal.fire('¡Éxito!', 'Planilla creada correctamente', 'success');
+                }
+                modalPlanilla.classList.add('oculto');
+                cargarPlanillas();
+            } catch (error) {
+                console.error("Error al guardar planilla:", error);
+                Swal.fire('Error', 'No se pudo guardar la planilla', 'error');
+            }
+        };
+    }
+
+    async function confirmarEliminacionPlanilla(id) {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                await deletePlanillas(id);
+
+                // Eliminar relación en tabla intermedia if exists
+                const relacion = window.allUsuariosPlanillas ? window.allUsuariosPlanillas.find(r => r.planilla_id == id) : null;
+                if (relacion) {
+                    await deleteUsuariosPlanillas(relacion.id);
+                }
+
+                Swal.fire('¡Eliminado!', 'El registro ha sido eliminado.', 'success');
+                cargarPlanillas();
+            } catch (error) {
+                console.error("Error al eliminar planilla:", error);
+                Swal.fire('Error', 'No se pudo eliminar el registro', 'error');
+            }
+        }
+    }
+
+    // Cerrar al click fuera
+    window.addEventListener('click', (e) => {
+        if (e.target === modalVerReporte) {
+            modalVerReporte.classList.add('oculto');
+        }
+        if (e.target === modalVerUsuario) {
+            modalVerUsuario.classList.add('oculto');
+        }
+        if (e.target === modalPlanilla) {
+            modalPlanilla.classList.add('oculto');
+        }
+    });
+
+    async function confirmarPago(planilla) {
+        // Encontrar usuario asociado
+        const relacion = window.allUsuariosPlanillas ? window.allUsuariosPlanillas.find(r => r.planilla_id == planilla.id) : null;
+        let nombreUsuario = "Empleado";
+        let usuarioId = null;
+
+        if (relacion) {
+            usuarioId = relacion.usuario_id;
+            const user = window.allUsuarios ? window.allUsuarios.find(u => u.id == usuarioId) : null;
+            if (user) nombreUsuario = user.nombre;
+        }
+
+        const neto = Number(planilla.salario_base || 0) + (Number(planilla.cant_horas_extra || 0) * Number(planilla.pago_hora_extra || 0)) - Number(planilla.rebajos || 0);
+
+        const result = await Swal.fire({
+            title: '¿Confirmar Pago?',
+            html: `
+                <div style="text-align: left; padding: 10px;">
+                    <p><strong>Empleado:</strong> ${nombreUsuario}</p>
+                    <p><strong>Puesto:</strong> ${planilla.puesto}</p>
+                    <p><strong>Monto:</strong> <span style="color: var(--verdeFuerte); font-weight: bold;">₡${neto.toLocaleString()}</span></p>
+                    <p>Se registrará este pago en el historial correspondiente.</p>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Sí, registrar pago',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                const nuevoPago = {
+                    id: Date.now().toString(),
+                    planilla_id: planilla.id,
+                    fecha_pago: new Date().toISOString().split('T')[0],
+                    monto_pagado: neto,
+                    estado: "Pagado",
+                    usuario_id: usuarioId
+                };
+
+                await postHistorialPago(nuevoPago);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Pago Registrado',
+                    text: `Se ha registrado el pago para ${nombreUsuario} correctamente.`,
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                // Si estamos en la vista de detalle, recargar el historial
+                if (!vistaDetallePlanilla.classList.contains('oculto')) {
+                    cargarHistorialPagos(planilla.id);
+                }
+            } catch (error) {
+                console.error("Error al registrar pago:", error);
+                Swal.fire('Error', 'No se pudo registrar el pago.', 'error');
+            }
+        }
+    }
+
+    async function abrirModalPagoInteractivo(user, planilla) {
+        const salarioBase = Number(planilla.salario_base || 0);
+        const pagoHoraExtra = Number(planilla.pago_hora_extra || 0);
+        const rebajos = Number(planilla.rebajos || 0);
+
+        const { value: formValues } = await Swal.fire({
+            title: `Generar Pago: ${user.nombre}`,
+            html: `
+                <div style="text-align: left; padding: 20px; font-family: 'Poppins', sans-serif;">
+                    <div style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                        <p style="margin: 5px 0;"><strong>Puesto:</strong> ${planilla.puesto}</p>
+                        <p style="margin: 5px 0;"><strong>Departamento:</strong> ${planilla.departamento}</p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="display: block; font-size: 0.8rem; color: #666;">Salario Base</label>
+                            <input type="text" value="₡${salarioBase.toLocaleString()}" class="swal2-input" style="width: 100%; margin: 5px 0;" disabled>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.8rem; color: #666;">Pago p/ Hora Extra</label>
+                            <input type="text" value="₡${pagoHoraExtra.toLocaleString()}" class="swal2-input" style="width: 100%; margin: 5px 0;" disabled>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.8rem; color: #666;">Horas Extra Trabajadas</label>
+                            <input type="number" id="swalExtraHours" class="swal2-input" style="width: 100%; margin: 5px 0;" value="0" min="0">
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.8rem; color: #666;">Rebajos Aplicados</label>
+                            <input type="text" value="₡${rebajos.toLocaleString()}" class="swal2-input" style="width: 100%; margin: 5px 0;" disabled>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px; background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center;">
+                        <h4 style="margin: 0; color: #666; font-size: 0.9rem;">TOTAL A PAGAR</h4>
+                        <h2 id="swalTotalPago" style="margin: 5px 0; color: var(--verdeFuerte);">₡${(salarioBase - rebajos).toLocaleString()}</h2>
+                    </div>
+                </div>
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-check"></i> Procesar Pago',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: 'var(--verdeFuerte)',
+            didOpen: () => {
+                const inputExtra = document.getElementById('swalExtraHours');
+                const displayTotal = document.getElementById('swalTotalPago');
+
+                inputExtra.addEventListener('input', () => {
+                    const horas = Number(inputExtra.value) || 0;
+                    const total = salarioBase + (horas * pagoHoraExtra) - rebajos;
+                    displayTotal.textContent = `₡${total.toLocaleString()}`;
+                });
+            },
+            preConfirm: () => {
+                const horas = Number(document.getElementById('swalExtraHours').value) || 0;
+                return {
+                    horasExtra: horas,
+                    montoTotal: salarioBase + (horas * pagoHoraExtra) - rebajos
+                };
+            }
+        });
+
+        if (formValues) {
+            try {
+                const nuevoPago = {
+                    id: Date.now().toString(),
+                    planilla_id: planilla.id,
+                    fecha_pago: new Date().toISOString().split('T')[0],
+                    monto_pagado: formValues.montoTotal,
+                    estado: "Pagado",
+                    usuario_id: user.id,
+                    horas_extra_calculadas: formValues.horasExtra
+                };
+
+                await postHistorialPago(nuevoPago);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Pago Exitoso!',
+                    text: `Se ha registrado el pago para ${user.nombre} por un total de ₡${formValues.montoTotal.toLocaleString()}`,
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+
+                // Recargar historial en la vista de detalle
+                cargarHistorialPagos(planilla.id);
+
+            } catch (error) {
+                console.error("Error al procesar pago interactivo:", error);
+                Swal.fire('Error', 'Ocurrió un error al registrar el pago.', 'error');
+            }
+        }
+    }
+
     function getClaseTipo(tipo) {
         if (!tipo) return 'tipo-otro';
         const t = tipo.toLowerCase();
@@ -1311,4 +1710,253 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.includes('resuelto') || e.includes('finalizado')) return 'estado-resuelto';
         return 'estado-pendiente';
     }
-});
+    function mostrarDetallePlanilla(planilla) {
+        if (!vistaDetallePlanilla) return;
+
+        ocultarTodasLasVistas();
+        vistaDetallePlanilla.classList.remove('oculto');
+        navPlanillas.classList.add('activo');
+
+        // Llenar encabezado
+        document.getElementById('detPuesto').textContent = planilla.puesto;
+        document.getElementById('detDepto').textContent = planilla.departamento;
+        const neto = Number(planilla.salario_base || 0) + (Number(planilla.cant_horas_extra || 0) * Number(planilla.pago_hora_extra || 0)) - Number(planilla.rebajos || 0);
+        document.getElementById('detNeto').textContent = `₡${neto.toLocaleString()}`;
+
+        // Cargar historial de pagos
+        cargarHistorialPagos(planilla.id);
+
+        const cuerpo = document.getElementById('cuerpoTablaDetallePlanilla');
+        if (!cuerpo) return;
+        cuerpo.innerHTML = '';
+
+        // Buscar relaciones
+        const relaciones = window.allUsuariosPlanillas ? window.allUsuariosPlanillas.filter(r => r.planilla_id == planilla.id) : [];
+
+        if (relaciones.length === 0) {
+            cuerpo.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay usuarios asociados a esta planilla.</td></tr>';
+            return;
+        }
+
+        relaciones.forEach(rel => {
+            const user = window.allUsuarios ? window.allUsuarios.find(u => u.id == rel.usuario_id) : null;
+            if (user) {
+                const tr = document.createElement('tr');
+                tr.className = 'fila-usuario';
+
+                // Usuario (Avatar + Nombre + Correo)
+                const tdUsuario = document.createElement('td');
+                const placeholder = user.nombre ? user.nombre.charAt(0).toUpperCase() : '?';
+                const avatarHtml = user.foto ?
+                    `<img src="${user.foto}" alt="${user.nombre}" class="avatarImg">` :
+                    `<div class="avatarPlaceholder">${placeholder}</div>`;
+
+                tdUsuario.innerHTML = `
+                    <div class="usuarioInfo">
+                        ${avatarHtml}
+                        <div class="infoColaborador">
+                            <h4>${user.nombre || 'Sin Nombre'}</h4>
+                            <span>${user.correo}</span>
+                        </div>
+                    </div>
+                `;
+
+                // Contacto (Teléfono)
+                const tdContacto = document.createElement('td');
+                tdContacto.innerHTML = `
+                    <div class="contactoInfo">
+                        <div><i class="fas fa-phone"></i> ${user.telefono || 'N/A'}</div>
+                    </div>
+                `;
+
+                // Rol
+                const tdRol = document.createElement('td');
+                const claseRol = `rol-${(user.rol || 'ciudadano').toLowerCase()}`;
+                tdRol.innerHTML = `<span class="badgeRol ${claseRol}">${user.rol || 'Ciudadano'}</span>`;
+
+                // Estado (Simulado)
+                const tdEstado = document.createElement('td');
+                tdEstado.innerHTML = `<span class="estado-activo"><i class="fas fa-circle bolitaVerde"></i> Activo</span>`;
+
+                // Acciones (Reusando funciones existentes)
+                const tdAcciones = document.createElement('td');
+                tdAcciones.className = 'acciones';
+
+                const btnVer = document.createElement('button');
+                btnVer.className = 'btnAccion btnVer';
+                btnVer.title = 'Ver detalles';
+                btnVer.innerHTML = '<i class="fas fa-eye"></i>';
+                btnVer.onclick = () => abrirModalUsuario(user);
+
+                const btnEditar = document.createElement('button');
+                btnEditar.className = 'btnAccion btnEditar';
+                btnEditar.title = 'Editar usuario';
+                btnEditar.innerHTML = '<i class="fas fa-edit"></i>';
+                btnEditar.onclick = () => editarUsuario(user);
+
+                const btnPagar = document.createElement('button');
+                btnPagar.className = 'btnAccion btnPagar';
+                btnPagar.title = 'Realizar Pago';
+                btnPagar.style.color = 'var(--verdeFuerte)';
+                btnPagar.innerHTML = '<i class="fas fa-dollar-sign"></i>';
+                btnPagar.onclick = () => abrirModalPagoInteractivo(user, planilla);
+
+                tdAcciones.appendChild(btnVer);
+                tdAcciones.appendChild(btnEditar);
+                tdAcciones.appendChild(btnPagar);
+
+                tr.appendChild(tdUsuario);
+                tr.appendChild(tdContacto);
+                tr.appendChild(tdRol);
+                tr.appendChild(tdEstado);
+                tr.appendChild(tdAcciones);
+
+                cuerpo.appendChild(tr);
+            }
+        });
+
+        const btnAsignar = document.getElementById('btnAsignarEmpleadoDetalle');
+        if (btnAsignar) {
+            btnAsignar.onclick = () => abrirModalAsignarEmpleado(planilla);
+        }
+    }
+
+    async function cargarHistorialPagos(planillaId) {
+        const cuerpoHistorial = document.getElementById('cuerpoTablaHistorialPagos');
+        if (!cuerpoHistorial) return;
+
+        cuerpoHistorial.innerHTML = '<tr><td colspan="3" style="text-align:center;">Cargando historial...</td></tr>';
+
+        try {
+            const historial = await getHistorialPagos();
+            const filteredHistorial = historial ? historial.filter(h => h.planilla_id == planillaId) : [];
+
+            cuerpoHistorial.innerHTML = '';
+
+            if (filteredHistorial.length === 0) {
+                cuerpoHistorial.innerHTML = '<tr><td colspan="3" style="text-align:center;">No hay registros de pago para esta planilla.</td></tr>';
+                return;
+            }
+
+            // Ordenar por fecha descendente
+            filteredHistorial.sort((a, b) => new Date(b.fecha_pago) - new Date(a.fecha_pago));
+
+            filteredHistorial.forEach(h => {
+                const tr = document.createElement('tr');
+
+                // Buscar nombre de usuario
+                const user = window.allUsuarios ? window.allUsuarios.find(u => u.id == h.usuario_id) : null;
+                const nombreUser = user ? user.nombre : (h.usuario_id || 'Desconocido');
+
+                tr.innerHTML = `
+                    <td>${h.fecha_pago}</td>
+                    <td><strong>${nombreUser}</strong></td>
+                    <td><strong style="color: var(--verdeFuerte);">₡${Number(h.monto_pagado).toLocaleString()}</strong></td>
+                    <td><span class="badgeEstado estado-resuelto">${h.estado}</span></td>
+                    <td class="acciones">
+                        <button class="btnAccion btnEliminar" title="Eliminar Registro" style="color: #dc3545;"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                `;
+
+                const btnEliminar = tr.querySelector('.btnEliminar');
+                btnEliminar.onclick = () => confirmarEliminacionPago(h.id, planillaId);
+
+                cuerpoHistorial.appendChild(tr);
+            });
+        } catch (error) {
+            console.error("Error al cargar historial de pagos:", error);
+            cuerpoHistorial.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Error al cargar el historial.</td></tr>';
+        }
+    }
+
+    async function confirmarEliminacionPago(pagoId, planillaId) {
+        const result = await Swal.fire({
+            title: '¿Eliminar registro de pago?',
+            text: "Esta acción no se puede deshacer.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                await deleteHistorialPago(pagoId);
+                Swal.fire('Eliminado', 'El registro de pago ha sido eliminado.', 'success');
+                cargarHistorialPagos(planillaId);
+            } catch (error) {
+                console.error("Error al eliminar pago:", error);
+                Swal.fire('Error', 'No se pudo eliminar el registro.', 'error');
+            }
+        }
+    }
+
+    async function abrirModalAsignarEmpleado(planilla) {
+        if (!window.allUsuarios) return;
+
+        const yaAsignados = window.allUsuariosPlanillas ?
+            window.allUsuariosPlanillas.filter(r => r.planilla_id == planilla.id).map(r => r.usuario_id) : [];
+
+        const disponibles = window.allUsuarios.filter(u => u.rol === 'empleado' && !yaAsignados.includes(u.id));
+
+        if (disponibles.length === 0) {
+            Swal.fire({
+                icon: 'info',
+                title: 'No hay empleados disponibles',
+                text: 'Todos los empleados registrados ya están asociados a esta planilla.'
+            });
+            return;
+        }
+
+        const inputOptions = {};
+        disponibles.forEach(u => {
+            inputOptions[u.id] = u.nombre;
+        });
+
+        const { value: usuarioId } = await Swal.fire({
+            title: 'Asignar Empleado',
+            input: 'select',
+            inputOptions: inputOptions,
+            inputPlaceholder: 'Seleccione un empleado...',
+            showCancelButton: true,
+            confirmButtonText: 'Asignar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (usuarioId) {
+            try {
+                await postUsuariosPlanillas({
+                    usuario_id: usuarioId,
+                    planilla_id: planilla.id
+                });
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Empleado asignado',
+                    text: 'Se ha vinculado el empleado correctamente.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+
+                await cargarPlanillas();
+                const planillaActualizada = window.allPlanillas.find(p => p.id == planilla.id);
+                mostrarDetallePlanilla(planillaActualizada || planilla);
+            } catch (error) {
+                console.error("Error al asignar:", error);
+                Swal.fire('Error', 'No se pudo asignar el empleado.', 'error');
+            }
+        }
+    }
+
+    const btnVolverPlanillas = document.getElementById('btnVolverPlanillas');
+    if (btnVolverPlanillas) {
+        btnVolverPlanillas.onclick = () => {
+            ocultarTodasLasVistas();
+            vistaPlanillas.classList.remove('oculto');
+            navPlanillas.classList.add('activo');
+        };
+    }
+}
+);

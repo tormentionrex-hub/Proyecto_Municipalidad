@@ -9,14 +9,14 @@ html {
     scroll-behavior: smooth;
 }
 
-body {
+body#home {
     font-family: 'Open Sans', sans-serif;
     color: #4A4A4A;
     overflow-x: hidden;
 
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.85),
-            rgba(255, 255, 255, 0.85)),
+        linear-gradient(rgba(178, 235, 242, 0.9),
+            rgba(178, 235, 242, 0.9)),
         url("/src/img/ciudad.png");
 
     background-size: cover;
@@ -41,8 +41,8 @@ h6 {
 /* Variables */
 :root {
     --moradoPrincipal: #3e206f;
-    --verdeSecundario: #56b974;
-    --amarilloAcento: #f8b400;
+    --verdeSecundario: #4362eb;
+    --amarilloAcento: #4ca2f1;
     --textoOscuro: #2c2c2c;
     --textoClaro: #666;
     --fondoClaro: #f9f9fb;
@@ -305,7 +305,7 @@ h6 {
     min-height: 80vh;
     display: flex;
     align-items: center;
-    background: var(--blanco);
+    background: transparent;
     overflow: visible;
     /* ← ESTA es la solución real */
 }
@@ -426,6 +426,7 @@ h6 {
     /* Centered better relative to decoration */
     top: 50%;
     transform: translateY(-50%);
+    background-color: #84c4ff;
 }
 
 .imagenInicio {
@@ -444,10 +445,10 @@ h6 {
     width: 220px;
     /* Larger */
     height: 220px;
-    background-color: var(--amarilloAcento);
     border-radius: 50%;
     z-index: 2;
     /* Overlapping slightly or as per image */
+    background-color: #4ca2f1;
 }
 
 /* Widget de Reseña */
@@ -535,7 +536,7 @@ h6 {
     border-radius: 0;
     overflow: hidden;
     box-shadow: none;
-    background-color: var(--blanco);
+    background-color: transparent;
     position: relative;
 }
 
@@ -769,7 +770,7 @@ h6 {
 
 .seccionNoticias {
     padding: 120px 20px;
-    background-color: #ffffff;
+    background-color: transparent;
     /* fondo blanco limpio */
 }
 
@@ -851,7 +852,7 @@ h6 {
 
 .seccionNoticias {
     padding: 120px 20px;
-    background-color: #ffffff;
+    background-color: transparent;
 }
 
 /* TITULO */
@@ -999,7 +1000,7 @@ h6 {
 
 .seccionNoticiasInfo {
     padding: 100px 20px 120px;
-    background: linear-gradient(180deg, #ffffff 0%, #f4f0fa 100%);
+    background: transparent;
     position: relative;
 }
 
