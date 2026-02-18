@@ -238,4 +238,170 @@ async function deleteReportes(id) {
 
 export { deleteReportes }
 
+////////////////////////////////////////Para la función de planillas/////////////////////////////////////////////////////
+//GET planillas
+async function getPlanillas() {
+    try {
+        const respuestaServidor = await fetch("http://localhost:3001/planillas")
+        const datosPlanillas = await respuestaServidor.json();
+        return datosPlanillas;
+    } catch (error) {
+        console.error("Error al obtener las planillas", error);
+    }
+}
 
+export { getPlanillas }
+
+//POST planillas
+async function postPlanillas(planilla) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/planillas", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(planilla)
+        })
+
+        const datosPlanillas = await respuesta.json();
+        return datosPlanillas;
+    } catch (error) {
+
+        console.error("Error al crear la planilla", error);
+    }
+
+}
+
+export { postPlanillas }
+
+
+async function patchPlanillas(planilla, id) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/planillas/" + id, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(planilla)
+        })
+        const datosPlanillas = await respuesta.json();
+        return datosPlanillas;
+    } catch (error) {
+
+        console.error("Error al actualizar la planilla", error);
+    }
+}
+
+export { patchPlanillas }
+
+
+async function deletePlanillas(id) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/planillas/" + id, {
+            method: "DELETE",
+        })
+        const datosPlanillas = await respuesta.json();
+        return datosPlanillas;
+    } catch (error) {
+
+        console.error("Error al Eliminar la planilla", error);
+    }
+}
+export { deletePlanillas }
+
+// GET usuarios_planillas
+async function getUsuariosPlanillas() {
+    try {
+        const respuesta = await fetch("http://localhost:3001/usuarios_planillas");
+        return await respuesta.json();
+    } catch (error) {
+        console.error("Error al obtener usuarios_planillas", error);
+    }
+}
+
+// POST usuarios_planillas
+async function postUsuariosPlanillas(data) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/usuarios_planillas", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+        return await respuesta.json();
+    } catch (error) {
+        console.error("Error al crear usuario_planilla", error);
+    }
+}
+
+// PATCH usuarios_planillas
+async function patchUsuariosPlanillas(data, id) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/usuarios_planillas/" + id, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+        return await respuesta.json();
+    } catch (error) {
+        console.error("Error al actualizar usuario_planilla", error);
+    }
+}
+
+// DELETE usuarios_planillas
+async function deleteUsuariosPlanillas(id) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/usuarios_planillas/" + id, {
+            method: "DELETE"
+        });
+        return await respuesta.json();
+    } catch (error) {
+        console.error("Error al eliminar usuario_planilla", error);
+    }
+}
+
+// GET historial_pago_Planillas
+async function getHistorialPagos() {
+    try {
+        const respuesta = await fetch("http://localhost:3001/historial_pago_Planillas");
+        return await respuesta.json();
+    } catch (error) {
+        console.error("Error al obtener historial_pago_Planillas", error);
+    }
+}
+
+// POST historial_pago_Planillas
+async function postHistorialPago(pago) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/historial_pago_Planillas", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(pago)
+        });
+        return await respuesta.json();
+    } catch (error) {
+        console.error("Error al crear historial_pago_Planillas", error);
+    }
+}
+
+async function deleteHistorialPago(id) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/historial_pago_Planillas/" + id, {
+            method: "DELETE"
+        });
+        return await respuesta.json();
+    } catch (error) {
+        console.error("Error al eliminar historial_pago_Planillas", error);
+    }
+}
+
+export {
+    getUsuariosPlanillas,
+    postUsuariosPlanillas,
+    patchUsuariosPlanillas,
+    deleteUsuariosPlanillas,
+    getHistorialPagos,
+    postHistorialPago,
+    deleteHistorialPago
+}

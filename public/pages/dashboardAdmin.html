@@ -39,7 +39,9 @@
 
                 <li id="navReportes"><a href="#"><i class="iconoMapaReportes"></i> <span>Reportes</span></a></li>
                 <li id="navUsuarios"><a href="#"><i class="iconoUsuarios"></i> <span>Usuarios</span></a></li>
+                <li id="navPlanillas"><a href="#"><i class="iconoPlanillas"></i> <span>Planillas</span></a></li>
             </ul>
+
         </nav>
         <div class="pieBarraLateral">
             <button class="botonCerrarSesion" id="botonCerrarSesion"><i class="iconoSalir"></i> <span>Cerrar
@@ -264,6 +266,7 @@
                         <option value="admin">Admin</option>
                         <option value="ciudadano">Ciudadano</option>
                         <option value="usuario">Usuario</option>
+                        <option value="empleado">Empleado</option>
                     </select>
                     <div class="pestañasVista">
                         <button class="botonVista activo" id="btnVistaLista" title="Vista de Lista"><i
@@ -353,6 +356,7 @@
                             <select id="invitacionRol" class="selectFiltro fullWidth">
                                 <option value="" disabled selected>Seleccione un rol..</option>
                                 <option value="usuario">Usuario</option>
+                                <option value="empleado">Empleado</option>
                                 <option value="ciudadano">Ciudadano</option>
                                 <option value="admin">Administrador</option>
                             </select>
@@ -386,6 +390,196 @@
         </div>
 
 
+
+        <!-- VISTA PLANILLAS (Nueva) -->
+        <div id="vistaPlanillas" class="oculto">
+            <header class="encabezadoUsuarios">
+                <div class="infoEncabezado">
+                    <div class="iconoEncabezadoUsuario"><i class="iconoPlanillas"></i></div>
+                    <div>
+                        <h1>Gestión de Planillas</h1>
+                        <p>Administre los registros salariales y la información de planillas.</p>
+                    </div>
+                </div>
+                <button class="botonNuevaPlanilla" id="btnNuevaPlanilla"><i class="fas fa-plus"></i> Crear Nueva
+                    Planilla</button>
+            </header>
+
+            <div class="contenedorHerramientas">
+                <div class="barraBusqueda">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="buscadorPlanillas" placeholder="Buscar por puesto o departamento...">
+                </div>
+
+                <div class="filaFiltros">
+                    <select class="selectFiltro" id="filtroDeptoPlanillas">
+                        <option value="">Todos los departamentos</option>
+                        <option value="Administración">Administración</option>
+                        <option value="Programación">Programación</option>
+                        <option value="Recursos Humanos">Recursos Humanos</option>
+                        <option value="Contabilidad">Contabilidad</option>
+                    </select>
+                </div>
+
+                <div class="infoResultados">
+                    <span id="contadorPlanillas">0 planillas encontradas</span>
+                </div>
+            </div>
+
+            <!-- Tabla de Planillas -->
+            <div class="contenedorTabla">
+                <table class="tablaUsuarios"> <!-- Reusing existing table styles -->
+                    <thead>
+                        <tr>
+                            <th>Puesto</th>
+                            <th>Departamento</th>
+                            <th>Salario Base</th>
+                            <th>Cant. Horas Extra</th>
+                            <th>Pago Hora Extra</th>
+                            <th>Rebajos</th>
+                            <th>Salario Neto</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaPlanillas">
+                        <!-- Se llena con JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- VISTA DETALLE PLANILLA (Nueva) -->
+        <div id="vistaDetallePlanilla" class="oculto">
+            <header class="encabezadoUsuarios">
+                <div class="infoEncabezado">
+                    <div class="iconoEncabezadoUsuario"><i class="fas fa-file-invoice-dollar"
+                            style="color: var(--verdeFuerte);"></i></div>
+                    <div>
+                        <h1 id="detallePlanillaTitulo">Detalles de Planilla</h1>
+                        <p id="detallePlanillaSubtitulo">Usuarios asociados a este registro salarial.</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="botonNuevo" id="btnAsignarEmpleadoDetalle"
+                        style="background: var(--moradoPrincipal); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+                        <i class="fas fa-plus"></i> Asignar Empleado
+                    </button>
+                    <button class="botonCerrarModal" id="btnVolverPlanillas"
+                        style="background: var(--rojo); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">
+                        <i class="fas fa-arrow-left"></i> Volver a la Lista
+                    </button>
+                </div>
+            </header>
+
+            <div class="contenedorHerramientas"
+                style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; border-left: 5px solid var(--verdeFuerte);">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div>
+                        <span
+                            style="display: block; font-size: 0.8em; color: var(--textoClaro); text-transform: uppercase;">Puesto</span>
+                        <strong id="detPuesto" style="font-size: 1.2em;">-</strong>
+                    </div>
+                    <div>
+                        <span
+                            style="display: block; font-size: 0.8em; color: var(--textoClaro); text-transform: uppercase;">Departamento</span>
+                        <strong id="detDepto" style="font-size: 1.2em;">-</strong>
+                    </div>
+                    <div>
+                        <span
+                            style="display: block; font-size: 0.8em; color: var(--textoClaro); text-transform: uppercase;">Salario
+                            Neto Total</span>
+                        <strong id="detNeto" style="font-size: 1.2em; color: var(--verdeFuerte);">-</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contenedorTabla">
+                <table class="tablaUsuarios">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Contacto</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaDetallePlanilla">
+                        <!-- Se llena con JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Sección de Historial de Pagos (Nueva) -->
+            <div class="infoEncabezado" style="margin-top: 40px; margin-bottom: 20px;">
+                <h2 style="color: var(--moradoPrincipal);"><i class="fas fa-history"></i> Historial de Pagos</h2>
+                <p>Registros de pagos realizados para esta planilla en los últimos meses.</p>
+            </div>
+
+            <div class="contenedorTabla">
+                <table class="tablaUsuarios">
+                    <thead>
+                        <tr>
+                            <th>Fecha de Pago</th>
+                            <th>Colaborador</th>
+                            <th>Monto Pagado</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaHistorialPagos">
+                        <!-- Se llena con JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal Crear/Editar Planilla -->
+        <div id="modalPlanilla" class="modal oculto">
+            <div class="contenidoModal modalDetalle">
+                <span class="cerrarModal" id="cerrarModalPlanilla">&times;</span>
+                <h2 style="margin-bottom: 20px; color: var(--moradoPrincipal);" id="tituloModalPlanilla">Nueva Planilla
+                </h2>
+
+                <form id="formularioPlanilla">
+                    <div class="contenedorFormularioInvitacion" style="display: block;">
+                        <div class="tarjetaFormulario">
+                            <div class="cuerpoTarjeta">
+                                <div class="grupoInput">
+                                    <label>Puesto <span class="asterisco">*</span></label>
+                                    <input type="text" id="planillaPuesto" required placeholder="Ej: Programador JR">
+                                </div>
+                                <div class="grupoInput">
+                                    <label>Departamento <span class="asterisco">*</span></label>
+                                    <input type="text" id="planillaDepartamento" required
+                                        placeholder="Ej: Programación">
+                                </div>
+                                <div class="grupoInput">
+                                    <label>Salario Base <span class="asterisco">*</span></label>
+                                    <input type="number" id="planillaSalarioBase" required placeholder="0">
+                                </div>
+                                <div class="grupoInput">
+                                    <label>Cant. Horas Extra <span class="asterisco">*</span></label>
+                                    <input type="number" id="planillaCantHorasExtra" placeholder="0" min="0">
+                                </div>
+                                <div class="grupoInput">
+                                    <label>Pago por Hora Extra <span class="asterisco">*</span></label>
+                                    <input type="number" id="planillaPagoHoraExtra" placeholder="0" min="0">
+                                </div>
+                                <div class="grupoInput">
+                                    <label>Rebajos</label>
+                                    <input type="number" id="planillaRebajos" placeholder="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; text-align: right;">
+                            <button type="submit" class="botonGuardar" id="btnGuardarPlanilla"
+                                style="width: auto; padding: 10px 25px;">Guardar Planilla</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!-- Modal Ver Reporte -->
         <div id="modalVerReporte" class="modal oculto">
