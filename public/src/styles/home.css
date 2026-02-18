@@ -1229,106 +1229,129 @@ h6 {
     }
 }
 
-/* =========================
-   FOOTER ESCAZÚ
-========================= */
-
+/* Estilos Footer Oficial - Diseño Final Sólido */
 .footerEscazu {
-    margin-top: 0;
+    background-color: #1fb1ab;
+    /* Color sólido oficial */
     overflow: hidden;
     position: relative;
-    background: #b2ebf2;
-}
-
-/* Transición difuminada entre la parte blanca y el footer teal */
-.footerEscazu::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    /* Altura del difuminado */
-    background: transparent;
-    z-index: 10;
-    pointer-events: none;
-    display: none;
-}
-
-.footerIlustracion {
     width: 100%;
-    line-height: 0;
+    margin-top: -1px;
+    /* Evita cualquier línea blanca de separación */
 }
 
-.footerSvg {
+/* El difuminado ha sido eliminado (se borró el ::before anterior) */
+
+.footerIlustracionContenedor {
+    position: relative;
+    width: 100%;
+    min-height: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1fb1ab;
+    overflow: hidden;
+}
+
+.footerLogoEsquina {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    width: 140px;
+    height: auto;
+    z-index: 10;
+}
+
+.footerCerros {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
     height: auto;
-    min-height: 280px;
-    display: block;
+    z-index: 2;
+    mix-blend-mode: multiply;
+    opacity: 0.9;
+    object-fit: cover;
+    object-position: bottom;
 }
 
-.footerTexto {
-    background-color: transparent;
-    text-align: center;
-    padding: 18px 20px;
-    border-top: 1px solid rgba(14, 44, 77, 0.1);
+.footerMarcaCantonal {
+    position: absolute;
+    bottom: 200px;
+    /* Ajustado para quedar arriba de las montañas */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: auto;
+    z-index: 3;
 }
 
-.footerTexto p {
-    font-family: "Open Sans", sans-serif;
-    font-size: 0.85rem;
-    color: #0e2c4d;
-    margin: 0;
-    letter-spacing: 0.5px;
+.brujaNuevaContenedor {
+    position: absolute;
+    z-index: 20;
+    /* Pasará por delante de marca_cantonal (z-index 3) */
+    top: 15%;
+    left: -150px;
+    width: 85px;
+    /* Un poquito más grande */
+    animation: volarBrujaIzquierdaDerecha 22s linear infinite;
 }
 
-/* ====== ANIMACION BRUJA VOLANDO (Refinada y fluida) ====== */
-@keyframes volarBruja {
+.brujaImagenOficial {
+    width: 100%;
+    height: auto;
+}
+
+@keyframes volarBrujaIzquierdaDerecha {
     0% {
-        transform: translate(-100px, 240px) scale(0.65);
+        transform: translateX(0) translateY(0) scale(1);
         opacity: 0;
     }
 
-    10% {
-        opacity: 0.95;
+    5% {
+        opacity: 1;
     }
 
-    40% {
-        transform: translate(500px, 190px) scale(0.7);
-    }
-
-    60% {
-        transform: translate(900px, 210px) scale(0.65);
-    }
-
-    90% {
-        opacity: 0.95;
+    95% {
+        opacity: 1;
     }
 
     100% {
-        transform: translate(1600px, 230px) scale(0.7);
+        transform: translateX(calc(100vw + 300px)) translateY(-20px) scale(1);
         opacity: 0;
     }
 }
 
-.brujaVolando {
-    animation: volarBruja 15s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    will-change: transform, opacity;
+.footerTexto {
+    background-color: #1fb1ab;
+    /* Todo el footer unido por el mismo color */
+    color: white;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    z-index: 5;
+    border-top: none;
 }
 
-/* Responsive footer */
-@media (max-width: 768px) {
-    .footerSvg {
-        min-height: 200px;
-    }
-
-    .footerTexto p {
-        font-size: 0.75rem;
-    }
+.footerTexto p {
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    font-weight: 500;
 }
 
-@media (max-width: 480px) {
-    .footerSvg {
-        min-height: 160px;
-    }
+.politicasFooter {
+    font-size: 0.8rem;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    font-weight: 600;
+}
+
+.politicasFooter span {
+    cursor: pointer;
+}
+
+.politicasFooter span:hover {
+    text-decoration: underline;
 }
