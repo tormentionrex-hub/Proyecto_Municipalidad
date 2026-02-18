@@ -152,21 +152,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Lógica del Dashboard Original ---
 
     // Botón de cierre de sesión
-    const btnLogout = document.getElementById('btnLogout');
+    const btnLogout = document.getElementById('botonCerrarSesion');
     if (btnLogout) {
         btnLogout.addEventListener('click', () => {
             Swal.fire({
                 title: '¿Cerrar sesión?',
-                text: "¿Estás seguro de que deseas salir?",
-                icon: 'question',
+                text: 'Tu sesión actual se cerrará',
+                icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
                 confirmButtonText: 'Sí, cerrar sesión',
-                cancelButtonText: 'Cancelar'
+                cancelButtonText: 'Cancelar',
+                reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = './login.html';
+                    localStorage.removeItem('usuarioActivo');
+                    Swal.fire({
+                        title: 'Sesión cerrada',
+                        text: 'Has cerrado sesión correctamente',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = '../pages/login.html';
+                    });
                 }
             });
         });
