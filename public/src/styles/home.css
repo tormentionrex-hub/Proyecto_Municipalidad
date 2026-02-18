@@ -980,3 +980,353 @@ h6 {
         flex-direction: column;
     }
 }
+
+/* =========================
+   BOTON NOTICIAS (VERDE)
+========================= */
+
+.botonNoticias {
+    background-color: var(--verdeSecundario) !important;
+}
+
+.botonNoticias:hover {
+    background-color: #3d9a5a !important;
+}
+
+/* =========================
+   SECCION NOTICIAS INFO
+========================= */
+
+.seccionNoticiasInfo {
+    padding: 100px 20px 120px;
+    background: linear-gradient(180deg, #ffffff 0%, #f4f0fa 100%);
+    position: relative;
+}
+
+.seccionNoticiasInfo::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--moradoPrincipal), var(--verdeSecundario), var(--amarilloAcento));
+}
+
+/* TITULO SECCION NOTICIAS */
+.tituloSeccionNoticias {
+    font-family: "Montserrat", sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--moradoPrincipal);
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.tituloSeccionNoticias::after {
+    content: "";
+    width: 80px;
+    height: 5px;
+    background-color: var(--amarilloAcento);
+    display: block;
+    margin: 15px auto 0;
+    border-radius: 10px;
+}
+
+/* SUBTITULO */
+.subtituloSeccionNoticias {
+    font-family: "Open Sans", sans-serif;
+    font-size: 1.05rem;
+    color: var(--textoClaro);
+    text-align: center;
+    margin-bottom: 60px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* GRID 3 COLUMNAS */
+.gridNoticiasInfo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* CARD NOTICIA */
+.cardNoticiaInfo {
+    background-color: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.07);
+    transition: all 0.35s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.cardNoticiaInfo:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 45px rgba(62, 32, 111, 0.12);
+}
+
+/* IMAGEN DE LA CARD */
+.cardNoticiaImagen {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+
+.cardNoticiaImagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.cardNoticiaInfo:hover .cardNoticiaImagen img {
+    transform: scale(1.08);
+}
+
+/* CATEGORIA BADGE */
+.categoriaNoticia {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background-color: var(--moradoPrincipal);
+    color: #ffffff;
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    z-index: 2;
+}
+
+.categoriaAlerta {
+    background-color: #e74c3c;
+}
+
+/* CONTENIDO DE LA CARD */
+.cardNoticiaContenido {
+    padding: 24px 22px 28px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* FECHA */
+.fechaNoticia {
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.8rem;
+    color: var(--textoClaro);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.fechaNoticia i {
+    color: var(--verdeSecundario);
+    font-size: 0.85rem;
+}
+
+/* TITULO CARD */
+.tituloCardNoticia {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--textoOscuro);
+    line-height: 1.35;
+    margin-bottom: 12px;
+    transition: color 0.3s ease;
+}
+
+.cardNoticiaInfo:hover .tituloCardNoticia {
+    color: var(--moradoPrincipal);
+}
+
+/* TEXTO */
+.textoCardNoticia {
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.88rem;
+    color: var(--textoClaro);
+    line-height: 1.65;
+    margin-bottom: 18px;
+    flex-grow: 1;
+}
+
+/* ENLACE */
+.enlaceNoticia {
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--moradoPrincipal);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.3s ease, gap 0.3s ease;
+    margin-top: auto;
+}
+
+.enlaceNoticia:hover {
+    color: var(--verdeSecundario);
+    gap: 10px;
+}
+
+/* =========================
+   RESPONSIVE NOTICIAS INFO
+========================= */
+
+@media (max-width: 992px) {
+    .gridNoticiasInfo {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .seccionNoticiasInfo {
+        padding: 70px 15px 90px;
+    }
+
+    .tituloSeccionNoticias {
+        font-size: 30px;
+    }
+
+    .subtituloSeccionNoticias {
+        font-size: 0.95rem;
+        margin-bottom: 40px;
+    }
+
+    .gridNoticiasInfo {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tituloSeccionNoticias {
+        font-size: 26px;
+    }
+
+    .cardNoticiaImagen {
+        height: 180px;
+    }
+
+    .tituloCardNoticia {
+        font-size: 1rem;
+    }
+
+    .textoCardNoticia {
+        font-size: 0.84rem;
+    }
+}
+
+/* =========================
+   FOOTER ESCAZÚ
+========================= */
+
+.footerEscazu {
+    margin-top: 0;
+    overflow: hidden;
+    position: relative;
+    /* Added for pseudo-element positioning */
+}
+
+/* Transición difuminada entre la parte blanca y el footer teal */
+.footerEscazu::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    /* Altura del difuminado */
+    background: linear-gradient(to bottom, #ffffff, transparent);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.footerIlustracion {
+    width: 100%;
+    line-height: 0;
+}
+
+.footerSvg {
+    width: 100%;
+    height: auto;
+    min-height: 280px;
+    display: block;
+}
+
+.footerTexto {
+    background-color: #4fb8a5;
+    text-align: center;
+    padding: 18px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.footerTexto p {
+    font-family: "Open Sans", sans-serif;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+/* ====== ANIMACION BRUJA VOLANDO (Refinada y fluida) ====== */
+@keyframes volarBruja {
+    0% {
+        transform: translate(-100px, 240px) scale(0.65);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.95;
+    }
+
+    40% {
+        transform: translate(500px, 190px) scale(0.7);
+    }
+
+    60% {
+        transform: translate(900px, 210px) scale(0.65);
+    }
+
+    90% {
+        opacity: 0.95;
+    }
+
+    100% {
+        transform: translate(1600px, 230px) scale(0.7);
+        opacity: 0;
+    }
+}
+
+.brujaVolando {
+    animation: volarBruja 15s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    will-change: transform, opacity;
+}
+
+/* Responsive footer */
+@media (max-width: 768px) {
+    .footerSvg {
+        min-height: 200px;
+    }
+
+    .footerTexto p {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .footerSvg {
+        min-height: 160px;
+    }
+}
