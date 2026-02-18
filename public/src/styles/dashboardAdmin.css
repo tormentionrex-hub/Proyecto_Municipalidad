@@ -353,7 +353,7 @@ body.cuerpoDashboard {
 }
 
 .valorEstadistica.resaltado {
-    color: #e67e22;
+    color: var(--azulCielo);
 }
 
 .etiquetaEstadistica {
@@ -999,7 +999,8 @@ body.cuerpoDashboard {
     margin-bottom: 5px;
 }
 
-.botonInvitar {
+.botonInvitar,
+.botonVerde {
     background-color: var(--verdeSecundario);
     color: white;
     border: none;
@@ -1011,10 +1012,12 @@ body.cuerpoDashboard {
     transition: var(--transicionRapida);
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
 }
 
-.botonInvitar:hover {
+.botonInvitar:hover,
+.botonVerde:hover {
     background-color: #43a060;
     /* Verde un poco más oscuro */
     transform: translateY(-2px);
@@ -1378,7 +1381,7 @@ body.cuerpoDashboard {
 }
 
 #btnEnviarInvitacion {
-    background-color: #ef6c00;
+    background-color: var(--verdeSecundario);
     padding: 12px 30px;
     font-size: 1rem;
     color: white;
@@ -1387,10 +1390,12 @@ body.cuerpoDashboard {
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.3s;
+    width: auto;
+    /* Asegurar que no tome el 100% de botonGuardar si no se desea */
 }
 
 #btnEnviarInvitacion:hover {
-    background-color: #e65100;
+    background-color: #43a060;
 }
 
 .botonVolver {
@@ -1557,8 +1562,17 @@ body.cuerpoDashboard {
     border-radius: 6px;
     object-fit: cover;
     border: 1px solid #e0e0e0;
-    padding: 2px;
+    padding: 0;
     background: white;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tablaReportes .placeholderReporteGrid i {
+    color: #ccc;
+    font-size: 1.2rem;
 }
 
 .tablaReportes .textoReporte h4 {
@@ -1736,4 +1750,114 @@ body.cuerpoDashboard {
     .tablaReportes.modo-cuadricula tbody {
         grid-template-columns: 1fr;
     }
+}
+
+/* --- ESTILOS VISTA TRÁMITES --- */
+.encabezadoTramites {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background-color: var(--blanco);
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: var(--sombraSuave);
+}
+
+.iconoEncabezadoTramite {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 159, 227, 0.15);
+    /* Azul cielo suave */
+    color: var(--azulCielo);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-right: 15px;
+}
+
+/* Pestañas de Trámites */
+.contenedorPestanasTramites {
+    display: flex;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    padding: 5px;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tabTramite {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--textoClaro);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tabTramite:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--textoOscuro);
+}
+
+.tabTramite.activo {
+    background-color: var(--azulCielo);
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 159, 227, 0.3);
+}
+
+/* Contenido Vacío */
+.contenidoTramitesVacio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: var(--sombraSuave);
+    padding: 40px;
+    text-align: center;
+}
+
+.estadoVacio {
+    color: #cbd5e1;
+    /* Gris claro */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.estadoVacio .iconoVacio {
+    font-size: 5rem;
+    margin-bottom: 10px;
+    background: #f8fafc;
+    padding: 30px;
+    border-radius: 50%;
+    color: var(--azulCielo);
+    opacity: 0.6;
+}
+
+.estadoVacio h3 {
+    color: var(--textoOscuro);
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.estadoVacio p {
+    color: var(--textoClaro);
+    max-width: 400px;
+    line-height: 1.6;
 }
