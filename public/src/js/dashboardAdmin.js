@@ -241,8 +241,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const navDashboard = document.getElementById('navDashboard');
     const navReportes = document.getElementById('navReportes');
+    const navTramites = document.getElementById('navTramites'); // Nuevo
+    const navUsuarios = document.getElementById('navUsuarios');
+
     const vistaDashboard = document.getElementById('vistaDashboard');
     const vistaReportes = document.getElementById('vistaReportes');
+    const vistaTramites = document.getElementById('vistaTramites'); // Nueva
+    const vistaUsuarios = document.getElementById('vistaUsuarios');
+    const vistaInvitarUsuario = document.getElementById('vistaInvitarUsuario');
+
     const cuerpoTabla = document.getElementById('cuerpoTablaReportes');
     const btnRecargar = document.getElementById('btnRecargarReportes');
 
@@ -251,36 +258,70 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnVistaListaReportes = document.getElementById('btnVistaListaReportes');
     const btnVistaCuadriculaReportes = document.getElementById('btnVistaCuadriculaReportes');
 
+    // Función auxiliar para ocultar todas las vistas
+    function ocultarTodasLasVistas() {
+        [vistaDashboard, vistaReportes, vistaTramites, vistaUsuarios, vistaInvitarUsuario].forEach(v => {
+            if (v) v.classList.add('oculto');
+        });
+        [navDashboard, navReportes, navTramites, navUsuarios].forEach(n => {
+            if (n) n.classList.remove('activo');
+        });
+    }
+
     // Navegación Sidebar
-    if (navDashboard && navReportes && vistaDashboard && vistaReportes) {
+    if (navDashboard) {
         navDashboard.addEventListener('click', (e) => {
             e.preventDefault();
+            ocultarTodasLasVistas();
             vistaDashboard.classList.remove('oculto');
-            vistaReportes.classList.add('oculto');
-            if (vistaUsuarios) vistaUsuarios.classList.add('oculto');
-
             navDashboard.classList.add('activo');
-            navReportes.classList.remove('activo');
-            if (navUsuarios) navUsuarios.classList.remove('activo');
-            if (vistaInvitarUsuario) vistaInvitarUsuario.classList.add('oculto');
-
-
         });
+    }
 
+    if (navReportes) {
         navReportes.addEventListener('click', (e) => {
             e.preventDefault();
-            vistaDashboard.classList.add('oculto');
+            ocultarTodasLasVistas();
             vistaReportes.classList.remove('oculto');
-            if (vistaUsuarios) vistaUsuarios.classList.add('oculto');
-
-            navDashboard.classList.remove('activo');
             navReportes.classList.add('activo');
-            if (navUsuarios) navUsuarios.classList.remove('activo');
-            if (vistaInvitarUsuario) vistaInvitarUsuario.classList.add('oculto');
+            cargarReportes();
+        });
+    }
 
+    if (navTramites) {
+        navTramites.addEventListener('click', (e) => {
+            e.preventDefault();
+            ocultarTodasLasVistas();
+            vistaTramites.classList.remove('oculto');
+            navTramites.classList.add('activo');
+        });
+    }
 
-            cargarReportes(); // Cargar datos al entrar
+    if (navUsuarios) {
+        navUsuarios.addEventListener('click', (e) => {
+            e.preventDefault();
+            ocultarTodasLasVistas();
+            vistaUsuarios.classList.remove('oculto');
+            navUsuarios.classList.add('activo');
+            cargarUsuarios();
+        });
+    }
 
+    // Lógica de Pestañas Internas de Trámites
+    const tabRevision = document.getElementById('tabRevision');
+    const tabHistorial = document.getElementById('tabHistorial');
+
+    if (tabRevision && tabHistorial) {
+        tabRevision.addEventListener('click', () => {
+            tabRevision.classList.add('activo');
+            tabHistorial.classList.remove('activo');
+            // Aquí iría la lógica para filtrar por estado pendiente si tuviéramos datos
+        });
+
+        tabHistorial.addEventListener('click', () => {
+            tabHistorial.classList.add('activo');
+            tabRevision.classList.remove('activo');
+            // Aquí iría la lógica para filtrar por historial
         });
     }
 
@@ -288,16 +329,14 @@ document.addEventListener('DOMContentLoaded', () => {
         btnRecargar.addEventListener('click', cargarReportes);
     }
 
-    // --- Lógica de Gestión de Usuarios (Nueva) ---
-    const navUsuarios = document.getElementById('navUsuarios');
-    const vistaUsuarios = document.getElementById('vistaUsuarios');
-    const vistaInvitarUsuario = document.getElementById('vistaInvitarUsuario'); // Nueva vista
-    const btnVolverUsuarios = document.getElementById('btnVolverUsuarios'); // Botón volver
+
+
+
+    const btnVolverUsuarios = document.getElementById('btnVolverUsuarios');
     const btnEnviarInvitacion = document.getElementById('btnEnviarInvitacion');
     const cuerpoTablaUsuarios = document.getElementById('cuerpoTablaUsuarios');
-    const btRecargarUsuarios = null;
     const buscadorUsuarios = document.getElementById('buscadorUsuarios');
-    const filtrosRol = document.querySelector('.selectFiltro'); // Selector de rol
+    const filtrosRol = document.getElementById('filtroRolUsuarios');
 
     // Botón Invitar Usuario (en la vista de usuarios)
     const btnInvitar = document.querySelector('.botonInvitar');
@@ -329,18 +368,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Construir link de invitación (Asumiendo ruta relativa a registro.html con query params)
-            // Ajustar URL según estructura real del proyecto
             const invitationLink = `${window.location.origin}/pages/registro.html?rol=${rol}&email=${email}&nombre=${encodeURIComponent(nombre)}`;
 
-            // Mensaje por defecto si no hay personalizado
             const mensajeFinal = mensajePersonalizado ? mensajePersonalizado :
                 `Hola ${nombre || 'Usuario'}, has sido invitado a unirte a la plataforma de la Municipalidad de Escazú con el rol de ${rol}. Por favor completa tu registro en el siguiente enlace.`;
 
             const templateParams = {
-                user_email: email, // Para compatibilidad con template existente
+                user_email: email,
                 to_email: email,
-                email: email, // Redundancia por seguridad de nombres en template
+                email: email,
                 link: invitationLink,
                 message: mensajeFinal,
                 reply_to: "no-reply@escazu.go.cr"
@@ -365,14 +401,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         showConfirmButton: false
                     });
 
-                    // Limpiar campos
                     document.getElementById('invitacionEmail').value = '';
                     document.getElementById('invitacionNombre').value = '';
-                    // document.getElementById('invitacionApellido').value = ''; // Eliminado
                     document.getElementById('invitacionRol').value = '';
                     document.getElementById('invitacionMensaje').value = '';
 
-                    // Volver a la lista
                     vistaInvitarUsuario.classList.add('oculto');
                     vistaUsuarios.classList.remove('oculto');
                 })
@@ -386,26 +419,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         });
     }
-
-    // Navegación Sidebar para Usuarios
-    if (navUsuarios && vistaUsuarios) {
-        navUsuarios.addEventListener('click', (e) => {
-            e.preventDefault();
-            vistaDashboard.classList.add('oculto');
-            vistaReportes.classList.add('oculto');
-            vistaUsuarios.classList.remove('oculto');
-            if (vistaInvitarUsuario) vistaInvitarUsuario.classList.add('oculto');
-
-            navDashboard.classList.remove('activo');
-            navReportes.classList.remove('activo');
-            navUsuarios.classList.add('activo');
-
-            cargarUsuarios(); // Cargar datos al entrar
-
-        });
-    }
-
-
 
     // Buscador de Usuarios
     if (buscadorUsuarios) {
@@ -538,15 +551,13 @@ document.addEventListener('DOMContentLoaded', () => {
             btnEditar.className = 'btnAccion btnEditar';
             btnEditar.title = 'Editar usuario';
             btnEditar.innerHTML = '<i class="fas fa-edit"></i>';
-            btnEditar.dataset.id = u.id; // Asumimos ID numérico o string
-            // La lógica de editar se maneja más abajo con delegación o directo aquí
-            // Por consistencia con código anterior, delegación. Pero aquí asignamos dataset
+            btnEditar.onclick = () => editarUsuario(u);
 
             const btnEliminar = document.createElement('button');
             btnEliminar.className = 'btnAccion btnEliminar';
             btnEliminar.title = 'Eliminar usuario';
             btnEliminar.innerHTML = '<i class="fas fa-trash-alt"></i>';
-            btnEliminar.dataset.id = u.id;
+            btnEliminar.onclick = () => confirmarEliminacionUsuario(u.id);
 
             tdAcciones.appendChild(btnVer);
             tdAcciones.appendChild(btnEditar);
@@ -1181,6 +1192,88 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (btnCerrarVerUsuario) {
         btnCerrarVerUsuario.addEventListener('click', () => modalVerUsuario.classList.add('oculto'));
+    }
+
+    // --- Funcionalidad Editar Usuario ---
+    async function editarUsuario(usuario) {
+        const { value: formValues } = await Swal.fire({
+            title: 'Editar Usuario',
+            width: '600px',
+            html: `
+                <div style="display: grid; grid-template-columns: 100px 1fr; gap: 20px; align-items: center; text-align: left; padding: 20px 0;">
+                    <label style="font-weight: 600; color: #555; font-size: 0.95rem;">Nombre:</label>
+                    <input id="swal-nombre" class="swal2-input" style="width: 100%; margin: 0; height: 45px; font-size: 0.95rem;" placeholder="Ingrese el nombre" value="${usuario.nombre || ''}">
+                    
+                    <label style="font-weight: 600; color: #555; font-size: 0.95rem;">Correo:</label>
+                    <input id="swal-correo" class="swal2-input" style="width: 100%; margin: 0; height: 45px; font-size: 0.95rem;" placeholder="Ingrese el correo" value="${usuario.correo || ''}">
+                    
+                    <label style="font-weight: 600; color: #555; font-size: 0.95rem;">Teléfono:</label>
+                    <input id="swal-telefono" class="swal2-input" style="width: 100%; margin: 0; height: 45px; font-size: 0.95rem;" placeholder="Ingrese el teléfono" value="${usuario.telefono || ''}">
+                    
+                    <label style="font-weight: 600; color: #555; font-size: 0.95rem;">Rol:</label>
+                    <select id="swal-rol" class="swal2-input" style="width: 100%; margin: 0; height: 45px; font-size: 0.95rem;">
+                        <option value="usuario" ${usuario.rol === 'usuario' ? 'selected' : ''}>Usuario</option>
+                        <option value="ciudadano" ${usuario.rol === 'ciudadano' ? 'selected' : ''}>Ciudadano</option>
+                        <option value="admin" ${usuario.rol === 'admin' ? 'selected' : ''}>Administrador</option>
+                    </select>
+                </div>
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Guardar Cambios',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#3e206f',
+            cancelButtonColor: '#6c757d',
+            preConfirm: () => {
+                return {
+                    nombre: document.getElementById('swal-nombre').value,
+                    correo: document.getElementById('swal-correo').value,
+                    telefono: document.getElementById('swal-telefono').value,
+                    rol: document.getElementById('swal-rol').value
+                }
+            }
+        });
+
+        if (formValues) {
+            try {
+                // Validación básica
+                if (!formValues.nombre || !formValues.correo) {
+                    throw new Error('Nombre y correo son obligatorios');
+                }
+
+                await patchUsuarios(usuario.id, formValues);
+                Swal.fire('¡Actualizado!', 'El usuario ha sido modificado exitosamente.', 'success');
+                cargarUsuarios(); // Recargar tabla
+            } catch (error) {
+                console.error("Error al editar usuario:", error);
+                Swal.fire('Error', error.message || 'No se pudo actualizar el usuario.', 'error');
+            }
+        }
+    }
+
+    // --- Funcionalidad Eliminar Usuario ---
+    async function confirmarEliminacionUsuario(id) {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Esta acción no se puede deshacer. El usuario será eliminado permanentemente.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                await deleteUsuarios(id);
+                Swal.fire('¡Eliminado!', 'El usuario ha sido eliminado.', 'success');
+                cargarUsuarios(); // Recargar tabla
+            } catch (error) {
+                console.error("Error al eliminar usuario:", error);
+                Swal.fire('Error', 'No se pudo eliminar el usuario.', 'error');
+            }
+        }
     }
 
     function getClaseTipo(tipo) {
