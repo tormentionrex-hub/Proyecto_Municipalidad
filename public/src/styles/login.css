@@ -1,108 +1,276 @@
 /* Fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
-/* RESET */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* HTML y BODY ocupan toda la pantalla */
-html, body{
-    height:100%;
-    font-family:'Montserrat', sans-serif;
+body {
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
 }
 
-/* BODY centra todo */
-body{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background: linear-gradient(135deg, #e6e6e6 0%, #f9f9f9 100%);
+/* Contenedor principal - Split Screen */
+.contenedorLogin {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    width: 100%;
 }
 
-/* Contenedor principal */
-.contenedorLogin{
-    width:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+/* Lado izquierdo - Formulario */
+.contenedorLogin::before {
+    display: none;
 }
 
-/* Tarjeta */
-.cardLogin{
-    background:#fff;
-    padding:40px 30px;
-    border-radius:10px;
-    box-shadow:0px 4px 15px rgba(0,0,0,0.1);
-    width:100%;
-    max-width:380px;
-    text-align:center;
+.cardLogin {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 120px 80px 60px;
+    background: #ffffff;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    max-width: 100%;
+    text-align: center;
 }
 
-/* Título */
-.cardLogin h2{
-    margin-bottom:20px;
-    font-size:28px;
-    font-weight:700;
+/* Logo en la esquina superior izquierda */
+.cardLogin::before {
+    content: "Municipalidad de Escazú";
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
 }
 
-/* Grupo input */
-.grupoInput{
-    margin-bottom:18px;
-    text-align:left;
+.cardLogin h2 {
+    margin-bottom: 32px;
+    font-size: 32px;
+    font-weight: 800;
+    color: #1f2937;
+    text-align: center;
 }
 
-.grupoInput label{
-    display:block;
-    margin-bottom:6px;
-    font-weight:600;
+.cardLogin h2::after {
+    content: "Por favor, introduce tus datos para continuar.";
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    color: #6b7280;
+    margin-top: 16px;
+    text-align: center;
 }
 
-.grupoInput input{
-    width:100%;
-    padding:12px;
-    border:2px solid #ccc;
-    border-radius:6px;
-    font-size:16px;
+/* Form Styles */
+#formLogin {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-/* Botón */
-.botonLogin{
-    width:100%;
-    padding:12px;
-    background:#6558f5;
-    border:none;
-    border-radius:6px;
-    color:white;
-    font-weight:700;
-    font-size:16px;
-    cursor:pointer;
-    margin-top:10px;
+.grupoInput {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+    width: 100%;
 }
 
-.botonLogin:hover{
-    background:#5346c9;
+.grupoInput label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
 }
 
-/* Error */
-.mensajeError{
-    margin-top:10px;
-    color:red;
+.grupoInput input[type="email"],
+.grupoInput input[type="password"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.2s;
+    background: white;
 }
 
-/* Link */
-.registroLink{
-    margin-top:15px;
+.grupoInput input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none;
 }
 
-.registroLink a{
-    color:#6558f5;
-    font-weight:600;
-    text-decoration:none;
+/* Password Container */
+.password-container {
+    position: relative;
 }
 
-.registroLink a:hover{
-    text-decoration:underline;
+.inputPassword {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.inputPassword i {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    color: #6b7280;
+    transition: color 0.3s ease;
+    padding: 5px;
+}
+
+.inputPassword i:hover {
+    color: #3b82f6;
+}
+
+/* Login Options */
+.opcionesLogin {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    margin: -5px 0 5px 0;
+}
+
+.opcionesLogin label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: #6b7280;
+}
+
+.opcionesLogin input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #3b82f6;
+}
+
+.olvidePassword a {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.olvidePassword a:hover {
+    text-decoration: underline;
+}
+
+/* Button */
+.botonLogin {
+    width: 100%;
+    padding: 14px;
+    background: #3b82f6;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.botonLogin:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.botonLogin:active {
+    transform: translateY(0);
+}
+
+/* Google Button - Estilo outline */
+.botonLogin:nth-of-type(2) {
+    background: white;
+    color: #1f2937;
+    border: 1px solid #d1d5db;
+    margin-top: 12px;
+}
+
+.botonLogin:nth-of-type(2):hover {
+    background: #f9fafb;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Error Message */
+.mensajeError {
+    min-height: 20px;
+    font-size: 14px;
+    color: #ef4444;
+    font-weight: 500;
+}
+
+/* Register Link */
+.registroLink {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #6b7280;
+    text-align: center;
+}
+
+.registroLink a {
+    color: #3b82f6;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.registroLink a:hover {
+    text-decoration: underline;
+}
+
+/* Lado derecho - Imagen motivacional */
+.contenedorLogin::after {
+    content: "";
+    grid-column: 2;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.75) 0%, rgba(37, 99, 235, 0.8) 100%),
+        url('../img/escazu.webp');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .contenedorLogin {
+        grid-template-columns: 1fr;
+    }
+
+    .contenedorLogin::after {
+        display: none;
+    }
+
+    .cardLogin {
+        padding: 40px 30px;
+    }
+
+    .cardLogin::before {
+        top: 20px;
+        left: 20px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cardLogin {
+        padding: 30px 20px;
+    }
+
+    .cardLogin h2 {
+        font-size: 28px;
+    }
 }

@@ -14,6 +14,12 @@
         rel="stylesheet">
     <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 
 <body class="cuerpoDashboard">
@@ -22,7 +28,7 @@
     <aside class="barraLateral">
         <div class="logoBarraLateral">
             <a href="../pages/home.html">
-                <img src="../src/img/Logo_Municipalidad_Escazu.png" alt="Logo Escazú">
+                <img src="../src/img/logo muni.png" alt="Logo Escazú">
             </a>
         </div>
         <nav class="navegacionBarraLateral">
@@ -32,7 +38,7 @@
                 <li><a href="#"><i class="iconoTramites"></i> <span>Trámites</span></a></li>
 
                 <li id="navReportes"><a href="#"><i class="iconoMapaReportes"></i> <span>Reportes</span></a></li>
-                <li><a href="#"><i class="iconoConfiguracion"></i> <span>Configuración</span></a></li>
+                <li id="navUsuarios"><a href="#"><i class="iconoUsuarios"></i> <span>Usuarios</span></a></li>
             </ul>
         </nav>
         <div class="pieBarraLateral">
@@ -64,88 +70,87 @@
                 </div>
             </header>
 
-            <!-- Sección de Estadísticas Rápidas -->
-            <section class="estadisticasDashboard">
-                <div class="tarjetaEstadistica">
-                    <div class="iconoEstadistica azul"><i class="iconoDinero"></i></div>
-                    <div class="detallesEstadistica">
-                        <h3>Ingresos Totales</h3>
-                        <p class="valorEstadistica">₡285.4M</p>
-                        <span class="etiquetaEstadistica">en el periodo seleccionado</span>
-                    </div>
-                </div>
-
-                <div class="tarjetaEstadistica">
-                    <div class="iconoEstadistica morado"><i class="iconoCajas"></i></div>
-                    <div class="detallesEstadistica">
-                        <h3>Trámites Procesados</h3>
-                        <p class="valorEstadistica">1,248</p>
-                        <span class="etiquetaEstadistica">total en periodo</span>
-                    </div>
-                </div>
-
-                <div class="tarjetaEstadistica">
-                    <div class="iconoEstadistica verde"><i class="iconoGraficoLinea"></i></div>
-                    <div class="detallesEstadistica">
-                        <h3>Eficiencia Promedio</h3>
-                        <p class="valorEstadistica">94%</p>
-                        <span class="etiquetaEstadistica">casos resueltos</span>
-                    </div>
-                </div>
-
-                <div class="tarjetaEstadistica">
-                    <div class="iconoEstadistica naranja"><i class="iconoUbicacion"></i></div>
-                    <div class="detallesEstadistica">
-                        <h3>Barrio Top</h3>
-                        <p class="valorEstadistica resaltado">San Rafael</p>
-                        <span class="etiquetaEstadistica">mayor movimiento</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Filtros de Contenido -->
-            <nav class="pestanasDashboard">
+            <!-- Filtros de Contenido (Ahora fuera de panelResumen para ser visible siempre) -->
+            <nav class="pestanasDashboard" style="margin-bottom: 20px;">
                 <button class="botonPestana activo" data-tab="resumen"><i class="iconoLista"></i> Resumen</button>
                 <button class="botonPestana" data-tab="geografia"><i class="iconoMapa"></i> Geografía</button>
                 <button class="botonPestana" data-tab="servicios"><i class="iconoServicios"></i> Servicios</button>
             </nav>
 
-            <!-- Sección de Gráficos y Detalles -->
-            <section class="contenidoDashboard">
-                <div class="filaContenido">
-                    <!-- Gráfico de Tendencia -->
-                    <div class="contenedorGrafico rejillaGrande">
-                        <div class="encabezadoGrafico">
-                            <h2><i class="iconoGraficoArea"></i> Tendencia de Trámites</h2>
-                        </div>
-                        <div class="cajaGrafico graficoTemporal">
-                            <!-- Aquí se renderizaría el gráfico con JS -->
-                            <div class="maquetaGrafico">
-                                <div class="barra barraNivel1"></div>
-                                <div class="barra barraNivel2"></div>
-                                <div class="barra barraNivel3"></div>
-                                <div class="barra barraNivel4"></div>
-                                <div class="barra barraNivel5"></div>
-                                <div class="barra barraNivel6"></div>
-                            </div>
+            <!-- Contenedor de Paneles -->
+            <div id="panelResumen">
+                <!-- Sección de Estadísticas Rápidas -->
+                <section class="estadisticasDashboard">
+                    <div class="tarjetaEstadistica">
+                        <div class="iconoEstadistica azul"><i class="iconoDinero"></i></div>
+                        <div class="detallesEstadistica">
+                            <h3>Ingresos Totales</h3>
+                            <p class="valorEstadistica">₡285.4M</p>
+                            <span class="etiquetaEstadistica">en el periodo seleccionado</span>
                         </div>
                     </div>
 
-                    <!-- Métodos de Solicitud -->
-                    <div class="contenedorGrafico rejillaPequena">
-                        <div class="encabezadoGrafico">
-                            <h2><i class="iconoPortatil"></i> Canales de Recepción</h2>
-                        </div>
-                        <div class="cajaGrafico">
-                            <ul class="listaCanales">
-                                <li><span>Presencial</span> <strong>45%</strong></li>
-                                <li><span>Web Municipal</span> <strong>35%</strong></li>
-                                <li><span>App Escazú</span> <strong>20%</strong></li>
-                            </ul>
+                    <div class="tarjetaEstadistica">
+                        <div class="iconoEstadistica morado"><i class="iconoCajas"></i></div>
+                        <div class="detallesEstadistica">
+                            <h3>Trámites Procesados</h3>
+                            <p class="valorEstadistica">1,248</p>
+                            <span class="etiquetaEstadistica">total en periodo</span>
                         </div>
                     </div>
+
+                    <div class="tarjetaEstadistica">
+                        <div class="iconoEstadistica verde"><i class="iconoGraficoLinea"></i></div>
+                        <div class="detallesEstadistica">
+                            <h3>Eficiencia Promedio</h3>
+                            <p class="valorEstadistica">94%</p>
+                            <span class="etiquetaEstadistica">casos resueltos</span>
+                        </div>
+                    </div>
+
+                    <div class="tarjetaEstadistica">
+                        <div class="iconoEstadistica naranja"><i class="iconoUbicacion"></i></div>
+                        <div class="detallesEstadistica">
+                            <h3>Barrio Top</h3>
+                            <p class="valorEstadistica resaltado">San Rafael</p>
+                            <span class="etiquetaEstadistica">mayor movimiento</span>
+                        </div>
+                    </div>
+                </section>
+
+
+
+                <!-- Sección de Gráficos y Detalles -->
+                <section class="contenidoDashboard">
+                    <div class="filaContenido">
+                        <!-- Gráfico de Tendencia -->
+                        <div class="contenedorGrafico rejillaGrande">
+                            <div class="encabezadoGrafico">
+                                <h2><i class="iconoGraficoArea"></i> Estadísticas de Reportes por Cantón</h2>
+                            </div>
+                            <div class="cajaGrafico" style="position: relative; height: 400px; width: 100%;">
+                                <canvas id="graficoTendencia"></canvas>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </section>
+            </div> <!-- Fin panelResumen -->
+
+            <!-- Panel Geografía (Oculto por defecto) -->
+            <div id="panelGeografia" class="oculto" style="padding: 20px;">
+                <div class="contenedorGrafico"
+                    style="background: white; border-radius: 12px; padding: 20px; box-shadow: var(--sombraSuave);">
+                    <div class="encabezadoGrafico" style="margin-bottom: 20px;">
+                        <h2 style="color: var(--moradoPrincipal);"><i class="iconoUbicacion"></i> Reportes por Cantón
+                            (Detallado)</h2>
+                    </div>
+                    <div class="cajaGrafico" style="position: relative; height: 500px; width: 100%;">
+                        <canvas id="graficoGeografia"></canvas>
+                    </div>
                 </div>
-            </section>
+            </div>
         </div>
 
         <!-- VISTA REPORTES (Nueva) -->
@@ -161,6 +166,13 @@
                 <button class="botonNuevoReporte displayNone"><i class="fas fa-plus"></i> Registrar Nuevo</button>
             </header>
 
+            <!-- Pestañas de Navegación Global (Persistentes) -->
+            <nav class="pestanasDashboard" style="margin-bottom: 20px;">
+                <button class="botonPestana" data-tab="resumen"><i class="iconoLista"></i> Resumen</button>
+                <button class="botonPestana" data-tab="geografia"><i class="iconoMapa"></i> Geografía</button>
+                <button class="botonPestana" data-tab="servicios"><i class="iconoServicios"></i> Servicios</button>
+            </nav>
+
             <div class="contenedorHerramientas">
                 <div class="barraBusqueda">
                     <i class="fas fa-search"></i>
@@ -168,12 +180,20 @@
                 </div>
 
                 <div class="filaFiltros">
-                    <button class="botonFiltro"><i class="fas fa-filter"></i> Filtros</button>
+                    <select class="selectFiltro" id="filtroTipoReporte">
+                        <option value="">Todos los tipos</option>
+                        <option value="bache">Baches</option>
+                        <option value="alcantarilla">Alcantarillado</option>
+                        <option value="señal">Señalización</option>
+                    </select>
                     <button class="botonRecargar" id="btnRecargarReportes"><i class="fas fa-sync-alt"></i></button>
-                </div>
 
-                <div class="pestañasVista">
-                    <button class="botonVista activo"><i class="fas fa-list"></i> Vista de Lista</button>
+                    <div class="pestañasVista">
+                        <button class="botonVista activo" id="btnVistaListaReportes" title="Vista de Lista"><i
+                                class="fas fa-list"></i></button>
+                        <button class="botonVista" id="btnVistaCuadriculaReportes" title="Vista de Cuadrícula"><i
+                                class="fas fa-th-large"></i></button>
+                    </div>
                 </div>
 
                 <div class="infoResultados">
@@ -200,6 +220,152 @@
             </div>
         </div>
 
+        <!-- VISTA USUARIOS (Nueva) -->
+        <div id="vistaUsuarios" class="oculto">
+            <header class="encabezadoUsuarios">
+                <div class="infoEncabezado">
+                    <div class="iconoEncabezadoUsuario"><i class="iconoUsuarios"></i></div>
+                    <div>
+                        <h1>Gestión de Usuarios</h1>
+                        <p>Administre y supervise todos los usuarios del sistema.</p>
+                    </div>
+                </div>
+                <button class="botonInvitar"><i class="fas fa-plus"></i> Invitar usuario</button>
+            </header>
+
+            <div class="contenedorHerramientas">
+                <div class="barraBusqueda">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="buscadorUsuarios" placeholder="Buscar usuarios...">
+                </div>
+
+                <div class="filaFiltros">
+                    <select class="selectFiltro">
+                        <option value="">Todos los roles</option>
+                        <option value="admin">Admin</option>
+                        <option value="ciudadano">Ciudadano</option>
+                        <option value="usuario">Usuario</option>
+                    </select>
+                    <div class="pestañasVista">
+                        <button class="botonVista activo" id="btnVistaLista" title="Vista de Lista"><i
+                                class="fas fa-list"></i></button>
+                        <button class="botonVista" id="btnVistaCuadricula" title="Vista de Cuadrícula"><i
+                                class="fas fa-th-large"></i></button>
+                    </div>
+                </div>
+
+                <div class="infoResultados">
+                    <span id="contadorUsuarios">0 usuarios</span>
+                </div>
+            </div>
+
+            <!-- Tabla de Usuarios -->
+            <div class="contenedorTabla">
+                <table class="tablaUsuarios">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Contacto</th>
+                            <th>Rol</th>
+                            <th>Estado</th> <!-- Agregado visualmente aunque sea estatico -->
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaUsuarios">
+                        <!-- Se llena con JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- VISTA INVITAR USUARIO (Nueva) -->
+        <div id="vistaInvitarUsuario" class="oculto">
+            <header class="encabezadoUsuarios">
+                <div class="infoEncabezado">
+                    <div class="iconoEncabezadoUsuario"><i class="fas fa-user-plus"></i></div>
+                    <div>
+                        <h1>Invitar Nuevo Usuario</h1>
+                        <p>Envíe una invitación para que un nuevo usuario se una al sistema.</p>
+                    </div>
+                </div>
+                <button class="botonVolver" id="btnVolverUsuarios"><i class="fas fa-arrow-left"></i> Volver</button>
+            </header>
+
+            <div class="contenedorFormularioInvitacion">
+
+                <!-- Sección 1: Información Básica -->
+                <div class="tarjetaFormulario">
+                    <div class="encabezadoTarjeta">
+                        <div class="iconoTarjeta"><i class="fas fa-envelope-open-text"></i></div>
+                        <div>
+                            <h3>Información Básica del Usuario</h3>
+                            <p>Datos principales del nuevo usuario.</p>
+                        </div>
+                    </div>
+
+                    <div class="cuerpoTarjeta">
+                        <div class="grupoInput">
+                            <label>Email del Usuario <span class="asterisco">*</span></label>
+                            <input type="email" id="invitacionEmail" placeholder="usuario@ejemplo.com">
+                            <small>El usuario recibirá la invitación en este email.</small>
+                        </div>
+
+                        <div class="grupoInput">
+                            <label>Nombre Completo</label>
+                            <input type="text" id="invitacionNombre" placeholder="Juan Pérez">
+                            <small>Opcional</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 2: Rol y Permisos -->
+                <div class="tarjetaFormulario">
+                    <div class="encabezadoTarjeta">
+                        <div class="iconoTarjeta"><i class="fas fa-shield-alt"></i></div>
+                        <div>
+                            <h3>Rol y Permisos</h3>
+                            <p>Defina el rol y nivel de acceso del usuario.</p>
+                        </div>
+                    </div>
+
+                    <div class="cuerpoTarjeta">
+                        <div class="grupoInput">
+                            <label>Rol del Usuario <span class="asterisco">*</span></label>
+                            <select id="invitacionRol" class="selectFiltro fullWidth">
+                                <option value="" disabled selected>Seleccione un rol..</option>
+                                <option value="usuario">Usuario</option>
+                                <option value="ciudadano">Ciudadano</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección 3: Mensaje -->
+                <div class="tarjetaFormulario">
+                    <div class="encabezadoTarjeta">
+                        <div class="iconoTarjeta"><i class="fas fa-paper-plane"></i></div>
+                        <div>
+                            <h3>Mensaje de Invitación (Opcional)</h3>
+                            <p>Añada un mensaje personalizado a la invitación.</p>
+                        </div>
+                    </div>
+
+                    <div class="cuerpoTarjeta">
+                        <div class="grupoInput">
+                            <textarea id="invitacionMensaje" rows="4"
+                                placeholder="¡Hola! Te invito a unirte al sistema de la Municipalidad..."></textarea>
+                        </div>
+
+                        <div class="accionesFormulario">
+                            <button class="botonGuardar" id="btnEnviarInvitacion">Enviar Invitación</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
 
 
         <!-- Modal Ver Reporte -->
@@ -214,6 +380,24 @@
 
                 <div style="margin-top: 20px; text-align: right;">
                     <button class="botonGuardar" id="btnCerrarVer"
+                        style="width: auto; padding: 10px 25px;">Cerrar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Ver Usuario -->
+        <div id="modalVerUsuario" class="modal oculto">
+            <div class="contenidoModal modalDetalle">
+                <span class="cerrarModal" id="cerrarModalVerUsuario">&times;</span>
+                <h2 style="margin-bottom: 20px; color: var(--moradoPrincipal); text-align: center;">Perfil de Usuario
+                </h2>
+
+                <div id="detalleUsuarioContenido" class="perfilUsuarioModal">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <div style="margin-top: 20px; text-align: right;">
+                    <button class="botonGuardar" id="btnCerrarVerUsuario"
                         style="width: auto; padding: 10px 25px;">Cerrar</button>
                 </div>
             </div>

@@ -1,0 +1,94 @@
+/* Estilos específicos para Recuperación de Contraseña */
+
+.recovery-card {
+    max-width: 450px;
+    animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-recovery {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.back-link {
+    position: absolute;
+    left: -10px;
+    top: 5px;
+    color: var(--text-muted);
+    font-size: 18px;
+    transition: all 0.3s ease;
+    padding: 10px;
+}
+
+.back-link:hover {
+    color: var(--primary-color);
+    transform: translateX(-3px);
+}
+
+.description {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
+
+/* Botón con Icono */
+.botonLogin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.mensajeFeedback {
+    min-height: 24px;
+    font-size: 14px;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+.mensajeFeedback.success {
+    color: #10b981;
+}
+
+.mensajeFeedback.error {
+    color: #ef4444;
+}
+
+.loginLink {
+    margin-top: 20px;
+    font-size: 15px;
+    color: var(--text-muted);
+}
+
+.loginLink a {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.loginLink a:hover {
+    text-decoration: underline;
+}
+
+/* Estado de carga en botón */
+.botonLogin.loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.botonLogin.loading .btn-text {
+    opacity: 0.5;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.botonLogin.loading i {
+    animation: spin 1s linear infinite;
+}

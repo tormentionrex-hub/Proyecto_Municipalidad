@@ -1,32 +1,59 @@
 /* Fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
     font-family: 'Montserrat', sans-serif;
-    background: #fafafa;
-    color: #333;
+    color: #1e293b;
+    overflow-x: hidden;
 }
 
-/* Contenedor central */
+/* Contenedor central - Fondo Social Humano */
 .contenedorRegister {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #f0f0f0 0%, #f9f9f9 100%);
+    padding: 60px 20px;
+    /* Imagen de comunidad/persona profesional */
+    background: url('https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
 }
 
-/* Tarjeta de registro */
-.cardRegister {
-    background: #fff;
-    padding: 40px 32px;
-    border-radius: 12px;
-    box-shadow: 0px 5px 18px rgba(0, 0, 0, 0.08);
+/* Superposición Celeste (Overlay) Profesional */
+.contenedorRegister::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 420px;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 180, 216, 0.85) 0%, rgba(224, 242, 241, 0.8) 100%);
+    z-index: 1;
+}
+
+/* Tarjeta de registro - Claridad Superior */
+.cardRegister {
+    position: relative;
+    z-index: 10;
+    background-color: #ffffff;
+    padding: 50px 45px;
+    border-radius: 12px;
+    box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 500px;
     text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin: auto;
 }
 
 /* //Título */
@@ -40,19 +67,24 @@ body {
 /* //Inputs */
 .grupoInput {
     margin-bottom: 20px;
-    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .grupoInput label {
     display: block;
+    align-self: flex-start;
     margin-bottom: 8px;
     font-weight: 600;
     color: #444;
     font-size: 0.95rem;
+    padding-left: 5%;
+    /* Alineación visual con el input si tiene 90% de ancho */
 }
 
 .grupoInput input {
-    width: 100%;
+    width: 90%;
     padding: 12px 14px;
     border: 2px solid #c3c3c3;
     border-radius: 7px;
@@ -61,14 +93,82 @@ body {
 }
 
 .grupoInput input:focus {
-    border-color: #6558f5; /* Morado institucional */
+    border-color: #6558f5;
+    /* Morado institucional */
     outline: none;
     box-shadow: 0 0 6px rgba(101, 88, 245, 0.22);
 }
 
+/* Previsualización de Foto */
+.fotoSeccion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.preview-container {
+    width: 120px;
+    height: 120px;
+    border: 3px solid #6558f5;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.preview-container:hover {
+    transform: scale(1.05);
+}
+
+#imgPreview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#previewPlaceholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.user-icon {
+    width: 50px;
+    height: 50px;
+    color: #cbd5e0;
+}
+
+.fotoInput {
+    text-align: center;
+    width: 100%;
+}
+
+.fotoInput label {
+    text-align: center;
+    align-self: center;
+    font-size: 0.85rem;
+    color: #6558f5;
+    margin-bottom: 20px;
+    padding-left: 0;
+}
+
+.fotoInput input {
+    font-size: 0.8rem;
+    padding: 8px;
+}
+
 /* Botón de registro */
 .botonRegister {
-    width: 100%;
+    width: 90%;
     padding: 14px;
     background: #6558f5;
     border: none;
@@ -77,7 +177,10 @@ body {
     font-size: 1.05rem;
     font-weight: 700;
     cursor: pointer;
-    margin-top: 8px;
+    margin: 20px auto 8px auto;
+    /* Centrado con margen superior e inferior */
+    display: block;
+    /* Para que margin: auto funcione */
     transition: 0.3s ease;
 }
 

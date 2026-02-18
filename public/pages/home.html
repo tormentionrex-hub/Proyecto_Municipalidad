@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Municipalidad de Escazú</title>
     <link rel="stylesheet" href="../src/styles/home.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Fuentes de Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,11 +65,11 @@
 
             <div class="contenedor contenidoInicio">
                 <div class="textoInicio">
-                    <h1 class="tituloPrincipal">Más seguridad<br> <span class="resaltadoMorado">para usted y su
-                            familia</span></h1>
-                    <h2 class="subtitulo">con nuevo sistema<br>de alerta temprana</h2>
-                    <p class="descripcion">Con tecnología innovadora.</p>
-                    <a href="#" class="botonAccion">LEER <i class="iconoFlechaDerecha"></i></a>
+                    <h1 class="tituloPrincipal">Mantengase informado con<br> <span class="resaltadoMorado">nuestro nuevo
+                            apartado</span></h1>
+                    <h2 class="subtitulo">sobre noticias<br></h2>
+                    <p class="descripcion">INFORMESE AQUI ▼</p>
+                    <a href="#noticias" class="botonAccion"> Casos <i class="iconoFlechaDerecha"></i></a>
                 </div>
 
                 <div class="visualInicio">
@@ -88,10 +89,155 @@
             <!-- Contenedor para reportes dinámicos -->
         </section>
 
+        <!-- Carrusel tipo tarjeta -->
+        <div class="contenedorCarrusel">
+            <div id="carouselMunicipalidad" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+
+                <!-- Indicadores -->
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselMunicipalidad" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselMunicipalidad" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselMunicipalidad" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                </div>
+
+                <div class="carousel-inner">
+
+                    <!-- Slide 1 -->
+                    <div class="carousel-item active">
+                        <div class="slideCard">
+                            <div class="slideCardImagen">
+                                <img src="../src/img/tramite-tributario.jpg" alt="Trámites tributarios">
+                            </div>
+                            <div class="slideCardTexto">
+                                <h3>Procesos Tributarios</h3>
+                                <p>La Municipalidad de Escazú pone a su disposición los trámites tributarios en línea
+                                    para su comodidad...</p>
+                                <a href="#" class="slideCardEnlace">Leer más &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="carousel-item">
+                        <div class="slideCard">
+                            <div class="slideCardImagen">
+                                <img src="../src/img/parque-de-san-antonio.png" alt="Parque San Antonio">
+                            </div>
+                            <div class="slideCardTexto">
+                                <h3>Parque de San Antonio</h3>
+                                <p>Descubra las nuevas mejoras realizadas en el Parque de San Antonio para el disfrute
+                                    de toda la comunidad...</p>
+                                <a href="#" class="slideCardEnlace">Leer más &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="carousel-item">
+                        <div class="slideCard">
+                            <div class="slideCardImagen">
+                                <img src="../src/img/alerta de estafa.jpg" alt="Alerta de estafa">
+                            </div>
+                            <div class="slideCardTexto">
+                                <h3>¡Alerta de estafa!</h3>
+                                <p>La Municipalidad de Escazú no está realizando llamadas para que...</p>
+                                <a href="#" class="slideCardEnlace">Leer más &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Controles -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselMunicipalidad"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselMunicipalidad"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
+        </div>
+
+        <section id="noticias" class="seccionNoticias">
+
+            <h1 class="tituloNoticias">
+                Algunos casos resueltos por la Municipalidad
+            </h1>
+
+            <div class="gridNoticias">
+
+                <!-- CARRETERA -->
+                <div class="cardNoticia">
+
+                    <h2 class="tituloCard">
+                        Reparación de carretera en San Antonio
+                    </h2>
+
+                    <div class="comparativaHorizontal">
+
+                        <div class="bloqueImagen">
+                            <span class="etiqueta antes">ANTES</span>
+                            <img src="../src/img/calle jodida.jpg" alt="Carretera antes">
+                        </div>
+
+                        <div class="bloqueImagen">
+                            <span class="etiqueta despues">DESPUÉS</span>
+                            <img src="../src/img/carretera arreglada.jpg" alt="Carretera después">
+                        </div>
+
+                    </div>
+
+                    <p class="textoCard">
+                        Nuestro equipo municipal solucionó problemas de grietas y baches,
+                        mejorando la seguridad vial para todos los ciudadanos.
+                    </p>
+
+                </div>
+
+                <!-- CAÑOS -->
+                <div class="cardNoticia">
+
+                    <h2 class="tituloCard">
+                        Limpieza de caños en San Rafael
+                    </h2>
+
+                    <div class="comparativaHorizontal">
+
+                        <div class="bloqueImagen">
+                            <span class="etiqueta antes">ANTES</span>
+                            <img src="../src/img/aguas-residuales-sucias-junto-con-las-en-una-zanja-abierta-lo-largo-de-la-calle-drenaje-sucio-un-colector-abierto-alcantarilla-123201822.webp"
+                                alt="Caño antes">
+                        </div>
+
+                        <div class="bloqueImagen">
+                            <span class="etiqueta despues">DESPUÉS</span>
+                            <img src="../src/img/Gemini_Generated_Image_d9pvbbd9pvbbd9pv.png" alt="Caño después">
+                        </div>
+
+                    </div>
+
+                    <p class="textoCard">
+                        Se realizó limpieza y mantenimiento de caños obstruidos,
+                        previniendo inundaciones y mejorando el entorno comunal.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
 
 
     </main>
     <script type="module" src="../src/js/home.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

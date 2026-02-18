@@ -4,6 +4,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("formRegister");
     const fotoInput = document.getElementById("foto");
 
+    const params = new URLSearchParams(window.location.search);
+    const emailParam = params.get('email');
+    const rolParam = params.get('rol');
+    const nombreParam = params.get('nombre');
+
+    if (nombreParam) {
+        document.getElementById("nombre").value = nombreParam;
+    }
+
+    // Pre-llenar datos si existen
+    if (emailParam) {
+        document.getElementById("correo").value = emailParam;
+        document.getElementById("correo").readOnly = true; // Bloquear edición
+    }
+
+    if (rolParam) {
+        document.getElementById("rol").value = rolParam;
+    }
+
     form.addEventListener("submit", registrarUsuario);
     fotoInput.addEventListener("change", mostrarVistaPrevia);
 });
@@ -60,6 +79,9 @@ async function registrarUsuario(e) {
     const correo = document.getElementById("correo").value.trim();
     const contraseña = document.getElementById("password").value.trim();
     const telefono = document.getElementById("telefono").value.trim();
+    // Obtener rol del hidden input o default a ciudadano si no existe
+    const rolInput = document.getElementById("rol").value;
+    const rol = rolInput ? rolInput : "ciudadano";
     const fotoInput = document.getElementById("foto");
 
     const mensajeError = document.getElementById("mensajeError");
@@ -113,7 +135,7 @@ async function registrarUsuario(e) {
             correo,
             contraseña,
             telefono,
-            rol: "ciudadano",
+            rol: rol, // Usar el rol dinámico
             foto
         };
 
