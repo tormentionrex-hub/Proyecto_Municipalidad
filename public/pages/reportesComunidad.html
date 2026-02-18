@@ -59,37 +59,59 @@
         </div>
     </header>
     
-    <div class="container mt-4">
+    <div class="pagina-reportes">
 
-        <h1 class="titulo-principal">Reportes recibidos</h1>
+        <!-- Banner del usuario (se llena con JS si hay sesión activa) -->
+        <div id="bannerUsuario" class="banner-usuario oculto"></div>
 
-        <!-- Filtros -->
-        <div class="contenedor-filtros">
-            <div class="grupo-filtro">
-                <h3>Ubicación:</h3>
-                <div class="filtros-comunidad" id="filtrosUbicacion">
-                    <button class="btn-filtro activo" data-filtro="todos">Todos</button>
-                    <button class="btn-filtro" data-filtro="Escazú Centro">Escazú Centro</button>
-                    <button class="btn-filtro" data-filtro="San Antonio">San Antonio</button>
-                    <button class="btn-filtro" data-filtro="San Rafael">San Rafael</button>
+        <!-- Layout principal: sidebar + feed -->
+        <div class="layout-principal">
+
+            <!-- Sidebar de filtros -->
+            <aside class="sidebar-filtros">
+                <div class="panel-filtros">
+                    <h3 class="panel-filtros-titulo">
+                        <i class="fas fa-sliders-h"></i> Filtros
+                    </h3>
+
+                    <div class="filtro-seccion">
+                        <h4 class="filtro-titulo"><i class="fas fa-map-marker-alt"></i> Ubicación</h4>
+                        <div id="filtrosUbicacion" class="filtro-lista">
+                            <button class="btn-filtro activo" data-filtro="todos">Todos</button>
+                            <button class="btn-filtro" data-filtro="Escazú Centro">Escazú Centro</button>
+                            <button class="btn-filtro" data-filtro="San Antonio">San Antonio</button>
+                            <button class="btn-filtro" data-filtro="San Rafael">San Rafael</button>
+                        </div>
+                    </div>
+
+                    <div class="filtro-seccion">
+                        <h4 class="filtro-titulo"><i class="fas fa-tag"></i> Tipo de Problema</h4>
+                        <div id="filtrosTipo" class="filtro-lista">
+                            <button class="btn-filtro btn-tipo activo" data-tipo="todos">Todos</button>
+                            <button class="btn-filtro btn-tipo" data-tipo="Baches">Baches</button>
+                            <button class="btn-filtro btn-tipo" data-tipo="Alcantarillado">Alcantarillado</button>
+                            <button class="btn-filtro btn-tipo" data-tipo="Señalización">Señalización</button>
+                        </div>
+                    </div>
+
+                    <div class="filtro-seccion" id="grupoFiltroMio" style="display:none;">
+                        <h4 class="filtro-titulo"><i class="fas fa-user"></i> Ver</h4>
+                        <div class="filtro-lista">
+                            <button class="btn-filtro" id="btnMisPublicaciones">Mis publicaciones</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </aside>
 
-            <div class="grupo-filtro">
-                <h3>Tipo de Problema:</h3>
-                <div class="filtros-comunidad" id="filtrosTipo">
-                    <button class="btn-filtro btn-tipo activo" data-tipo="todos">Todos</button>
-                    <button class="btn-filtro btn-tipo" data-tipo="Baches">Baches</button>
-                    <button class="btn-filtro btn-tipo" data-tipo="Alcantarillado">Alcantarillado</button>
-                    <button class="btn-filtro btn-tipo" data-tipo="Señalización">Señalización</button>
+            <!-- Feed de publicaciones -->
+            <main class="feed-publicaciones">
+                <div class="feed-encabezado">
+                    <h1 class="titulo-principal">Reportes recibidos</h1>
                 </div>
-            </div>
-        </div>
+                <div id="listaReportes"></div>
+            </main>
 
-        <div id="listaReportes">
-            <!-- Cargado dinámicamente -->
         </div>
-
     </div>
 
     <!-- Botón Flotante -->
@@ -129,19 +151,36 @@
                     </select>
                 </div>
 
-                <div class="campo-formulario">
+                <div class="campo-formulario" id="campoNombreUsuario">
                     <label>Tu Nombre (Opcional):</label>
                     <input type="text" id="usuarioReporte" class="input-modal" placeholder="Nombre del ciudadano">
                 </div>
 
                 <div class="campo-formulario" style="margin-bottom: 20px;">
                     <label>Foto (Opcional):</label>
-                    <input type="file" id="fotoReporte" accept="image/*" style="width: 100%;">
+                    <input type="file" id="fotoReporte" accept="image/*" hidden>
+                    <div id="zonaFoto" class="zona-foto">
+                        <div class="zona-foto-placeholder" id="zonaFotoPlaceholder">
+                            <i class="fas fa-image"></i>
+                            <span>Toca para agregar una foto</span>
+                            <small>JPG, PNG, GIF · Máx. 70KB</small>
+                        </div>
+                        <div id="previewFoto" class="preview-foto oculto">
+                            <img id="imgPreview" src="" alt="">
+                            <button type="button" id="btnQuitarFoto" title="Quitar foto"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
                 </div>
 
                 <button type="submit" class="boton-submit">Enviar Reporte</button>
             </form>
         </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox-overlay" style="display:none;" aria-modal="true" role="dialog">
+        <button class="lightbox-cerrar" id="lightboxCerrar" aria-label="Cerrar">&times;</button>
+        <img class="lightbox-img" id="lightboxImg" src="" alt="Imagen ampliada">
     </div>
 
     <script type="module" src="../src/js/reportesComunidad.js"></script>
