@@ -42,6 +42,7 @@
                 <li id="navPlanillas"><a href="#"><i class="iconoPlanillas"></i> <span>Planillas</span></a></li>
                 <li id="navSolicitudes"><a href="#"><i class="fas fa-hand-holding-usd"></i> <span>Solicitudes</span></a>
                 </li>
+                <li id="navServicios"><a href="#"><i class="fas fa-broom"></i> <span>Servicios</span></a></li>
             </ul>
 
         </nav>
@@ -156,25 +157,39 @@
                     <div class="iconoEncabezadoTramite"><i class="iconoTramites"></i></div>
                     <div>
                         <h1>Gestión de Proyectos Viales</h1>
-                        <p>Gestión de Proyectos Viales</p>
+                        <p>Planifique y administre las obras de infraestructura vial del cantón.</p>
                     </div>
                 </div>
+                <button class="botonInvitar" id="btnNuevoProyecto"><i class="fas fa-plus"></i> Registrar
+                    Proyecto</button>
             </header>
 
-            <!-- Pestañas Trámites -->
-            <div class="contenedorPestanasTramites">
-                <button class="tabTramite activo" id="tabRevision"><i class="fas fa-inbox"></i> Revisión</button>
-                <button class="tabTramite" id="tabHistorial"><i class="fas fa-history"></i> Historial</button>
+            <div class="contenedorHerramientas">
+                <div class="barraBusqueda">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="buscadorProyectos" placeholder="Buscar proyecto...">
+                </div>
+                <div class="infoResultados">
+                    <span id="contadorProyectos">0 proyectos</span>
+                </div>
             </div>
 
-            <!-- Contenido Trámites (Estado Vacío) -->
-            <div class="contenidoTramitesVacio">
-                <div class="estadoVacio">
-                    <i class="fas fa-inbox iconoVacio"></i>
-                    <h3>Sin nada por aquí</h3>
-                    <p>Cuando los ciudadanos envíen Proyectos Viales, pasarán a estar pendientes y se mostrarán aquí.
-                    </p>
-                </div>
+            <div class="contenedorTabla">
+                <table class="tablaUsuarios">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Presupuesto</th>
+                            <th>Fecha Inicio</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaProyectos">
+                        <!-- Se llena con JS -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -751,6 +766,189 @@
                     <button class="botonGuardar" id="btnCerrarVerUsuario"
                         style="width: auto; padding: 10px 25px;">Cerrar</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Modal Proyecto Vial -->
+        <div id="modalProyecto" class="modal oculto">
+            <div class="contenidoModal modalDetalle">
+                <span class="cerrarModal" id="cerrarModalProyecto">&times;</span>
+                <!-- Estilo tipo 'Invitar Usuario' -->
+                <div class="encabezadoTarjeta"
+                    style="display: flex; gap: 15px; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                    <div class="iconoTarjeta"
+                        style="width: 50px; height: 50px; background-color: #e7f1ff; color: #0d6efd; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                        <i class="fas fa-hard-hat"></i>
+                    </div>
+                    <div>
+                        <h3 id="tituloModalProyecto" style="color: #0d6efd; margin: 0; font-size: 1.3rem;">Nuevo
+                            Proyecto Vial</h3>
+                        <p style="margin: 5px 0 0 0; color: #6c757d; font-size: 0.9rem;">Gestione la información del
+                            proyecto.</p>
+                    </div>
+                </div>
+
+                <form id="formProyecto">
+                    <input type="hidden" id="idProyectoEditar">
+
+                    <div class="cuerpoTarjeta">
+                        <div class="grupoInput">
+                            <label>Nombre del Proyecto <span class="asterisco">*</span></label>
+                            <input type="text" id="nombreProyectoInput" required
+                                placeholder="Ej: Recarpeteo Calle Vieja">
+                        </div>
+                        <div class="grupoInput">
+                            <label>Descripción <span class="asterisco">*</span></label>
+                            <textarea id="descripcionProyectoInput" rows="3" required
+                                placeholder="Detalles de la obra..."></textarea>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="grupoInput">
+                                <label>Presupuesto <span class="asterisco">*</span></label>
+                                <input type="number" id="presupuestoProyectoInput" required placeholder="Ej: 5000000"
+                                    min="0">
+                            </div>
+                            <div class="grupoInput">
+                                <label>Fecha de Inicio <span class="asterisco">*</span></label>
+                                <input type="date" id="fechaInicioProyectoInput" required>
+                            </div>
+                        </div>
+
+                        <div class="grupoInput">
+                            <label>Estado <span class="asterisco">*</span></label>
+                            <select id="estadoProyectoInput" class="selectFiltro fullWidth" required>
+                                <option value="Planificación">Planificación</option>
+                                <option value="En Ejecución">En Ejecución</option>
+                                <option value="Finalizado">Finalizado</option>
+                                <option value="Suspendido">Suspendido</option>
+                            </select>
+                        </div>
+
+                        <div class="accionesFormulario" style="margin-top: 20px; text-align: right;">
+                            <button type="submit" class="botonGuardar" style="background-color: #0d6efd;">Guardar
+                                Proyecto</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Modal Asignar Empleado -->
+        <div id="modalAsignarEmpleado" class="modal oculto">
+            <div class="contenidoModal modalDetalle">
+                <span class="cerrarModal" id="cerrarModalAsignarEmpleado">&times;</span>
+                <h2 style="margin-bottom: 20px; color: var(--moradoPrincipal);">Asignar Empleado a Planilla</h2>
+                <form id="formAsignarEmpleado">
+                    <input type="hidden" id="idPlanillaAsignar">
+                    <div class="grupoInput">
+                        <label>Seleccionar Usuario <span class="asterisco">*</span></label>
+                        <select id="selectUsuarioAsignar" class="selectFiltro fullWidth" required>
+                            <option value="">-- Seleccione un usuario --</option>
+                            <!-- Se llenará dinámicamente -->
+                        </select>
+                        <small style="color: #6c757d; display: block; margin-top: 5px;">Solo se muestran usuarios que no
+                            están asignados a esta planilla.</small>
+                    </div>
+                    <div class="accionesFormulario" style="margin-top: 20px; text-align: right;">
+                        <button type="submit" class="botonGuardar">Confirmar Asignación</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- VISTA SERVICIOS PÚBLICOS (Nueva) -->
+        <div id="vistaServicios" class="oculto">
+            <header class="encabezadoUsuarios">
+                <div class="infoEncabezado">
+                    <div class="iconoEncabezadoUsuario" style="background-color: var(--naranja); color: white;"><i
+                            class="fas fa-broom"></i></div>
+                    <div>
+                        <h1>Gestión de Servicios Públicos</h1>
+                        <p>Administre y organice el mantenimiento de los servicios públicos.</p>
+                    </div>
+                </div>
+                <button class="botonInvitar" id="btnNuevoServicio"><i class="fas fa-plus"></i> Crear Servicio</button>
+            </header>
+
+            <div class="contenedorHerramientas">
+                <div class="barraBusqueda">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="buscadorServicios" placeholder="Buscar por tipo o descripción...">
+                </div>
+                <div class="infoResultados">
+                    <span id="contadorServicios">0 servicios</span>
+                </div>
+            </div>
+
+            <div class="contenedorTabla">
+                <table class="tablaUsuarios">
+                    <thead>
+                        <tr>
+                            <th>Tipo de Servicio</th>
+                            <th>Descripción</th>
+                            <th>Responsable</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaServicios">
+                        <!-- Se llena con JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal Crear/Editar Servicio -->
+        <div id="modalServicio" class="modal oculto">
+            <div class="contenidoModal modalDetalle">
+                <span class="cerrarModal" id="cerrarModalServicio">&times;</span>
+                <h2 style="margin-bottom: 20px; color: var(--moradoPrincipal);" id="tituloModalServicio">Nuevo Servicio
+                </h2>
+
+                <form id="formServicio">
+                    <input type="hidden" id="idServicioEditar">
+
+                    <div class="tarjetaFormulario">
+                        <div class="cuerpoTarjeta">
+                            <div class="grupoInput">
+                                <label>Tipo de Servicio <span class="asterisco">*</span></label>
+                                <select id="servicioTipo" class="selectFiltro fullWidth" required>
+                                    <option value="" disabled selected>Seleccione...</option>
+                                    <option value="Limpieza de Vías">Limpieza de Vías</option>
+                                    <option value="Recolección de Basura">Recolección de Basura</option>
+                                    <option value="Mantenimiento de Parques">Mantenimiento de Parques</option>
+                                    <option value="Alumbrado Público">Alumbrado Público</option>
+                                    <option value="Alcantarillado Pluvial">Alcantarillado Pluvial</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+
+                            <div class="grupoInput">
+                                <label>Descripción <span class="asterisco">*</span></label>
+                                <textarea id="servicioDescripcion" rows="3" required
+                                    placeholder="Detalles del servicio..."></textarea>
+                            </div>
+
+                            <div class="grupoInput">
+                                <label>Responsable <span class="asterisco">*</span></label>
+                                <input type="text" id="servicioResponsable" required
+                                    placeholder="Nombre o Departamento">
+                            </div>
+
+                            <div class="grupoInput">
+                                <label>Estado <span class="asterisco">*</span></label>
+                                <select id="servicioEstado" class="selectFiltro fullWidth" required>
+                                    <option value="Activo">Activo</option>
+                                    <option value="Inactivo">Inactivo</option>
+                                    <option value="En Mantenimiento">En Mantenimiento</option>
+                                </select>
+                            </div>
+
+                            <div class="accionesFormulario" style="margin-top: 20px; text-align: right;">
+                                <button type="submit" class="botonGuardar">Guardar Servicio</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </main>

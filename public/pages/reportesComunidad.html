@@ -18,7 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body>
+<body id="home">
 
     <!-- navbar -->
     <header class="encabezado">
@@ -44,6 +44,7 @@
                 </div>
                 <nav class="menuPrincipal">
                     <ul class="listaMenu">
+                        <li><a href="../pages/Gestionar-Usuario.html">Gestionar Usuario</a></li>
                         <li><a href="../pages/reportesComunidad.html">Reportes de la comunidad</a></li>
                         <li><a href="../pages/solicitudes-financiamiento.html">Solicitudes de Financiamiento</a></li>
                         <li><a href="../pages/login.html" class="botonIngresar">Ingresar</a></li>
@@ -52,7 +53,10 @@
             </div>
         </div>
     </header>
-    
+
+    <div class="fondoFormaSuperior"></div>
+
+
     <div class="pagina-reportes">
 
         <!-- Banner del usuario (se llena con JS si hay sesión activa) -->
@@ -161,7 +165,8 @@
                         </div>
                         <div id="previewFoto" class="preview-foto oculto">
                             <img id="imgPreview" src="" alt="">
-                            <button type="button" id="btnQuitarFoto" title="Quitar foto"><i class="fas fa-times"></i></button>
+                            <button type="button" id="btnQuitarFoto" title="Quitar foto"><i
+                                    class="fas fa-times"></i></button>
                         </div>
                     </div>
                 </div>
@@ -176,6 +181,34 @@
         <button class="lightbox-cerrar" id="lightboxCerrar" aria-label="Cerrar">&times;</button>
         <img class="lightbox-img" id="lightboxImg" src="" alt="Imagen ampliada">
     </div>
+
+    <!-- Footer con ilustración de Escazú -->
+    <footer class="footerEscazu">
+        <div class="footerIlustracionContenedor">
+            <!-- Logo SVG en una esquina -->
+            <img src="../src/img/logo-blanco.svg" alt="Logo Municipalidad" class="footerLogoEsquina">
+
+            <!-- "cerros.png" que cubrirá gran parte del footer -->
+            <img src="../src/img/cerros.png" alt="Cerros de Escazú" class="footerCerros">
+
+            <!-- Imagen "marca_cantonal" arriba de las montañas -->
+            <img src="../src/img/marca_cantonal.png" alt="Marca Cantonal" class="footerMarcaCantonal">
+
+            <!-- Bruja volando (pasará por delante de marca_cantonal) -->
+            <div class="brujaNuevaContenedor">
+                <img src="../src/img/bruja.png" alt="Bruja Escazú" class="brujaImagenOficial">
+            </div>
+        </div>
+
+        <div class="footerTexto">
+            <div class="contenedor">
+                <p>Escazú, San José, Costa Rica — Todos los derechos reservados © 2026</p>
+                <div class="politicasFooter">
+                    <span>Politicas Municipales</span> / <span>Red de Responsabilidad Social</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script type="module" src="../src/js/reportesComunidad.js"></script>
 </body>

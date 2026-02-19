@@ -1907,3 +1907,107 @@ body.cuerpoDashboard {
     font-weight: 600;
     cursor: pointer;
 }
+
+/* --- Gestión de Proyectos Viales --- */
+
+/* Status Badges PROYECTOS */
+.badge-proyecto {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #fff;
+    display: inline-block;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.proyecto-pendiente {
+    background-color: #6c757d;
+}
+
+/* Planificación (Gris) */
+.proyecto-activo {
+    background-color: #0d6efd;
+}
+
+/* En Ejecución (Azul) */
+.proyecto-aprobado {
+    background-color: #198754;
+}
+
+/* Finalizado (Verde) */
+.proyecto-rechazado {
+    background-color: #dc3545;
+}
+
+/* Suspendido (Rojo) */
+
+/* Estilos Personalizados Proyectos Viales (Tema Azul Institucional) */
+#vistaTramites .iconoEncabezadoTramite {
+    background-color: #e7f1ff;
+    color: #0d6efd;
+}
+
+#vistaTramites .iconoEncabezadoTramite i {
+    color: #0d6efd;
+}
+
+#vistaTramites h1 {
+    color: #0d6efd;
+}
+
+/* Botón Nuevo Proyecto (Verde) - COMENTADO para usar clase .botonInvitar */
+/*
+#btnNuevoProyecto {
+    background-color: #198754;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+#btnNuevoProyecto:hover {
+    background-color: #157347;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(25, 135, 84, 0.2);
+}
+*/
+
+/* Modal Styles */
+#tituloModalProyecto {
+    color: #0d6efd !important;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 15px;
+}
+
+#formProyecto .grupoInput label {
+    color: #495057;
+    font-weight: 600;
+}
+
+#formProyecto input:focus,
+#formProyecto textarea:focus,
+#formProyecto select:focus {
+    border-color: #0d6efd;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+#formProyecto .botonGuardar {
+    background-color: #0d6efd !important;
+    color: white;
+    width: 100%;
+    font-size: 1.1em;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: none;
+    font-weight: bold;
+}
+
+#formProyecto .botonGuardar:hover {
+    background-color: #0b5ed7 !important;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}

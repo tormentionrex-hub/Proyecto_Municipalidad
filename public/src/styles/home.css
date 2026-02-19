@@ -140,10 +140,10 @@ h6 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1400px;
+    max-width: 98%;
     /* Wider container for navbar */
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 25px;
 }
 
 .cajaLogo {

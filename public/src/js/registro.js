@@ -14,10 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("nombre").value = nombreParam;
     }
 
-    // Pre-llenar datos si existen
     if (emailParam) {
         document.getElementById("correo").value = emailParam;
-        document.getElementById("correo").readOnly = true; // Bloquear edición
+        document.getElementById("correo").readOnly = true;
     }
 
     if (rolParam) {
@@ -27,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", registrarUsuario);
     fotoInput.addEventListener("change", mostrarVistaPrevia);
 
-    // Permitir clic en la zona circular para abrir el selector de archivos
     if (zonaFotoPerfil) {
         zonaFotoPerfil.addEventListener("click", () => {
             fotoInput.click();
@@ -51,8 +49,6 @@ function mostrarVistaPrevia() {
 
     if (fotoInput.files && fotoInput.files[0]) {
         const file = fotoInput.files[0];
-
-        // Validar tamaño: 70KB (como en registrarUsuario)
         if (file.size > 70000) {
             Swal.fire({
                 icon: 'error',
@@ -60,7 +56,7 @@ function mostrarVistaPrevia() {
                 text: 'La imagen debe pesar menos de 70KB.',
                 confirmButtonColor: '#3e206f'
             });
-            fotoInput.value = ""; // Limpiar input
+            fotoInput.value = "";
             imgPreview.style.display = "none";
             previewPlaceholder.style.display = "block";
             return;
@@ -79,7 +75,6 @@ function mostrarVistaPrevia() {
     }
 }
 
-//Registro de usuario
 async function registrarUsuario(e) {
     e.preventDefault();
 
@@ -87,21 +82,54 @@ async function registrarUsuario(e) {
     const correo = document.getElementById("correo").value.trim();
     const contraseña = document.getElementById("password").value.trim();
     const telefono = document.getElementById("telefono").value.trim();
-    // Obtener rol del hidden input o default a ciudadano si no existe
     const rolInput = document.getElementById("rol").value;
     const rol = rolInput ? rolInput : "ciudadano";
     const fotoInput = document.getElementById("foto");
 
-    const mensajeError = document.getElementById("mensajeError");
-    const mensajeExito = document.getElementById("mensajeExito");
+    // 1. Validaciones Locales con SweetAlert
+    if (!nombre || !correo || !contraseña || !telefono) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos Incompletos',
+            text: 'Todos los campos son obligatorios.',
+            confirmButtonColor: '#3e206f'
+        });
+        return;
+    }
 
-    mensajeError.textContent = "";
-    mensajeExito.textContent = "";
+    if (!validarCorreo(correo)) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Correo Inválido',
+            text: 'Ingrese un correo electrónico válido.',
+            confirmButtonColor: '#3e206f'
+        });
+        return;
+    }
+
+    if (contraseña.length < 4) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Contraseña Débil',
+            text: 'La contraseña debe tener al menos 4 caracteres.',
+            confirmButtonColor: '#3e206f'
+        });
+        return;
+    }
+
+    if (!/^[0-9]{8}$/.test(telefono)) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Teléfono Inválido',
+            text: 'El teléfono debe tener 8 dígitos numéricos.',
+            confirmButtonColor: '#3e206f'
+        });
+        return;
+    }
 
     let foto = '';
     if (fotoInput.files.length > 0) {
         const file = fotoInput.files[0];
-        // Validar tamaño: 70KB
         if (file.size > 70000) {
             Swal.fire({
                 icon: 'error',
@@ -113,61 +141,74 @@ async function registrarUsuario(e) {
         }
         foto = await convertirImagenABase64(file);
     }
-    //Validaciones
-
-    if (!nombre || !correo || !contraseña || !telefono) {
-        mensajeError.textContent = "Todos los campos son obligatorios.";
-        return;
-    }
-
-    if (!validarCorreo(correo)) {
-        mensajeError.textContent = "Ingrese un correo válido.";
-        return;
-    }
-
-    if (contraseña.length < 4) {
-        mensajeError.textContent = "La contraseña debe tener al menos 4 caracteres.";
-        return;
-    }
-
-    if (!/^[0-9]{8}$/.test(telefono)) {
-        mensajeError.textContent = "El teléfono debe tener 8 dígitos.";
-        return;
-    }
 
     try {
+        // 2. Validación de Duplicados
+        // Correo (aunque venga readonly, validamos por seguridad)
+        const checkCorreo = await fetch(`${API_URL}/usuarios?correo=${correo}`);
+        const usuariosCorreo = await checkCorreo.json();
 
-        //Crear usuario (post)
+        if (usuariosCorreo.length > 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Correo Registrado',
+                text: 'El correo electrónico ya se encuentra registrado en el sistema.',
+                confirmButtonColor: '#3e206f'
+            });
+            return;
+        }
+
+        // Teléfono
+        const checkTel = await fetch(`${API_URL}/usuarios?telefono=${telefono}`);
+        const usuariosTel = await checkTel.json();
+
+        if (usuariosTel.length > 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Teléfono Registrado',
+                text: 'El número de teléfono ya se encuentra registrado en el sistema.',
+                confirmButtonColor: '#3e206f'
+            });
+            return;
+        }
+
+        // 3. Crear Usuario
         const nuevoUsuario = {
             nombre,
             correo,
             contraseña,
             telefono,
-            rol: rol, // Usar el rol dinámico
+            rol: rol,
             foto
         };
 
         await fetch(`${API_URL}/usuarios`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(nuevoUsuario)
         });
 
-        mensajeExito.textContent = "Usuario registrado correctamente. Redirigiendo...";
-
-        setTimeout(() => {
+        Swal.fire({
+            icon: 'success',
+            title: '¡Registro Exitoso!',
+            text: 'Cuenta creada correctamente. Redirigiendo...',
+            timer: 2000,
+            showConfirmButton: false
+        }).then(() => {
             window.location.href = "login.html";
-        }, 2000);
+        });
 
     } catch (error) {
         console.error("Error al registrar:", error);
-        mensajeError.textContent = "Error al conectar con el servidor.";
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de Servidor',
+            text: 'No se pudo conectar con el servidor.',
+            confirmButtonColor: '#3e206f'
+        });
     }
 }
 
-//Validación correo
 function validarCorreo(correo) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(correo);

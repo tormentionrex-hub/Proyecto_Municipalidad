@@ -1,5 +1,20 @@
 import { getSolicitudesFinanciamiento, postSolicitudesFinanciamiento } from '../services/services.js';
 
+// Menu desplegable (Lógica idéntica a home.js)
+document.querySelectorAll(".desplegable > a").forEach(link => {
+    link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const li = link.parentElement;
+        li.classList.toggle("activo");
+    });
+});
+
+document.addEventListener("click", (e) => {
+    if (!e.target.closest(".desplegable")) {
+        document.querySelectorAll(".desplegable.activo").forEach(li => li.classList.remove("activo"));
+    }
+});
+
 const gridSolicitudes = document.querySelector('.gridSolicitudes');
 const btnNuevaSolicitud = document.getElementById('btnNuevaSolicitud');
 const modalSolicitud = document.getElementById('modalSolicitud');
@@ -131,10 +146,32 @@ if (formSolicitud) {
     formSolicitud.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const nombreProyecto = document.getElementById('nombreProyecto').value;
-        const descripcion = document.getElementById('descripcionProyecto').value;
-        const montoSolicitado = document.getElementById('montoSolicitado').value;
-        const ubicacion = document.getElementById('ubicacionProyecto').value;
+        const nombreProyecto = document.getElementById('nombreProyecto').value.trim();
+        const descripcion = document.getElementById('descripcionProyecto').value.trim();
+        const montoSolicitado = document.getElementById('montoSolicitado').value.trim();
+        const ubicacion = document.getElementById('ubicacionProyecto').value.trim();
+
+        // Validación estricta: No permitir campos vacíos
+        if (!nombreProyecto || !descripcion || !montoSolicitado || !ubicacion) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Campos Vacíos',
+                text: 'Todos los campos son obligatorios. Por favor, complete la información y no deje espacios en blanco.',
+                confirmButtonColor: '#3e206f'
+            });
+            return;
+        }
+
+        // Validación de longitud de descripción (Ignorando espacios, solo letras/signos)
+        if (descripcion.replace(/\s/g, '').length < 10) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Descripción muy corta',
+                text: 'Por favor describa el proyecto mejor. (Mínimo 10 letras)',
+                confirmButtonColor: '#3e206f'
+            });
+            return;
+        }
 
         // Crear objeto solicitud según estructura especificada
         const nuevaSolicitud = {
@@ -175,7 +212,93 @@ if (formSolicitud) {
     });
 }
 
+// -------------------------------------------------------------------------
+// FUNCIONES NAVBAR (Idénticas a home.js)
+// -------------------------------------------------------------------------
+
+function configurarBotonIngresar() {
+    const boton = document.querySelector(".botonIngresar");
+    const usuarioActivo = localStorage.getItem('usuarioActivo');
+
+    if (boton) {
+        if (usuarioActivo) {
+            // Estado: Logueado -> Convertir en botón de Cerrar Sesión
+            boton.textContent = "Cerrar Sesión";
+            boton.style.borderColor = "#dc3545";
+            boton.style.color = "#dc3545";
+            boton.style.fontWeight = "bold";
+
+            // Hover
+            boton.addEventListener('mouseenter', () => {
+                boton.style.backgroundColor = "#dc3545";
+                boton.style.color = "white";
+            });
+
+            boton.addEventListener('mouseleave', () => {
+                boton.style.backgroundColor = "transparent";
+                boton.style.color = "#dc3545";
+            });
+
+            // CLICK CERRAR SESIÓN CON SWEETALERT
+            boton.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: '¿Cerrar sesión?',
+                    text: 'Tu sesión actual se cerrará',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Sí, cerrar sesión',
+                    cancelButtonText: 'Cancelar',
+                    reverseButtons: true
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+                        // eliminar usuario
+                        localStorage.removeItem("usuarioActivo");
+
+                        // mensaje de éxito
+                        Swal.fire({
+                            title: 'Sesión cerrada',
+                            text: 'Has cerrado sesión correctamente',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            // redirigir
+                            window.location.href = "../pages/login.html";
+                        });
+                    }
+                });
+            });
+
+        } else {
+            // Estado: No Logueado
+            boton.addEventListener("click", () => {
+                window.location.href = "../pages/login.html";
+            });
+        }
+    }
+}
+
+function configurarMenuAdmin() {
+    const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
+    if (usuarioActivo && usuarioActivo.rol === 'admin') {
+        const listaMenu = document.querySelector('.listaMenu');
+        if (listaMenu) {
+            const li = document.createElement('li');
+            li.innerHTML = '<a href="../pages/dashboardAdmin.html" style="color: #28a745; font-weight: bold;">Admin <i class="fas fa-user-shield"></i></a>';
+            // Insertar al principio para coincidir con Home/Requirements
+            listaMenu.insertBefore(li, listaMenu.firstChild);
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     cargarSolicitudes();
     poblarUbicaciones();
+    configurarBotonIngresar();
+    configurarMenuAdmin();
 });

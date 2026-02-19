@@ -31,6 +31,9 @@ async function patchUsuarios(usuario, id) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(usuario)
         })
+        if (!respuesta.ok) {
+            throw new Error(`Error HTTP: ${respuesta.status}`);
+        }
         return await respuesta.json();
     } catch (error) {
         console.error("Error al actualizar el usuario", error);

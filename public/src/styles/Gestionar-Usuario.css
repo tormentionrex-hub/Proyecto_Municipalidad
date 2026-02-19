@@ -42,9 +42,18 @@ body {
     background-attachment: fixed;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
     justify-content: center;
     align-items: center;
     padding: 40px 20px;
+    position: relative;
+    z-index: 10;
 }
 
 .contenedor-perfil {
@@ -204,7 +213,7 @@ body {
     z-index: 100;
 }
 
-.btn-google-texto {
+.btn-volver-home {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -215,20 +224,21 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
 }
 
-.btn-google-texto:hover {
+.btn-volver-home:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
     background-color: #f8f9fa;
 }
 
-.btn-google-texto img {
-    width: 24px;
-    height: 24px;
+.btn-volver-home i {
+    font-size: 20px;
+    color: var(--moradoPrincipal);
 }
 
-.btn-google-texto span {
+.btn-volver-home span {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: 0.95rem;
@@ -244,4 +254,76 @@ body {
         top: 10px;
         right: 10px;
     }
+}
+
+/* Acciones Foto */
+.acciones-foto {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.boton-eliminar-foto {
+    background-color: var(--error);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+    border: none;
+    font-family: inherit;
+}
+
+.boton-eliminar-foto:hover {
+    background-color: #c82333;
+}
+
+/* =======================================
+   Sección Eliminar Cuenta (Actualizado)
+   ======================================= */
+.seccion-eliminar-cuenta {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #f8f9fa;
+}
+
+.seccion-eliminar-cuenta h3 {
+    color: #dc3545;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.seccion-eliminar-cuenta p {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.btn-eliminar-cuenta {
+    background-color: transparent;
+    border: 2px solid #dc3545;
+    color: #dc3545;
+    padding: 10px 25px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Open Sans', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-eliminar-cuenta:hover {
+    background-color: #dc3545;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.2);
 }
