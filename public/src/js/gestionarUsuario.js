@@ -1,6 +1,9 @@
 /* global Swal */
 import { getUsuarios, patchUsuarios, deleteUsuarios } from '../services/services.js';
 
+let formDirty = false;
+let isNavigating = false;
+
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Verificar Sesión
     const usuarioSesion = localStorage.getItem('usuarioActivo');
@@ -31,6 +34,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     let nuevaFotoBase64 = null;
     const defaultPhoto = "https://cdn-icons-png.flaticon.com/512/1144/1144760.png";
 
+    // Detectar cambios en inputs
+    const inputs = [inputNombre, inputTelefono, inputCorreo, inputPassAnterior, inputPassNueva, inputPassConfirmar];
+    inputs.forEach(input => {
+        if (input) {
+            input.addEventListener('input', () => {
+                formDirty = true;
+            });
+        }
+    });
+
     // 3. Cargar datos frescos del servidor
     async function cargarDatosUsuario() {
         try {
@@ -40,6 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (usuario) {
                 usuarioData = usuario;
                 llenarFormulario(usuario);
+                formDirty = false; // Resetear estado al cargar datos
             } else {
                 Swal.fire('Error', 'Usuario no encontrado en la base de datos', 'error');
             }
@@ -126,6 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     imgPreview.src = dataUrl;
                     nuevaFotoBase64 = dataUrl;
+                    formDirty = true; // Foto cambiada -> formulario sucio
 
                     if (btnEliminarFoto) btnEliminarFoto.style.display = 'block';
                 };
@@ -162,6 +177,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         btnEliminarFoto.style.display = 'none';
                         nuevaFotoBase64 = null; // Limpiar buffer de subida
                         inputFoto.value = ''; // Limpiar input file
+                        // NOTA: No cambiamos formDirty a false aquí porque los inputs de texto podrían tener cambios pendientes.
+                        // Sin embargo, si SOLO se cambió la foto y luego se eliminó, técnicamente volvemos al estado inicial de foto.
+                        // Pero manejar esa granularidad es complejo. Asumimos que si eliminó foto, se guardó ESO, pero el resto sigue sucio si lo estaba.
 
                         // Actualizar data local
                         if (usuarioData) usuarioData.foto = defaultPhoto;
@@ -212,15 +230,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            // Lógica de contraseña mejorada: 
-            // 1. No obliga a cambiarla si solo se quiere editar el perfil (ej. la foto).
-            // 2. Solo se activa si el usuario escribe algo en los campos de Nueva Contraseña.
+            // Lógica de contraseña mejorada
             let nuevaContraseña = usuarioData.contraseña;
             const passAnt = inputPassAnterior.value.trim();
             const passNue = inputPassNueva.value.trim();
             const passConf = inputPassConfirmar.value.trim();
 
-            // Si el usuario ingresó algo en los campos de nueva contraseña, significa que desea cambiarla
             if (passNue !== "" || passConf !== "") {
                 if (passAnt === "") {
                     Swal.fire('Atención', 'Debe ingresar su contraseña anterior para autorizar el cambio de contraseña.', 'warning');
@@ -248,8 +263,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 nuevaContraseña = passNue;
             }
-            // Si solo se llenó la contraseña anterior (autocompletado), pero no la nueva, 
-            // simplemente se ignora y se mantiene la contraseña actual (nuevaContraseña ya tiene el valor de usuarioData.contraseña)
 
             // Preparar objeto de actualización
             const datosActualizar = {
@@ -257,7 +270,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 telefono: telefono,
                 correo: correo,
                 contraseña: nuevaContraseña,
-                // Si hay nueva foto subida, usarla. Si no, mantener la actual (que puede ser default si se eliminó antes)
                 foto: nuevaFotoBase64 || usuarioData.foto
             };
 
@@ -267,6 +279,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Actualizar localStorage
                 const sesionActualizada = { ...usuarioActivoLocal, ...datosActualizar };
                 localStorage.setItem('usuarioActivo', JSON.stringify(sesionActualizada));
+
+                formDirty = false; // Guardado exitoso -> formulario limpio
 
                 Swal.fire({
                     title: 'Perfil Actualizado',
@@ -327,6 +341,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     cargarDatosUsuario();
 });
 
+// Interceptor global de navegación
+document.addEventListener('click', (e) => {
+    // Buscar si el clic fue en un enlace o dentro de uno
+    const link = e.target.closest('a');
+    if (link && formDirty && !isNavigating) {
+        // Evitar navegación inmediata
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        Swal.fire({
+            title: 'Cambios no guardados',
+            text: 'Tienes cambios sin guardar. ¿Estás seguro de que quieres salir?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Sí, salir sin guardar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Usuario confirma salir -> Permitir navegación
+                isNavigating = true;
+                formDirty = false; // Evitar bucles o alertas repetidas
+
+                // Simular el clic original o navegar manualmente
+                // Si el link tiene onclick, href="javascript:...", etc., click() es mejor
+                link.click();
+            }
+        });
+    }
+}, true); // Use capture phase to intercept early
+
 // --- Lógica Navbar (Unificada) ---
 document.addEventListener("DOMContentLoaded", () => {
     configurarBotonIngresar();
@@ -359,6 +405,10 @@ function configurarBotonIngresar() {
 
             // CLICK CERRAR SESIÓN CON SWEETALERT
             boton.addEventListener("click", (e) => {
+                // Si formDirty interceptó el click, este handler NO debería ejecutarse hasta que isNavigating sea true
+                // Pero como usamos stopImmediatePropagation en la fase de captura, este handler será bloqueado la primera vez
+                // Si el usuario confirma, isNavigating es true y el evento de click sintético pasará la captura y llegará aquí.
+
                 e.preventDefault();
 
                 Swal.fire({

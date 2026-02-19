@@ -128,7 +128,8 @@ body.cuerpoDashboard {
     position: fixed;
     height: 100vh;
     z-index: 100;
-    overflow-y: auto; /* Permite scroll vertical */
+    overflow-y: auto;
+    /* Permite scroll vertical */
 }
 
 /* Scrollbar personalizado para la barra lateral (Estilo gris transparente) */
@@ -141,12 +142,14 @@ body.cuerpoDashboard {
 }
 
 .barraLateral::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.1); /* Gris muy transparente */
+    background: rgba(0, 0, 0, 0.1);
+    /* Gris muy transparente */
     border-radius: 10px;
 }
 
 .barraLateral::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.2); /* Gris un poco más visible al hacer hover */
+    background: rgba(0, 0, 0, 0.2);
+    /* Gris un poco más visible al hacer hover */
 }
 
 .logoBarraLateral {
@@ -936,7 +939,9 @@ body.cuerpoDashboard {
 
 /* Modal Detalle Reporte */
 .modalDetalle {
-    max-width: 600px;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .detalleReporteGrid {
