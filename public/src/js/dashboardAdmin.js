@@ -18,7 +18,15 @@ import {
     deleteHistorialPago,
     getSolicitudesFinanciamiento,
     patchSolicitudesFinanciamiento,
-    deleteSolicitudesFinanciamiento
+    deleteSolicitudesFinanciamiento,
+    getServicios,
+    postServicios,
+    patchServicios,
+    deleteServicios,
+    getProyectos,
+    postProyectos,
+    patchProyectos,
+    deleteProyectos
 } from '../services/services.js';
 
 // Configuración de EmailJS
@@ -40,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Validación de Rol de Administrador
     const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo'));
+    let currentPlanillaContext = null; // Variable global para contexto de planilla
     if (!usuarioActivo || usuarioActivo.rol !== 'admin') {
         window.location.href = 'home.html';
         return;
@@ -293,7 +302,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('vistaPlanillas'),
             document.getElementById('vistaDetallePlanilla'),
             document.getElementById('vistaInvitarUsuario'),
-            document.getElementById('vistaSolicitudes') // Nueva vista
+            document.getElementById('vistaSolicitudes'),
+            document.getElementById('vistaServicios')
         ];
 
         vistas.forEach(v => {
@@ -306,7 +316,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('navTramites'),
             document.getElementById('navUsuarios'),
             document.getElementById('navPlanillas'),
-            document.getElementById('navSolicitudes') // Nuevo nav
+            document.getElementById('navSolicitudes'),
+            document.getElementById('navServicios')
         ];
 
         navs.forEach(n => {
@@ -395,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const filtrosRol = document.getElementById('filtroRolUsuarios');
 
     // Botón Invitar Usuario (en la vista de usuarios)
-    const btnInvitar = document.querySelector('.botonInvitar');
+    const btnInvitar = document.querySelector('#vistaUsuarios .botonInvitar');
     if (btnInvitar) {
         btnInvitar.addEventListener('click', () => {
             vistaUsuarios.classList.add('oculto');
@@ -414,13 +425,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Botón Enviar Invitación (EmailJS)
     if (btnEnviarInvitacion) {
         btnEnviarInvitacion.addEventListener('click', () => {
-            const email = document.getElementById('invitacionEmail').value;
-            const rol = document.getElementById('invitacionRol').value;
-            const nombre = document.getElementById('invitacionNombre').value;
-            const mensajePersonalizado = document.getElementById('invitacionMensaje').value;
+            const email = document.getElementById('invitacionEmail').value.trim();
+            const rol = document.getElementById('invitacionRol').value.trim();
+            const nombre = document.getElementById('invitacionNombre').value.trim();
+            const mensajePersonalizado = document.getElementById('invitacionMensaje').value.trim();
 
-            if (!email || !rol) {
-                Swal.fire('Error', 'Por favor complete el email y el rol.', 'error');
+            if (!email || !rol || !nombre || !mensajePersonalizado) {
+                Swal.fire('Error', 'Todos los campos son obligatorios y no pueden contener solo espacios.', 'error');
                 return;
             }
 
@@ -694,11 +705,11 @@ document.addEventListener('DOMContentLoaded', () => {
         formGestionarSolicitud.addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('idSolicitudGestionar').value;
-            const montoAprobado = document.getElementById('montoAprobadoGestion').value;
-            const entidad = document.getElementById('entidadFinancieraGestion').value;
+            const montoAprobado = document.getElementById('montoAprobadoGestion').value.trim();
+            const entidad = document.getElementById('entidadFinancieraGestion').value.trim();
 
-            if (!entidad) {
-                Swal.fire('Error', 'Debe seleccionar una entidad financiera', 'error');
+            if (!montoAprobado || !entidad) {
+                Swal.fire('Error', 'Todos los campos son obligatorios.', 'error');
                 return;
             }
 
@@ -771,14 +782,19 @@ document.addEventListener('DOMContentLoaded', () => {
         formEditarSolicitud.addEventListener('submit', async (e) => {
             e.preventDefault();
             const id = document.getElementById('idSolicitudEditar').value;
-            const estado = document.getElementById('estadoSolicitudEditar').value;
-            const monto = document.getElementById('montoAprobadoEditar').value;
-            const entidad = document.getElementById('entidadFinancieraEditar').value;
+            const estado = document.getElementById('estadoSolicitudEditar').value.trim();
+            const monto = document.getElementById('montoAprobadoEditar').value.trim();
+            const entidad = document.getElementById('entidadFinancieraEditar').value.trim();
+
+            if (!estado || !monto || !entidad) {
+                Swal.fire('Error', 'Todos los campos son obligatorios.', 'error');
+                return;
+            }
 
             const updateData = {
                 estado: estado,
-                monto_aprobado: monto ? Number(monto) : null,
-                entidad_financiera: entidad || null
+                monto_aprobado: Number(monto),
+                entidad_financiera: entidad
             };
 
             try {
@@ -1324,154 +1340,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Event Delegation para Botones de la tabla USUARIOS
-    if (cuerpoTablaUsuarios) {
-        cuerpoTablaUsuarios.addEventListener('click', async (e) => {
-            const btnEliminar = e.target.closest('.btnEliminarUsuario');
-            const btnEditar = e.target.closest('.btnEditarUsuario');
 
-            // Ver Usuario
-            const btnVer = e.target.closest('.btnVerUsuario');
-            if (btnVer) {
-                const id = btnVer.dataset.id;
-                const usuarios = window.allUsuarios || await getUsuarios();
-                const usuario = usuarios.find(u => u.id == id);
-                if (usuario) abrirModalUsuario(usuario);
-            }
-
-            // Eliminar Usuario
-            if (btnEliminar) {
-                const id = btnEliminar.dataset.id;
-                Swal.fire({
-                    title: '¿Eliminar usuario?',
-                    text: "Esta acción eliminará permanentemente al usuario.",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
-                }).then(async (result) => {
-                    if (result.isConfirmed) {
-                        try {
-                            await deleteUsuarios(id);
-                            Swal.fire(
-                                'Eliminado',
-                                'El usuario ha sido eliminado.',
-                                'success'
-                            );
-                            cargarUsuarios(); // Recargar tabla
-                        } catch (error) {
-                            Swal.fire('Error', 'No se pudo eliminar el usuario', 'error');
-                            console.error(error);
-                        }
-                    }
-                });
-            }
-
-
-            // Editar Usuario
-            if (btnEditar) {
-                const id = btnEditar.dataset.id;
-                const tr = e.target.closest('tr');
-                const nombreActual = tr.querySelector('.infoColaborador h4').innerText;
-                const rolActualElement = tr.querySelector('.badgeRol');
-                const rolActual = rolActualElement ? rolActualElement.innerText : 'usuario'; // Default a usuario si no encuentra
-
-                // Preguntar qué se desea editar
-                const { value: opcion } = await Swal.fire({
-                    title: `Editar Usuario: ${nombreActual}`,
-                    input: 'radio',
-                    inputOptions: {
-                        '1': 'Cambiar Rol',
-                        '2': 'Cambiar Nombre'
-                    },
-                    inputValidator: (value) => {
-                        if (!value) {
-                            return 'Debes seleccionar una opción'
-                        }
-                    },
-                    showCancelButton: true,
-                    confirmButtonText: 'Continuar',
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonColor: '#3e206f'
-                });
-
-                if (opcion === "1") {
-                    // Cambiar Rol con validación estricta
-                    const { value: nuevoRol } = await Swal.fire({
-                        title: 'Cambiar Rol',
-                        input: 'select',
-                        inputOptions: {
-                            'admin': 'Administrador (admin)',
-                            'usuario': 'Usuario (usuario)',
-                            'ciudadano': 'Ciudadano (ciudadano)'
-                        },
-                        inputPlaceholder: 'Selecciona un rol',
-                        inputValue: rolActual.toLowerCase(),
-                        showCancelButton: true,
-                        confirmButtonText: 'Guardar',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonColor: '#3e206f',
-                        preConfirm: (value) => {
-                            // Validación adicional aunque el select ya limita, por seguridad
-                            const rolesValidos = ['admin', 'usuario', 'ciudadano'];
-                            if (!rolesValidos.includes(value)) {
-                                Swal.showValidationMessage('Rol inválido seleccionado');
-                            }
-                            return value;
-                        }
-                    });
-
-                    if (nuevoRol && nuevoRol !== rolActual) {
-                        try {
-                            await patchUsuarios({ rol: nuevoRol }, id);
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Rol Actualizado',
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                            cargarUsuarios();
-                        } catch (error) {
-                            Swal.fire('Error', 'Error al actualizar el rol', 'error');
-                        }
-                    }
-                } else if (opcion === "2") {
-                    // Cambiar Nombre
-                    const { value: nuevoNombre } = await Swal.fire({
-                        title: 'Cambiar Nombre',
-                        input: 'text',
-                        inputValue: nombreActual,
-                        showCancelButton: true,
-                        confirmButtonText: 'Guardar',
-                        cancelButtonText: 'Cancelar',
-                        confirmButtonColor: '#3e206f',
-                        inputValidator: (value) => {
-                            if (!value) {
-                                return 'El nombre no puede estar vacío'
-                            }
-                        }
-                    });
-
-                    if (nuevoNombre && nuevoNombre !== nombreActual) {
-                        try {
-                            await patchUsuarios({ nombre: nuevoNombre }, id);
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Nombre Actualizado',
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                            cargarUsuarios();
-                        } catch (error) {
-                            Swal.fire('Error', 'Error al actualizar el nombre', 'error');
-                        }
-                    }
-                }
-            }
-        });
-    }
 
     // Modal Ver Reporte Logic
     const modalVerReporte = document.getElementById('modalVerReporte');
@@ -1611,6 +1480,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <select id="swal-rol" class="swal2-input" style="width: 100%; margin: 0; height: 45px; font-size: 0.95rem;">
                         <option value="usuario" ${usuario.rol === 'usuario' ? 'selected' : ''}>Usuario</option>
                         <option value="ciudadano" ${usuario.rol === 'ciudadano' ? 'selected' : ''}>Ciudadano</option>
+                        <option value="empleado" ${usuario.rol === 'empleado' ? 'selected' : ''}>Empleado</option>
                         <option value="admin" ${usuario.rol === 'admin' ? 'selected' : ''}>Administrador</option>
                     </select>
                 </div>
@@ -1622,11 +1492,20 @@ document.addEventListener('DOMContentLoaded', () => {
             confirmButtonColor: '#3e206f',
             cancelButtonColor: '#6c757d',
             preConfirm: () => {
+                const nombre = document.getElementById('swal-nombre').value.trim();
+                const correo = document.getElementById('swal-correo').value.trim();
+                const telefono = document.getElementById('swal-telefono').value.trim();
+                const rol = document.getElementById('swal-rol').value.trim();
+
+                if (!nombre || !correo || !telefono) {
+                    Swal.showValidationMessage('Todos los campos son obligatorios');
+                }
+
                 return {
-                    nombre: document.getElementById('swal-nombre').value,
-                    correo: document.getElementById('swal-correo').value,
-                    telefono: document.getElementById('swal-telefono').value,
-                    rol: document.getElementById('swal-rol').value
+                    nombre: nombre,
+                    correo: correo,
+                    telefono: telefono,
+                    rol: rol
                 }
             }
         });
@@ -1638,9 +1517,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error('Nombre y correo son obligatorios');
                 }
 
-                await patchUsuarios(usuario.id, formValues);
+                await patchUsuarios(formValues, usuario.id);
                 Swal.fire('¡Actualizado!', 'El usuario ha sido modificado exitosamente.', 'success');
-                cargarUsuarios(); // Recargar tabla
+                await cargarUsuarios(); // Recargar tabla
+
+                // Refrescar vista detalle planilla si está activa
+                const vistaDet = document.getElementById('vistaDetallePlanilla');
+                if (vistaDet && !vistaDet.classList.contains('oculto')) {
+                    const idP = vistaDet.dataset.id;
+                    if (idP && window.allPlanillas) {
+                        const currentP = window.allPlanillas.find(p => p.id == idP);
+                        if (currentP) mostrarDetallePlanilla(currentP);
+                    }
+                }
             } catch (error) {
                 console.error("Error al editar usuario:", error);
                 Swal.fire('Error', error.message || 'No se pudo actualizar el usuario.', 'error');
@@ -1820,13 +1709,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const id = formularioPlanilla.dataset.id;
 
+            const puesto = document.getElementById('planillaPuesto').value.trim();
+            const departamento = document.getElementById('planillaDepartamento').value.trim();
+            const salarioBase = document.getElementById('planillaSalarioBase').value.trim();
+            const cantHoras = document.getElementById('planillaCantHorasExtra').value.trim();
+            const pagoHora = document.getElementById('planillaPagoHoraExtra').value.trim();
+            const rebajos = document.getElementById('planillaRebajos').value.trim();
+
+            if (!puesto || !departamento || !salarioBase || !cantHoras || !pagoHora || !rebajos) {
+                Swal.fire('Error', 'Todos los campos son obligatorios. Ingrese 0 si es necesario.', 'error');
+                return;
+            }
+
             const dataPlanilla = {
-                puesto: document.getElementById('planillaPuesto').value,
-                departamento: document.getElementById('planillaDepartamento').value,
-                salario_base: Number(document.getElementById('planillaSalarioBase').value),
-                cant_horas_extra: Number(document.getElementById('planillaCantHorasExtra').value),
-                pago_hora_extra: Number(document.getElementById('planillaPagoHoraExtra').value),
-                rebajos: Number(document.getElementById('planillaRebajos').value)
+                puesto: puesto,
+                departamento: departamento,
+                salario_base: Number(salarioBase),
+                cant_horas_extra: Number(cantHoras),
+                pago_hora_extra: Number(pagoHora),
+                rebajos: Number(rebajos)
             };
             // Salario neto para guardar consistency
             dataPlanilla.salario_neto = dataPlanilla.salario_base + (dataPlanilla.cant_horas_extra * dataPlanilla.pago_hora_extra) - dataPlanilla.rebajos;
@@ -2082,8 +1983,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ocultarTodasLasVistas();
         vistaDetallePlanilla.classList.remove('oculto');
         navPlanillas.classList.add('activo');
+        vistaDetallePlanilla.dataset.id = planilla.id;
 
         // Llenar encabezado
+        if (planilla) currentPlanillaContext = planilla; // Actualizar contexto
         document.getElementById('detPuesto').textContent = planilla.puesto;
         document.getElementById('detDepto').textContent = planilla.departamento;
         const neto = Number(planilla.salario_base || 0) + (Number(planilla.cant_horas_extra || 0) * Number(planilla.pago_hora_extra || 0)) - Number(planilla.rebajos || 0);
@@ -2137,8 +2040,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Rol
                 const tdRol = document.createElement('td');
-                const claseRol = `rol-${(user.rol || 'ciudadano').toLowerCase()}`;
-                tdRol.innerHTML = `<span class="badgeRol ${claseRol}">${user.rol || 'Ciudadano'}</span>`;
+                if ((user.rol || '').toLowerCase() === 'admin') {
+                    tdRol.innerHTML = `
+                        <span class="badgeRol rol-admin">Admin</span>
+                        <span class="badgeRol rol-empleado" style="margin-top: 5px; display: inline-block;">Empleado</span>
+                    `;
+                } else {
+                    const claseRol = `rol-${(user.rol || 'ciudadano').toLowerCase()}`;
+                    tdRol.innerHTML = `<span class="badgeRol ${claseRol}">${user.rol || 'Ciudadano'}</span>`;
+                }
 
                 // Estado (Simulado)
                 const tdEstado = document.createElement('td');
@@ -2167,9 +2077,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnPagar.innerHTML = '<i class="fas fa-dollar-sign"></i>';
                 btnPagar.onclick = () => abrirModalPagoInteractivo(user, planilla);
 
+                const btnEliminar = document.createElement('button');
+                btnEliminar.className = 'btnAccion btnEliminar';
+                btnEliminar.title = 'Eliminar / Desasignar';
+                btnEliminar.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                btnEliminar.onclick = () => confirmarDesasignarEmpleado(user.id, planilla.id);
+
                 tdAcciones.appendChild(btnVer);
                 tdAcciones.appendChild(btnEditar);
                 tdAcciones.appendChild(btnPagar);
+                tdAcciones.appendChild(btnEliminar);
 
                 tr.appendChild(tdUsuario);
                 tr.appendChild(tdContacto);
@@ -2181,9 +2098,92 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const btnAsignar = document.getElementById('btnAsignarEmpleadoDetalle');
-        if (btnAsignar) {
-            btnAsignar.onclick = () => abrirModalAsignarEmpleado(planilla);
+
+    }
+
+    // Función para Desasignar o Eliminar Empleado
+    async function confirmarDesasignarEmpleado(usuarioId, planillaId) {
+        const result = await Swal.fire({
+            title: '¿Qué desea hacer?',
+            text: "Puede sacar al empleado de la planilla (volviéndolo ciudadano) o eliminar su cuenta permanentemente.",
+            icon: 'question',
+            showCancelButton: true,
+            showDenyButton: true,
+            confirmButtonText: 'Sacar de Planilla',
+            denyButtonText: 'Eliminar Cuenta',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#ffc107', // Amarillo warning
+            denyButtonColor: '#d33' // Rojo peligro
+        });
+
+        if (result.isConfirmed) {
+            // Opción 1: Sacar de Planilla (Revertir a Ciudadano)
+            try {
+                // 1. Eliminar relación
+                const relaciones = window.allUsuariosPlanillas || await getUsuariosPlanillas();
+                const relacion = relaciones.find(r => r.usuario_id == usuarioId && r.planilla_id == planillaId);
+
+                if (relacion) {
+                    await deleteUsuariosPlanillas(relacion.id);
+                }
+
+                // 2. Actualizar Rol a 'ciudadano'
+                await patchUsuarios({ rol: 'ciudadano' }, usuarioId);
+
+                Swal.fire('Desasignado', 'El usuario ha sido retirado de la planilla y su rol es ahora Ciudadano.', 'success');
+
+                // Refrescar
+                if (window.allPlanillas) {
+                    const planilla = window.allPlanillas.find(p => p.id == planillaId);
+                    if (planilla) {
+                        window.allUsuarios = await getUsuarios();
+                        window.allUsuariosPlanillas = await getUsuariosPlanillas();
+                        mostrarDetallePlanilla(planilla);
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+                Swal.fire('Error', 'No se pudo desasignar al empleado.', 'error');
+            }
+
+        } else if (result.isDenied) {
+            // Opción 2: Eliminar Cuenta Permanentemente
+            const confirmDelete = await Swal.fire({
+                title: '¿Eliminar cuenta definitivamente?',
+                text: "Esta acción NO se puede deshacer. Se borrará todo el registro del usuario.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar todo'
+            });
+
+            if (confirmDelete.isConfirmed) {
+                try {
+                    await deleteUsuarios(usuarioId);
+
+                    // Limpiar relación si existe (json-server no hace cascade delete por defecto)
+                    const relaciones = window.allUsuariosPlanillas || await getUsuariosPlanillas();
+                    const relacion = relaciones.find(r => r.usuario_id == usuarioId && r.planilla_id == planillaId);
+                    if (relacion) {
+                        await deleteUsuariosPlanillas(relacion.id);
+                    }
+
+                    Swal.fire('Eliminado', 'La cuenta del usuario ha sido eliminada permanentemente.', 'success');
+
+                    // Refrescar
+                    if (window.allPlanillas) {
+                        const planilla = window.allPlanillas.find(p => p.id == planillaId);
+                        if (planilla) {
+                            window.allUsuarios = await getUsuarios();
+                            window.allUsuariosPlanillas = await getUsuariosPlanillas();
+                            mostrarDetallePlanilla(planilla);
+                        }
+                    }
+                } catch (error) {
+                    console.error(error);
+                    Swal.fire('Error', 'No se pudo eliminar la cuenta.', 'error');
+                }
+            }
         }
     }
 
@@ -2321,8 +2321,581 @@ document.addEventListener('DOMContentLoaded', () => {
         btnVolverPlanillas.onclick = () => {
             ocultarTodasLasVistas();
             vistaPlanillas.classList.remove('oculto');
-            navPlanillas.classList.add('activo');
+            // Assuming navPlanillas is available in scope or by ID
+            const navPlanillas = document.getElementById('navPlanillas');
+            if (navPlanillas) {
+                document.querySelectorAll('.navegacionBarraLateral li').forEach(li => li.classList.remove('activo'));
+                navPlanillas.classList.add('activo');
+            }
         };
     }
+
+    // --------------------------------------------------------------------------------
+    // GESTIÓN DE PROYECTOS VIALES
+    // --------------------------------------------------------------------------------
+
+    // navTramites y vistaTramites ya están definidos previamente
+
+    // CSS de Gestion de Proyectos Viales se encuentra en dashboardAdmin.css
+
+    const btnNuevoProyecto = document.getElementById('btnNuevoProyecto');
+    const buscadorProyectos = document.getElementById('buscadorProyectos');
+    const cuerpoTablaProyectos = document.getElementById('cuerpoTablaProyectos');
+    const modalProyecto = document.getElementById('modalProyecto');
+    const cerrarModalProyecto = document.getElementById('cerrarModalProyecto');
+    const formProyecto = document.getElementById('formProyecto');
+
+    let todosLosProyectos = [];
+
+    if (navTramites) {
+        navTramites.addEventListener('click', async (e) => {
+            e.preventDefault();
+            ocultarTodasLasVistas();
+            vistaTramites.classList.remove('oculto');
+
+            // Activar Nav
+            document.querySelectorAll('.navegacionBarraLateral li').forEach(li => li.classList.remove('activo'));
+            navTramites.classList.add('activo');
+
+            await cargarProyectos();
+        });
+    }
+
+    async function cargarProyectos() {
+        try {
+            const proyectos = await getProyectos();
+            todosLosProyectos = proyectos || [];
+            renderizarProyectos(todosLosProyectos);
+            if (document.getElementById('contadorProyectos')) {
+                document.getElementById('contadorProyectos').textContent = `${todosLosProyectos.length} proyectos`;
+            }
+        } catch (error) {
+            console.error("Error al cargar proyectos:", error);
+        }
+    }
+
+    function renderizarProyectos(lista) {
+        if (!cuerpoTablaProyectos) return;
+        cuerpoTablaProyectos.innerHTML = '';
+
+        lista.forEach(proyecto => {
+            const tr = document.createElement('tr');
+
+            tr.innerHTML = `
+                <td><strong>${proyecto.nombre || 'Sin nombre'}</strong></td>
+                <td><small>${proyecto.descripcion || ''}</small></td>
+                <td>₡${(proyecto.presupuesto || 0).toLocaleString()}</td>
+                <td>${proyecto.fecha_inicio || '-'}</td>
+                <td><span class="badge-proyecto ${obtenerClaseEstado(proyecto.estado)}">${proyecto.estado}</span></td>
+                <td class="acciones">
+                    <button class="btnAccion btnEditar btn-editar-proyecto" data-id="${proyecto.id}" title="Editar"><i class="fas fa-edit"></i></button>
+                    <button class="btnAccion btnEliminar btn-eliminar-proyecto" data-id="${proyecto.id}" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            `;
+            cuerpoTablaProyectos.appendChild(tr);
+        });
+
+        // Listeners
+        document.querySelectorAll('.btn-editar-proyecto').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.currentTarget.dataset.id;
+                abrirModalProyecto(id);
+            });
+        });
+
+        document.querySelectorAll('.btn-eliminar-proyecto').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.currentTarget.dataset.id;
+                confirmarEliminarProyecto(id);
+            });
+        });
+    }
+
+    function obtenerClaseEstado(estado) {
+        if (!estado) return '';
+        const e = estado.toLowerCase();
+        if (e.includes('ejecuc')) return 'proyecto-activo';
+        if (e.includes('final')) return 'proyecto-aprobado';
+        if (e.includes('susp')) return 'proyecto-rechazado';
+        return 'proyecto-pendiente';
+    }
+
+    // Modal
+    if (btnNuevoProyecto) {
+        btnNuevoProyecto.addEventListener('click', () => {
+            abrirModalProyecto();
+        });
+    }
+
+    if (cerrarModalProyecto) {
+        cerrarModalProyecto.addEventListener('click', () => {
+            modalProyecto.classList.add('oculto');
+        });
+    }
+
+    function abrirModalProyecto(id = null) {
+        if (formProyecto) formProyecto.reset();
+        const inputId = document.getElementById('idProyectoEditar');
+        if (inputId) inputId.value = '';
+
+        // Restringir fecha (No permitir fechas pasadas)
+        const fechaInput = document.getElementById('fechaInicioProyectoInput');
+        if (fechaInput) {
+            const today = new Date().toISOString().split('T')[0];
+            fechaInput.setAttribute('min', today);
+        }
+
+        const titulo = document.getElementById('tituloModalProyecto');
+
+        if (id) {
+            if (titulo) titulo.textContent = 'Editar Proyecto Vial';
+            const proyecto = todosLosProyectos.find(p => p.id == id);
+            if (proyecto) {
+                if (inputId) inputId.value = proyecto.id;
+                document.getElementById('nombreProyectoInput').value = proyecto.nombre;
+                document.getElementById('descripcionProyectoInput').value = proyecto.descripcion;
+                document.getElementById('presupuestoProyectoInput').value = proyecto.presupuesto;
+                document.getElementById('fechaInicioProyectoInput').value = proyecto.fecha_inicio;
+                document.getElementById('estadoProyectoInput').value = proyecto.estado;
+            }
+        } else {
+            if (titulo) titulo.textContent = 'Nuevo Proyecto Vial';
+            const estadoInput = document.getElementById('estadoProyectoInput');
+            if (estadoInput) estadoInput.value = 'Planificación';
+        }
+
+        modalProyecto.classList.remove('oculto');
+    }
+
+    // Submit
+    if (formProyecto) {
+        formProyecto.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const id = document.getElementById('idProyectoEditar').value;
+            const nombre = document.getElementById('nombreProyectoInput').value.trim();
+            const descripcion = document.getElementById('descripcionProyectoInput').value.trim();
+            const presupuesto = document.getElementById('presupuestoProyectoInput').value.trim();
+            const fecha = document.getElementById('fechaInicioProyectoInput').value.trim();
+            const estado = document.getElementById('estadoProyectoInput').value.trim();
+
+            if (!nombre || !descripcion || !presupuesto || !fecha || !estado) {
+                Swal.fire('Error', 'Todos los campos son obligatorios y no pueden estar vacíos.', 'error');
+                return;
+            }
+
+            const datos = {
+                nombre,
+                descripcion,
+                presupuesto: Number(presupuesto),
+                fecha_inicio: fecha,
+                estado
+            };
+
+            try {
+                if (id) {
+                    await patchProyectos(datos, id);
+                    Swal.fire('Actualizado', 'Proyecto actualizado correctamente.', 'success');
+                } else {
+                    await postProyectos(datos);
+                    Swal.fire('Creado', 'Proyecto creado correctamente.', 'success');
+                }
+                modalProyecto.classList.add('oculto');
+                cargarProyectos();
+            } catch (error) {
+                console.error(error);
+                Swal.fire('Error', 'No se pudo guardar el proyecto.', 'error');
+            }
+        });
+    }
+
+    // Eliminar
+    async function confirmarEliminarProyecto(id) {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Se eliminará este proyecto permanentemente.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                await deleteProyectos(id);
+                Swal.fire('Eliminado', 'El proyecto ha sido eliminado.', 'success');
+                cargarProyectos();
+            } catch (error) {
+                console.error(error);
+                Swal.fire('Error', 'No se pudo eliminar el proyecto.', 'error');
+            }
+        }
+    }
+
+    // Buscador
+    if (buscadorProyectos) {
+        buscadorProyectos.addEventListener('input', (e) => {
+            const termino = e.target.value.toLowerCase();
+            const filtrados = todosLosProyectos.filter(p =>
+                (p.nombre || '').toLowerCase().includes(termino) ||
+                (p.descripcion || '').toLowerCase().includes(termino)
+            );
+            renderizarProyectos(filtrados);
+        });
+    }
+
+
+
+    // Listener Global para Asignar Empleado (fuera de función render)
+    const btnAsignarGlobal = document.getElementById('btnAsignarEmpleadoDetalle');
+    if (btnAsignarGlobal) {
+        btnAsignarGlobal.addEventListener('click', () => {
+            if (currentPlanillaContext) {
+                abrirModalAsignarEmpleado(currentPlanillaContext);
+            } else {
+                console.error("No hay contexto de planilla seleccionado");
+                Swal.fire('Error', 'No se ha seleccionado una planilla.', 'error');
+            }
+        });
+    }
+
+    // --- Lógica Asignar Empleado a Planilla ---
+    const modalAsignarEmpleado = document.getElementById('modalAsignarEmpleado');
+    const cerrarModalAsignarEmpleado = document.getElementById('cerrarModalAsignarEmpleado');
+    const formAsignarEmpleado = document.getElementById('formAsignarEmpleado');
+    const selectUsuarioAsignar = document.getElementById('selectUsuarioAsignar');
+
+    // Definir como función para que sea 'hoisted' y accesible desde arriba
+    // Definir como función para que sea 'hoisted' y accesible desde arriba
+    async function abrirModalAsignarEmpleado(planilla) {
+        // Buscar elementos dinámicamente para asegurar que existan
+        const modal = document.getElementById('modalAsignarEmpleado');
+        const select = document.getElementById('selectUsuarioAsignar');
+        const inputId = document.getElementById('idPlanillaAsignar');
+
+        if (!modal) {
+            console.error("Modal Asignar Empleado no encontrado en el DOM");
+            Swal.fire('Error', 'No se encontró la interfaz de asignación.', 'error');
+            return;
+        }
+
+        if (inputId) inputId.value = planilla.id;
+        modal.classList.remove('oculto');
+
+        // Mostrar carga
+        if (select) {
+            select.innerHTML = '<option value="">Cargando usuarios...</option>';
+
+            try {
+                // Refrescar datos antes de mostrar
+                await cargarUsuarios();
+                const usuarios = window.allUsuarios || [];
+
+                const relaciones = await getUsuariosPlanillas();
+                window.allUsuariosPlanillas = relaciones;
+
+                // Filtrar ya asignados a esta planilla
+                const asignados = relaciones.filter(r => r.planilla_id == planilla.id).map(r => r.usuario_id);
+
+                // Disponibles
+                const disponibles = usuarios.filter(u => !asignados.includes(u.id));
+
+                select.innerHTML = '<option value="">-- Seleccione un usuario --</option>';
+
+                if (disponibles.length === 0) {
+                    const opt = document.createElement('option');
+                    opt.textContent = "No hay usuarios disponibles";
+                    select.appendChild(opt);
+                }
+
+                disponibles.forEach(u => {
+                    const option = document.createElement('option');
+                    option.value = u.id;
+                    option.textContent = `${u.nombre || 'Sin Nombre'} (${u.correo}) - ${u.rol}`;
+                    select.appendChild(option);
+                });
+
+            } catch (error) {
+                console.error("Error al cargar usuarios para asignar:", error);
+                select.innerHTML = '<option value="">Error al cargar</option>';
+            }
+        }
+    }
+
+    // Exponer al scope si es necesario (para onclicks inline, aunque aquí se usa addEventListener en JS)
+    window.abrirModalAsignarEmpleado = abrirModalAsignarEmpleado;
+
+    if (cerrarModalAsignarEmpleado) {
+        cerrarModalAsignarEmpleado.addEventListener('click', () => {
+            modalAsignarEmpleado.classList.add('oculto');
+        });
+    }
+
+    // Cerrar al click fuera
+    window.addEventListener('click', (e) => {
+        if (e.target === modalAsignarEmpleado) {
+            modalAsignarEmpleado.classList.add('oculto');
+        }
+    });
+
+    if (formAsignarEmpleado) {
+        formAsignarEmpleado.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const planillaId = document.getElementById('idPlanillaAsignar').value;
+            const usuarioId = selectUsuarioAsignar.value;
+
+            if (!usuarioId) {
+                Swal.fire('Error', 'Debe seleccionar un usuario válido.', 'error');
+                return;
+            }
+
+            try {
+                // Verificar usuario actual para no sobreescribir rol admin
+                if (!window.allUsuarios) window.allUsuarios = await getUsuarios();
+                const userObj = window.allUsuarios.find(u => u.id == usuarioId);
+
+                // 1. Actualizar Rol a Empleado (SOLO SI NO ES ADMINISTRADOR)
+                if (userObj && (userObj.rol || '').toLowerCase() !== 'admin') {
+                    await patchUsuarios({ rol: 'empleado' }, usuarioId);
+                }
+
+                // 2. Crear Relación
+                const nuevaRelacion = {
+                    id: Date.now().toString(),
+                    usuario_id: usuarioId,
+                    planilla_id: planillaId,
+                    fecha_asignacion: new Date().toISOString().split('T')[0]
+                };
+
+                await postUsuariosPlanillas(nuevaRelacion);
+
+                Swal.fire('¡Asignado!', 'Usuario asignado correctamente.', 'success');
+                modalAsignarEmpleado.classList.add('oculto');
+
+                // 3. Refrescar Vista Detalle
+                // Recargar TODO para asegurar consistencia
+                await cargarPlanillas(); // Refrescar lista de planillas para asegurar objeto fresco
+                window.allUsuarios = await getUsuarios();
+                window.allUsuariosPlanillas = await getUsuariosPlanillas();
+
+                if (window.allPlanillas) {
+                    // Usar find con comparacion laxa por si string/numero
+                    const planilla = window.allPlanillas.find(p => p.id == planillaId);
+                    if (planilla) {
+                        mostrarDetallePlanilla(planilla);
+                    } else {
+                        console.error("Planilla no encontrada tras refresh:", planillaId);
+                        cargarPlanillas(); // Fallback a lista general
+                    }
+                }
+
+            } catch (error) {
+                console.error("Error asignando empleado:", error);
+                Swal.fire('Error', 'No se pudo procesar la asignación.', 'error');
+            }
+        });
+    }
+    // -------------------------------------------------------------
+    // GESTIÓN DE SERVICIOS PÚBLICOS
+    // -------------------------------------------------------------
+
+    const navServicios = document.getElementById('navServicios');
+    const vistaServicios = document.getElementById('vistaServicios');
+    const cuerpoTablaServicios = document.getElementById('cuerpoTablaServicios');
+    const buscadorServicios = document.getElementById('buscadorServicios');
+    const contadorServicios = document.getElementById('contadorServicios');
+    const btnNuevoServicio = document.getElementById('btnNuevoServicio');
+    const modalServicio = document.getElementById('modalServicio');
+    const cerrarModalServicio = document.getElementById('cerrarModalServicio');
+    const formServicio = document.getElementById('formServicio');
+    const idServicioEditar = document.getElementById('idServicioEditar');
+    const servicioTipo = document.getElementById('servicioTipo');
+    const servicioDescripcion = document.getElementById('servicioDescripcion');
+    const servicioResponsable = document.getElementById('servicioResponsable');
+    const servicioEstado = document.getElementById('servicioEstado');
+
+    // Sidebar
+    if (navServicios) {
+        navServicios.addEventListener('click', (e) => {
+            e.preventDefault();
+            ocultarTodasLasVistas();
+            vistaServicios.classList.remove('oculto');
+            navServicios.classList.add('activo');
+            cargarServicios();
+        });
+    }
+
+    // Modal Listeners
+    if (btnNuevoServicio) {
+        btnNuevoServicio.addEventListener('click', () => {
+            modalServicio.classList.remove('oculto');
+            formServicio.reset();
+            idServicioEditar.value = '';
+            const titulo = document.getElementById('tituloModalServicio');
+            if (titulo) titulo.textContent = 'Nuevo Servicio';
+        });
+    }
+
+    if (cerrarModalServicio) {
+        cerrarModalServicio.addEventListener('click', () => modalServicio.classList.add('oculto'));
+    }
+
+    // Load Services
+    async function cargarServicios() {
+        if (!cuerpoTablaServicios) return;
+
+        const termino = buscadorServicios ? buscadorServicios.value.toLowerCase() : '';
+
+        try {
+            const servicios = await getServicios();
+            // User requested: Buscar por tipo o descripción
+            const filtrados = (servicios || []).filter(s =>
+                (s.tipo_servicio || '').toLowerCase().includes(termino) ||
+                (s.descripcion || '').toLowerCase().includes(termino)
+            );
+
+            // Actualizar contador
+            const contadorStatus = document.getElementById('contadorServicios');
+            if (contadorStatus) {
+                contadorStatus.textContent = `${filtrados.length} servicio${filtrados.length !== 1 ? 's' : ''} encontrado${filtrados.length !== 1 ? 's' : ''}`;
+            }
+
+            cuerpoTablaServicios.innerHTML = '';
+
+            filtrados.forEach(servicio => {
+                const tr = document.createElement('tr');
+
+                // Estilos para el estado (badges)
+                let estadoStyle = '';
+                if (servicio.estado === 'Activo') {
+                    estadoStyle = 'background:#e8f5e9; color:#388e3c;';
+                } else if (servicio.estado === 'Inactivo') {
+                    estadoStyle = 'background:#ffebee; color:#d32f2f;';
+                } else {
+                    estadoStyle = 'background:#fff3cd; color:#856404;';
+                }
+
+                // Usamos la clase badgeEstado definida en el CSS
+                const estadoHtml = `<span class="badgeEstado" style="${estadoStyle}">${servicio.estado || 'Activo'}</span>`;
+
+                tr.innerHTML = `
+                    <td><strong>${servicio.tipo_servicio || '-'}</strong></td>
+                    <td style="max-width: 350px; font-size: 0.9rem; color: #555;">${servicio.descripcion || '-'}</td>
+                    <td>${servicio.responsable || '-'}</td>
+                    <td>${estadoHtml}</td>
+                    <td class="acciones">
+                        <button class="btnAccion btnEditar" title="Editar"><i class="fas fa-edit"></i></button>
+                        <button class="btnAccion btnEliminar" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                `;
+
+                // Agregar listeners a los botones
+                const btnEditar = tr.querySelector('.btnEditar');
+                btnEditar.addEventListener('click', () => editarServicioLocal(servicio));
+
+                const btnBorrar = tr.querySelector('.btnEliminar');
+                btnBorrar.addEventListener('click', () => eliminarServicioLocal(servicio.id));
+
+                cuerpoTablaServicios.appendChild(tr);
+            });
+        } catch (error) {
+            console.error('Error loading services:', error);
+            cuerpoTablaServicios.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">Error cargando datos.</td></tr>';
+        }
+    }
+
+    // Edit Logic
+    function editarServicioLocal(servicio) {
+        if (servicio) {
+            idServicioEditar.value = servicio.id;
+            servicioTipo.value = servicio.tipo_servicio;
+            servicioDescripcion.value = servicio.descripcion;
+            servicioResponsable.value = servicio.responsable;
+            servicioEstado.value = servicio.estado;
+
+            const titulo = document.getElementById('tituloModalServicio');
+            if (titulo) titulo.textContent = 'Editar Servicio';
+
+            modalServicio.classList.remove('oculto');
+        }
+    }
+
+    // Delete Logic
+    function eliminarServicioLocal(id) {
+        Swal.fire({
+            title: '¿Eliminar Servicio?',
+            text: "No podrás revertir esto.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Sí, eliminar'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await deleteServicios(id);
+                    Swal.fire('Eliminado', 'El servicio ha sido eliminado.', 'success');
+                    cargarServicios(); // Refresh
+                } catch (error) {
+                    Swal.fire('Error', 'No se pudo eliminar.', 'error');
+                }
+            }
+        });
+    }
+
+    // Search Listener
+    if (buscadorServicios) {
+        buscadorServicios.addEventListener('input', cargarServicios);
+    }
+
+    // Form Submit
+    if (formServicio) {
+        formServicio.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const tipo = servicioTipo.value.trim();
+            const desc = servicioDescripcion.value.trim();
+            const resp = servicioResponsable.value.trim();
+            const estado = servicioEstado.value.trim();
+
+            if (!tipo || !desc || !resp || !estado) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos Incompletos',
+                    text: 'Por favor, complete todos los campos obligatorios. No pueden quedar espacios en blanco.',
+                    confirmButtonColor: '#3e206f'
+                });
+                return;
+            }
+
+            const nuevoServicio = {
+                tipo_servicio: tipo,
+                descripcion: desc,
+                responsable: resp,
+                estado: estado
+            };
+
+            const id = idServicioEditar.value;
+
+            try {
+                if (id) {
+                    await patchServicios(nuevoServicio, id);
+                    Swal.fire({ title: 'Actualizado', text: 'Servicio actualizado correctamente', icon: 'success', timer: 1500, showConfirmButton: false });
+                } else {
+                    await postServicios(nuevoServicio);
+                    Swal.fire({ title: 'Creado', text: 'Servicio creado correctamente', icon: 'success', timer: 1500, showConfirmButton: false });
+                }
+                modalServicio.classList.add('oculto');
+                formServicio.reset();
+                cargarServicios();
+            } catch (error) {
+                Swal.fire('Error', 'No se pudo guardar el servicio', 'error');
+            }
+        });
+    }
+
 }
 );

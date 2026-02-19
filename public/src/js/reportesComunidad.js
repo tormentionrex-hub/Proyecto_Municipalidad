@@ -1,11 +1,14 @@
 
-import { getReportes, postReportes, deleteReportes, getUsuarios } from '../services/services.js';
+import { getReportes, postReportes, patchReportes, deleteReportes, getUsuarios } from '../services/services.js';
 
 let todosLosReportes = [];
 let todosLosUsuarios = [];
 let filtroUbicacion = 'todos';
 let filtroTipo = 'todos';
 let filtroMios = false;
+let modoEdicion = false;
+let idReporteEditar = null;
+let fotoActualEdicion = '';
 
 // Leer usuario activo del localStorage
 const usuarioActivo = JSON.parse(localStorage.getItem('usuarioActivo') || 'null');
@@ -81,7 +84,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const formReporte = document.getElementById('formReporteCiudadano');
 
     if (btnNuevoReporte) {
-        btnNuevoReporte.addEventListener('click', () => modalReporte.classList.remove('oculto'));
+        btnNuevoReporte.addEventListener('click', () => {
+            resetearFormulario();
+            modalReporte.classList.remove('oculto');
+        });
     }
 
     if (cerrarModal) {
@@ -164,49 +170,126 @@ document.addEventListener('DOMContentLoaded', async () => {
                     return;
                 }
                 foto = await convertirImagenABase64(file);
+            } else if (modoEdicion && fotoActualEdicion) {
+                foto = fotoActualEdicion;
             }
 
-            // Usar datos del usuario activo si existe, si no usar el campo del formulario
+            // Usar datos del usuario activo si existe, si no usar el campo del formulario (solo para nuevos)
             const nombreUsuario = usuarioActivo
                 ? usuarioActivo.nombre
                 : (document.getElementById('usuarioReporte').value || 'Anónimo');
 
-            const nuevoReporte = {
-                tipo_obstruccion: titulo,
-                comentario: descripcion,
-                ubicacion,
-                usuario: nombreUsuario,
-                user_id: usuarioActivo ? usuarioActivo.id : null,
-                foto,
-                fecha: new Date().toISOString().split('T')[0],
-                estado: 'Pendiente'
-            };
-
             try {
-                await postReportes(nuevoReporte);
-                Swal.fire({
-                    icon: 'success',
-                    title: '¡Reporte enviado!',
-                    text: 'Gracias por colaborar con tu comunidad.',
-                    confirmButtonColor: '#3e206f'
-                });
-                formReporte.reset();
-                limpiarPreview();
+                if (modoEdicion) {
+                    const reporteActualizado = {
+                        tipo_obstruccion: titulo,
+                        comentario: descripcion,
+                        ubicacion,
+                        foto // Actualizar foto si se cambió o mantener la anterior
+                    };
+
+                    await patchReportes(reporteActualizado, idReporteEditar);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Actualizado!',
+                        text: 'La publicación ha sido modificada.',
+                        confirmButtonColor: '#3e206f',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                } else {
+                    const nuevoReporte = {
+                        tipo_obstruccion: titulo,
+                        comentario: descripcion,
+                        ubicacion,
+                        usuario: nombreUsuario,
+                        user_id: usuarioActivo ? usuarioActivo.id : null,
+                        foto,
+                        fecha: new Date().toISOString().split('T')[0],
+                        estado: 'Pendiente'
+                    };
+
+                    await postReportes(nuevoReporte);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Reporte enviado!',
+                        text: 'Gracias por colaborar con tu comunidad.',
+                        confirmButtonColor: '#3e206f'
+                    });
+                }
+
+                resetearFormulario();
                 modalReporte.classList.add('oculto');
+
+                // Recargar
                 const reportes = await getReportes();
                 todosLosReportes = reportes.reverse();
                 aplicarFiltros();
+
             } catch (error) {
                 console.error(error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'No se pudo enviar el reporte.',
+                    text: 'Hubo un problema al procesar la solicitud.',
                     confirmButtonColor: '#3e206f'
                 });
             }
         });
     }
+
+    // Funciones auxiliares para el modal
+    function resetearFormulario() {
+        formReporte.reset();
+        limpiarPreview();
+        modoEdicion = false;
+        idReporteEditar = null;
+        fotoActualEdicion = '';
+
+        // Restaurar textos
+        document.querySelector('#modalReporte h2').textContent = 'Reportar un Problema';
+        document.querySelector('.boton-submit').textContent = 'Enviar Reporte';
+
+        // Mostrar campo nombre si no hay usuario (solo en crear)
+        const campoNombre = document.getElementById('campoNombreUsuario');
+        if (campoNombre && !usuarioActivo) campoNombre.style.display = '';
+    }
+
+    window.cargarDatosEdicion = function (reporte) {
+        modoEdicion = true;
+        idReporteEditar = reporte.id;
+        fotoActualEdicion = reporte.foto || '';
+
+        // Llenar campos
+        document.getElementById('tituloReporte').value = reporte.tipo_obstruccion || '';
+        document.getElementById('descripcionReporte').value = reporte.comentario || '';
+        document.getElementById('ubicacionReporte').value = reporte.ubicacion || '';
+
+        // Ocultar campo nombre en edición (usualmente no se edita el autor)
+        const campoNombre = document.getElementById('campoNombreUsuario');
+        if (campoNombre) campoNombre.style.display = 'none';
+
+        // Foto
+        limpiarPreview(); // limpiar input file real
+        if (reporte.foto && reporte.foto.trim() !== '') {
+            const imgPreview = document.getElementById('imgPreview');
+            const previewFoto = document.getElementById('previewFoto');
+            const placeholder = document.getElementById('zonaFotoPlaceholder');
+
+            imgPreview.src = reporte.foto;
+            previewFoto.classList.remove('oculto');
+            placeholder.style.display = 'none';
+        }
+
+        // Cambiar textos UI
+        document.querySelector('#modalReporte h2').textContent = 'Editar Publicación';
+        document.querySelector('.boton-submit').textContent = 'Guardar Cambios';
+
+        // Mostrar modal
+        modalReporte.classList.remove('oculto');
+    };
 
     // Cargar reportes y usuarios en paralelo
     try {
@@ -405,8 +488,18 @@ function renderizarInformes(reportes) {
         const usuarioReporte = obtenerUsuarioDeReporte(reporte.user_id);
         const puedeGestionar = esPropietarioOAdmin(reporte);
 
-        const avatarHtml = usuarioReporte?.foto
-            ? `<img src="${usuarioReporte.foto}" alt="${usuarioReporte.nombre}" class="avatar-usuario">`
+        // Lógica de fallback para foto: 
+        // 1. Intentar usar la foto de la base de datos (usuarioReporte)
+        // 2. Si es mi propio reporte y la base no está actualizada, usar mi foto de sesión (usuarioActivo)
+        let fotoAvatar = '';
+        if (usuarioReporte && usuarioReporte.foto && usuarioReporte.foto.trim() !== '') {
+            fotoAvatar = usuarioReporte.foto;
+        } else if (usuarioActivo && String(reporte.user_id) === String(usuarioActivo.id) && usuarioActivo.foto) {
+            fotoAvatar = usuarioActivo.foto;
+        }
+
+        const avatarHtml = fotoAvatar
+            ? `<img src="${fotoAvatar}" alt="${usuarioReporte?.nombre || 'Usuario'}" class="avatar-usuario">`
             : `<div class="avatar-placeholder"><i class="fas fa-user"></i></div>`;
 
         const nombreAutor = usuarioReporte?.nombre || reporte.usuario || 'Anónimo';
@@ -447,7 +540,7 @@ function renderizarInformes(reportes) {
             <div class="menu-opciones">
                 <button class="btn-tres-puntos" title="Opciones"><i class="fas fa-ellipsis-h"></i></button>
                 <div class="dropdown-opciones oculto">
-                    <button class="opcion-dropdown opcion-editar" disabled>
+                    <button class="opcion-dropdown opcion-editar">
                         <i class="fas fa-pen"></i> Editar
                     </button>
                     <button class="opcion-dropdown opcion-eliminar" data-id="${reporte.id}">
@@ -493,6 +586,12 @@ function renderizarInformes(reportes) {
                 dropdown.classList.add('oculto');
                 eliminarReporte(reporte.id);
             });
+
+            div.querySelector('.opcion-editar').addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.add('oculto');
+                window.cargarDatosEdicion(reporte);
+            });
         }
 
         contenedor.appendChild(div);
@@ -509,8 +608,8 @@ function convertirImagenABase64(file) {
 }
 
 // ── Lightbox ────────────────────────────────────────────
-const lightbox     = document.getElementById('lightbox');
-const lightboxImg  = document.getElementById('lightboxImg');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
 const lightboxCerrar = document.getElementById('lightboxCerrar');
 
 function abrirLightbox(src) {
