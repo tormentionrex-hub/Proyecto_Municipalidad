@@ -336,6 +336,56 @@ async function deleteServicios(id) {
 }
 
 // ---------------------------------------------------------
+// CRUD SOLICITUDES FINANCIAMIENTO
+// ---------------------------------------------------------
+
+async function getSolicitudesFinanciamiento() {
+    try {
+        const respuestaServidor = await fetch("http://localhost:3001/solicitud_financiamiento");
+        return await respuestaServidor.json();
+    } catch (error) {
+        console.error("Error al obtener las solicitudes de financiamiento", error);
+    }
+}
+
+async function postSolicitudesFinanciamiento(solicitud) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/solicitud_financiamiento", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(solicitud)
+        });
+        return await respuesta.json();
+    } catch (error) {
+        console.error("Error al crear la solicitud de financiamiento", error);
+    }
+}
+
+async function patchSolicitudesFinanciamiento(solicitud, id) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/solicitud_financiamiento/" + id, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(solicitud)
+        });
+        return await respuesta.json();
+    } catch (error) {
+        console.error("Error al actualizar la solicitud de financiamiento", error);
+    }
+}
+
+async function deleteSolicitudesFinanciamiento(id) {
+    try {
+        const respuesta = await fetch("http://localhost:3001/solicitud_financiamiento/" + id, {
+            method: "DELETE",
+        });
+        return await respuesta.json();
+    } catch (error) {
+        console.error("Error al eliminar la solicitud de financiamiento", error);
+    }
+}
+
+// ---------------------------------------------------------
 // EXPORTS
 // ---------------------------------------------------------
 
@@ -366,5 +416,9 @@ export {
     getServicios,
     postServicios,
     patchServicios,
-    deleteServicios
+    deleteServicios,
+    getSolicitudesFinanciamiento,
+    postSolicitudesFinanciamiento,
+    patchSolicitudesFinanciamiento,
+    deleteSolicitudesFinanciamiento
 };

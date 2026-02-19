@@ -120,3 +120,138 @@ body {
     color: var(--amarilloAcento) !important;
     font-weight: 600;
 }
+
+/* =========================
+   BOTÓN FLOTANTE
+========================= */
+.boton-flotante {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: var(--moradoPrincipal);
+    color: #fff;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.boton-flotante:hover {
+    background-color: #2b1650;
+    transform: translateY(-3px);
+}
+
+/* =========================
+   MODAL OVERLAY
+========================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 900;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.oculto {
+    display: none;
+}
+
+/* SweetAlert2 siempre encima del modal */
+.swal2-container {
+    z-index: 9999 !important;
+}
+
+.modal-contenido {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.cerrar-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.2s;
+}
+
+.cerrar-modal:hover {
+    color: #000;
+}
+
+/* =========================
+   FORMULARIO MODAL
+========================= */
+.campo-formulario {
+    margin-bottom: 20px;
+}
+
+.campo-formulario label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--textoOscuro);
+    font-size: 0.95rem;
+}
+
+.input-modal {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 1rem;
+    transition: border-color 0.3s, background-color 0.3s;
+    font-family: inherit;
+}
+
+.input-modal:focus {
+    border-color: var(--moradoPrincipal);
+    background-color: #fff;
+    outline: none;
+}
+
+textarea.input-modal {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.boton-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--moradoPrincipal);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.boton-submit:hover {
+    background-color: #2b1650;
+    transform: translateY(-2px);
+}
