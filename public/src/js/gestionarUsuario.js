@@ -61,6 +61,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             imgPreview.src = defaultPhoto;
         }
 
+        // Rellenar contraseña actual para que "ya esté escrita" (aparecerá como puntos)
+        if (inputPassAnterior) {
+            inputPassAnterior.value = usuario.contraseña || '';
+        }
+
         // Mostrar boton eliminar si NO es la default
         if (btnEliminarFoto) {
             if (usuario.foto && usuario.foto !== defaultPhoto && usuario.foto.trim() !== '') {
@@ -207,23 +212,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            // Lógica de contraseña
+            // Lógica de contraseña mejorada: 
+            // 1. No obliga a cambiarla si solo se quiere editar el perfil (ej. la foto).
+            // 2. Solo se activa si el usuario escribe algo en los campos de Nueva Contraseña.
             let nuevaContraseña = usuarioData.contraseña;
             const passAnt = inputPassAnterior.value.trim();
             const passNue = inputPassNueva.value.trim();
             const passConf = inputPassConfirmar.value.trim();
 
-            // Si intenta cambiar contraseña
-            if (passAnt || passNue || passConf) {
-                if (!passAnt) {
-                    Swal.fire('Atención', 'Debe ingresar su contraseña anterior para realizar cambios de seguridad.', 'warning');
+            // Si el usuario ingresó algo en los campos de nueva contraseña, significa que desea cambiarla
+            if (passNue !== "" || passConf !== "") {
+                if (passAnt === "") {
+                    Swal.fire('Atención', 'Debe ingresar su contraseña anterior para autorizar el cambio de contraseña.', 'warning');
                     return;
                 }
                 if (passAnt !== usuarioData.contraseña) {
-                    Swal.fire('Error', 'La contraseña anterior es incorrecta.', 'error');
+                    Swal.fire('Error', 'La contraseña anterior ingresada es incorrecta.', 'error');
                     return;
                 }
-                if (!passNue) {
+                if (passNue === "") {
                     Swal.fire('Error', 'Debe ingresar la nueva contraseña.', 'warning');
                     return;
                 }
@@ -231,16 +238,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                     Swal.fire('Error', 'La nueva contraseña debe tener al menos 8 caracteres.', 'warning');
                     return;
                 }
-                if (!passConf) {
+                if (passConf === "") {
                     Swal.fire('Error', 'Debe confirmar la nueva contraseña.', 'warning');
                     return;
                 }
                 if (passNue !== passConf) {
-                    Swal.fire('Error', 'Las nuevas contraseñas no coinciden.', 'error');
+                    Swal.fire('Error', 'La nueva contraseña y su confirmación no coinciden.', 'error');
                     return;
                 }
                 nuevaContraseña = passNue;
             }
+            // Si solo se llenó la contraseña anterior (autocompletado), pero no la nueva, 
+            // simplemente se ignora y se mantiene la contraseña actual (nuevaContraseña ya tiene el valor de usuarioData.contraseña)
 
             // Preparar objeto de actualización
             const datosActualizar = {

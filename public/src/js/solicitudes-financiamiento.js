@@ -162,12 +162,12 @@ if (formSolicitud) {
             return;
         }
 
-        // Validación de longitud de descripción (Ignorando espacios, solo letras/signos)
-        if (descripcion.replace(/\s/g, '').length < 10) {
+        // Validación de longitud de descripción 
+        if (descripcion.replace(/\s/g, '').length < 40) {  //maximo de caracteres
             Swal.fire({
                 icon: 'warning',
                 title: 'Descripción muy corta',
-                text: 'Por favor describa el proyecto mejor. (Mínimo 10 letras)',
+                text: 'Por favor describa el proyecto con más detalle. (Mínimo 40 caracteres)',
                 confirmButtonColor: '#3e206f'
             });
             return;
