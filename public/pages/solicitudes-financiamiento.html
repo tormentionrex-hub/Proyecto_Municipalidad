@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitudes de Financiamiento - Municipalidad de Escazú</title>
+    <link rel="stylesheet" href="../src/styles/home.css">
+    <link rel="stylesheet" href="../src/styles/solicitudes-financiamiento.css">
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+    <!-- navbar -->
+    <header class="encabezado">
+        <div class="contenedor contenedorEncabezado">
+            <div class="cajaLogo">
+                <a href="../pages/home.html"><img src="../src/img/logo muni.png" alt="logo de la muni" width="100"
+                        height="100"></a>
+                <div class="textoLogo">
+                    <h1>MUNICIPALIDAD</h1>
+                    <h2>DE ESCAZÚ</h2>
+                </div>
+            </div>
+
+            <div class="navegacion">
+                <div class="barraSuperior">
+                    <div class="redesSociales">
+                        <a href="https://www.facebook.com/Municipalidaddeescazu"><i class="iconoFacebook"></i></a>
+                        <a href="https://www.instagram.com/muniescazu"><i class="iconoInstagram"></i></a>
+                        <a href="https://www.x.com/MEscazu"><i class="iconoTwitter"></i></a>
+                        <a href="https://www.youtube.com/@MunicipalidaddeEscazuOFICIAL"><i class="iconoYoutube"></i></a>
+                    </div>
+                </div>
+                <nav class="menuPrincipal">
+                    <ul class="listaMenu">
+                        <li><a href="../pages/reportesComunidad.html">Reportes de la comunidad</a></li>
+                        <li><a href="../pages/solicitudes-financiamiento.html" class="activo">Solicitudes de Financiamiento</a></li>
+                        <li><a href="../pages/login.html" class="botonIngresar">Ingresar</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="heroFinanciamiento">
+            <div class="contenedor">
+                <h1>Solicitudes de Financiamiento</h1>
+                <p>Conozca los programas de apoyo económico disponibles para los ciudadanos del cantón de Escazú.</p>
+            </div>
+        </section>
+
+        <section class="contenedor seccionSolicitudes">
+            <div class="gridSolicitudes">
+
+                <article class="cardSolicitud">
+                    <div class="iconoCard">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h2>Mejoras de Vivienda</h2>
+                    <p>Programa de financiamiento para reparaciones y mejoras en viviendas de familias de bajos recursos
+                        del cantón.</p>
+                    <span class="estadoCard estadoActivo">Disponible</span>
+                </article>
+
+                <article class="cardSolicitud">
+                    <div class="iconoCard">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <h2>Apoyo a Emprendimientos</h2>
+                    <p>Financiamiento para pequeños y medianos emprendedores locales que deseen iniciar o fortalecer
+                        su negocio.</p>
+                    <span class="estadoCard estadoActivo">Disponible</span>
+                </article>
+
+                <article class="cardSolicitud">
+                    <div class="iconoCard">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h2>Proyectos Ambientales</h2>
+                    <p>Apoyo económico para iniciativas comunales orientadas a la conservación del ambiente y la
+                        sostenibilidad.</p>
+                    <span class="estadoCard estadoCerrado">Cerrado</span>
+                </article>
+
+                <article class="cardSolicitud">
+                    <div class="iconoCard">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h2>Becas Estudiantiles</h2>
+                    <p>Programa de becas para estudiantes de secundaria y universitarios residentes en el cantón de
+                        Escazú.</p>
+                    <span class="estadoCard estadoActivo">Disponible</span>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="seccionRequisitos contenedor">
+            <h2>¿Cómo aplicar?</h2>
+            <ol class="listaRequisitos">
+                <li>Verifique que cumple con los requisitos del programa de su interés.</li>
+                <li>Reúna la documentación requerida (cédula, recibo de servicio público, declaración jurada).</li>
+                <li>Acérquese a las oficinas de la Municipalidad de Escazú o complete el formulario en línea.</li>
+                <li>Espere la resolución de su solicitud en un plazo de 15 días hábiles.</li>
+            </ol>
+        </section>
+    </main>
+
+    <footer class="footerEscazu">
+        <div class="footerIlustracionContenedor">
+            <img src="../src/img/logo-blanco.svg" alt="Logo Municipalidad" class="footerLogoEsquina">
+            <img src="../src/img/cerros.png" alt="Cerros de Escazú" class="footerCerros">
+            <img src="../src/img/marca_cantonal.png" alt="Marca Cantonal" class="footerMarcaCantonal">
+            <div class="brujaNuevaContenedor">
+                <img src="../src/img/bruja.png" alt="Bruja Escazú" class="brujaImagenOficial">
+            </div>
+        </div>
+        <div class="footerTexto">
+            <div class="contenedor">
+                <p>Escazú, San José, Costa Rica — Todos los derechos reservados © 2026</p>
+                <div class="politicasFooter">
+                    <span>Politicas Municipales</span> / <span>Red de Responsabilidad Social</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="../src/js/solicitudes-financiamiento.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
