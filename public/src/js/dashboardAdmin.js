@@ -15,7 +15,10 @@ import {
     deleteUsuariosPlanillas,
     getHistorialPagos,
     postHistorialPago,
-    deleteHistorialPago
+    deleteHistorialPago,
+    getSolicitudesFinanciamiento,
+    patchSolicitudesFinanciamiento,
+    deleteSolicitudesFinanciamiento
 } from '../services/services.js';
 
 // Configuración de EmailJS
@@ -280,11 +283,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnVistaCuadriculaReportes = document.getElementById('btnVistaCuadriculaReportes');
 
     // Función auxiliar para ocultar todas las vistas
+    // Función auxiliar para ocultar todas las vistas
     function ocultarTodasLasVistas() {
-        [vistaDashboard, vistaReportes, vistaTramites, vistaUsuarios, vistaPlanillas, vistaDetallePlanilla, vistaInvitarUsuario].forEach(v => {
+        const vistas = [
+            document.getElementById('vistaDashboard'),
+            document.getElementById('vistaReportes'),
+            document.getElementById('vistaTramites'),
+            document.getElementById('vistaUsuarios'),
+            document.getElementById('vistaPlanillas'),
+            document.getElementById('vistaDetallePlanilla'),
+            document.getElementById('vistaInvitarUsuario'),
+            document.getElementById('vistaSolicitudes') // Nueva vista
+        ];
+
+        vistas.forEach(v => {
             if (v) v.classList.add('oculto');
         });
-        [navDashboard, navReportes, navTramites, navUsuarios, navPlanillas].forEach(n => {
+
+        const navs = [
+            document.getElementById('navDashboard'),
+            document.getElementById('navReportes'),
+            document.getElementById('navTramites'),
+            document.getElementById('navUsuarios'),
+            document.getElementById('navPlanillas'),
+            document.getElementById('navSolicitudes') // Nuevo nav
+        ];
+
+        navs.forEach(n => {
             if (n) n.classList.remove('activo');
         });
     }
@@ -450,6 +475,347 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
         });
     }
+
+    // -------------------------------------------------------------------------
+    // LÓGICA DE SOLICITUDES DE FINANCIAMIENTO
+    // -------------------------------------------------------------------------
+
+    // Elementos de la Vista Solicitudes
+    const navSolicitudes = document.getElementById('navSolicitudes');
+    const vistaSolicitudes = document.getElementById('vistaSolicitudes');
+    const tabSolicitudesPendientes = document.getElementById('tabSolicitudesPendientes');
+    const tabSolicitudesTodas = document.getElementById('tabSolicitudesTodas');
+    const cuerpoTablaSolicitudes = document.getElementById('cuerpoTablaSolicitudes');
+    const buscadorSolicitudes = document.getElementById('buscadorSolicitudes');
+    const contadorSolicitudes = document.getElementById('contadorSolicitudes');
+
+    // Modals
+    const modalGestionarSolicitud = document.getElementById('modalGestionarSolicitud');
+    const modalEditarSolicitud = document.getElementById('modalEditarSolicitud');
+
+    if (navSolicitudes) {
+        navSolicitudes.addEventListener('click', (e) => {
+            e.preventDefault();
+            ocultarTodasLasVistas();
+            vistaSolicitudes.classList.remove('oculto');
+            navSolicitudes.classList.add('activo');
+            cargarSolicitudesAdmin();
+        });
+    }
+
+    // Tabs Internos
+    let filtroEstadoSolicitud = 'pendiente'; // 'pendiente' o 'todos'
+
+    if (tabSolicitudesPendientes && tabSolicitudesTodas) {
+        tabSolicitudesPendientes.addEventListener('click', () => {
+            tabSolicitudesPendientes.classList.add('activo');
+            tabSolicitudesTodas.classList.remove('activo');
+            filtroEstadoSolicitud = 'pendiente';
+            renderizarSolicitudes();
+        });
+
+        tabSolicitudesTodas.addEventListener('click', () => {
+            tabSolicitudesTodas.classList.add('activo');
+            tabSolicitudesPendientes.classList.remove('activo');
+            filtroEstadoSolicitud = 'todos';
+            renderizarSolicitudes();
+        });
+    }
+
+    if (buscadorSolicitudes) {
+        buscadorSolicitudes.addEventListener('input', renderizarSolicitudes);
+    }
+
+    async function cargarSolicitudesAdmin() {
+        if (!cuerpoTablaSolicitudes) return;
+        cuerpoTablaSolicitudes.innerHTML = '<tr><td colspan="7" style="text-align:center;">Cargando solicitudes...</td></tr>';
+
+        try {
+            const solicitudes = await getSolicitudesFinanciamiento();
+            window.allSolicitudes = solicitudes || [];
+            renderizarSolicitudes();
+        } catch (error) {
+            console.error("Error cargando solicitudes", error);
+            cuerpoTablaSolicitudes.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Error al cargar solicitudes.</td></tr>';
+        }
+    }
+
+    function renderizarSolicitudes() {
+        if (!window.allSolicitudes || !cuerpoTablaSolicitudes) return;
+
+        const termino = buscadorSolicitudes ? buscadorSolicitudes.value.toLowerCase() : '';
+
+        let solicitudesFiltradas = window.allSolicitudes.filter(s => {
+            const nombre = (s.nombre_proyecto || '').toLowerCase();
+            const ubicacion = (s.ubicacion || '').toLowerCase();
+            const coincideTexto = nombre.includes(termino) || ubicacion.includes(termino);
+
+            if (filtroEstadoSolicitud === 'pendiente') {
+                return (s.estado === 'pendiente') && coincideTexto;
+            } else {
+                return coincideTexto;
+            }
+        });
+
+        if (solicitudesFiltradas.length === 0) {
+            cuerpoTablaSolicitudes.innerHTML = '<tr><td colspan="7" style="text-align:center;">No se encontraron solicitudes</td></tr>';
+            if (contadorSolicitudes) contadorSolicitudes.textContent = '0 solicitudes';
+            return;
+        }
+
+        if (contadorSolicitudes) contadorSolicitudes.textContent = `${solicitudesFiltradas.length} solicitudes`;
+
+        cuerpoTablaSolicitudes.innerHTML = '';
+        solicitudesFiltradas.forEach(s => {
+            const tr = document.createElement('tr');
+
+            // Columna Proyecto
+            const tdProyecto = document.createElement('td');
+            tdProyecto.innerHTML = `<strong>${s.nombre_proyecto}</strong>`;
+
+            // Columna Ubicación
+            const tdUbicacion = document.createElement('td');
+            tdUbicacion.textContent = s.ubicacion || 'N/A';
+
+            // Columna Monto Solicitado
+            const tdMontoSol = document.createElement('td');
+            tdMontoSol.textContent = `₡${Number(s.monto_solicitado).toLocaleString()}`;
+
+            // Columna Monto Aprobado
+            const tdMontoApr = document.createElement('td');
+            // Check if monto_aprobado is valid number, else show -
+            const montoAprobado = s.monto_aprobado ? `₡${Number(s.monto_aprobado).toLocaleString()}` : '-';
+            tdMontoApr.textContent = montoAprobado;
+
+            // Columna Estado
+            const tdEstado = document.createElement('td');
+            let claseEstado = '';
+            if (s.estado === 'pendiente') claseEstado = 'rol-usuario'; // usar estilo gris
+            else if (s.estado === 'aprobado') claseEstado = 'rol-empleado'; // estilo verde/azul
+            else if (s.estado === 'rechazado') claseEstado = 'rol-admin'; // rojo
+
+            // Ajustamos clases manualmente si no existen
+            let color = '#6c757d';
+            if (s.estado === 'aprobado') color = '#28a745';
+            if (s.estado === 'rechazado') color = '#dc3545';
+
+            tdEstado.innerHTML = `<span style="background-color: ${color}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.8em;">${s.estado}</span>`;
+
+            // Columna Entidad
+            const tdEntidad = document.createElement('td');
+            tdEntidad.textContent = s.entidad_financiera || '-';
+
+            // Columna Acciones
+            const tdAcciones = document.createElement('td');
+            tdAcciones.className = 'acciones';
+
+            if (s.estado === 'pendiente') {
+                const btnGestionar = document.createElement('button');
+                btnGestionar.className = 'btnAccion';
+                btnGestionar.style.backgroundColor = '#6f42c1';
+                btnGestionar.style.color = 'white';
+                btnGestionar.title = 'Gestionar Solicitud';
+                btnGestionar.innerHTML = '<i class="fas fa-tasks"></i>';
+                btnGestionar.onclick = () => abrirModalGestionar(s);
+                tdAcciones.appendChild(btnGestionar);
+            }
+
+            // Botones comunes para TODOS (Editar, Eliminar)
+            if (filtroEstadoSolicitud === 'todos') {
+                const btnEditar = document.createElement('button');
+                btnEditar.className = 'btnAccion btnEditar';
+                btnEditar.title = 'Editar';
+                btnEditar.innerHTML = '<i class="fas fa-edit"></i>';
+                btnEditar.onclick = () => abrirModalEditar(s);
+
+                const btnEliminar = document.createElement('button');
+                btnEliminar.className = 'btnAccion btnEliminar';
+                btnEliminar.title = 'Eliminar';
+                btnEliminar.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                btnEliminar.onclick = () => confirmarEliminarSolicitud(s.id);
+
+                tdAcciones.appendChild(btnEditar);
+                tdAcciones.appendChild(btnEliminar);
+            }
+
+            tr.appendChild(tdProyecto);
+            tr.appendChild(tdUbicacion);
+            tr.appendChild(tdMontoSol);
+            tr.appendChild(tdMontoApr);
+            tr.appendChild(tdEstado);
+            tr.appendChild(tdEntidad);
+            tr.appendChild(tdAcciones);
+
+            cuerpoTablaSolicitudes.appendChild(tr);
+        });
+    }
+
+    // Funciones del Modal Gestionar (Pendientes)
+    window.abrirModalGestionar = function (solicitud) {
+        if (modalGestionarSolicitud) {
+            modalGestionarSolicitud.classList.remove('oculto');
+
+            document.getElementById('idSolicitudGestionar').value = solicitud.id;
+            // Prellenar monto aprobado con el solicitado por defecto
+            document.getElementById('montoAprobadoGestion').value = solicitud.monto_solicitado;
+            document.getElementById('entidadFinancieraGestion').value = '';
+
+            const infoDiv = document.getElementById('infoSolicitudGestionar');
+            const descripcion = solicitud.descripcion || 'Sin descripción';
+            const ubicacion = solicitud.ubicacion || 'No especificada';
+
+            infoDiv.innerHTML = `
+                <p><strong>Proyecto:</strong> ${solicitud.nombre_proyecto}</p>
+                <p><strong>Descripción:</strong> ${descripcion}</p>
+                <p><strong>Solicitante/Ubicación:</strong> ${ubicacion}</p>
+                <p><strong>Monto Solicitado:</strong> ₡${Number(solicitud.monto_solicitado).toLocaleString()}</p>
+            `;
+        }
+    };
+
+    // Cerrar modales
+    const cerrarModalGestionar = document.getElementById('cerrarModalGestionar');
+    if (cerrarModalGestionar) {
+        cerrarModalGestionar.addEventListener('click', () => {
+            modalGestionarSolicitud.classList.add('oculto');
+        });
+    }
+
+    const cerrarModalEditarSolicitud = document.getElementById('cerrarModalEditarSolicitud');
+    if (cerrarModalEditarSolicitud) {
+        cerrarModalEditarSolicitud.addEventListener('click', () => {
+            modalEditarSolicitud.classList.add('oculto');
+        });
+    }
+
+    // Aprobar Solicitud
+    const formGestionarSolicitud = document.getElementById('formGestionarSolicitud');
+    if (formGestionarSolicitud) {
+        formGestionarSolicitud.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('idSolicitudGestionar').value;
+            const montoAprobado = document.getElementById('montoAprobadoGestion').value;
+            const entidad = document.getElementById('entidadFinancieraGestion').value;
+
+            if (!entidad) {
+                Swal.fire('Error', 'Debe seleccionar una entidad financiera', 'error');
+                return;
+            }
+
+            try {
+                await patchSolicitudesFinanciamiento({
+                    estado: 'aprobado',
+                    monto_aprobado: Number(montoAprobado),
+                    entidad_financiera: entidad,
+                    fecha_aprobación: new Date().toLocaleDateString('es-CR')
+                }, id);
+
+                Swal.fire('Aprobada', 'La solicitud ha sido aprobada', 'success');
+                modalGestionarSolicitud.classList.add('oculto');
+                cargarSolicitudesAdmin();
+            } catch (error) {
+                console.error("Error al aprobar:", error);
+                Swal.fire('Error', `No se pudo aprobar la solicitud: ${error.message}`, 'error');
+            }
+        });
+    }
+
+    // Rechazar Solicitud
+    const btnRechazarSolicitud = document.getElementById('btnRechazarSolicitud');
+    if (btnRechazarSolicitud) {
+        btnRechazarSolicitud.addEventListener('click', async () => {
+            const id = document.getElementById('idSolicitudGestionar').value;
+
+            Swal.fire({
+                title: '¿Rechazar solicitud?',
+                text: "Esta acción no se puede deshacer.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                confirmButtonText: 'Sí, rechazar'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        await patchSolicitudesFinanciamiento({
+                            estado: 'rechazado',
+                            entidad_financiera: null, // Asegurar que limpio
+                            fecha_aprobación: new Date().toLocaleDateString('es-CR')
+                        }, id);
+
+                        Swal.fire('Rechazada', 'La solicitud ha sido rechazada', 'success');
+                        modalGestionarSolicitud.classList.add('oculto');
+                        cargarSolicitudesAdmin();
+                    } catch (error) {
+                        console.error("Error al rechazar:", error);
+                        Swal.fire('Error', `No se pudo rechazar la solicitud: ${error.message}`, 'error');
+                    }
+                }
+            });
+        });
+    }
+
+    // Editar Solicitud (Admin - Todos)
+    window.abrirModalEditar = function (solicitud) {
+        if (modalEditarSolicitud) {
+            modalEditarSolicitud.classList.remove('oculto');
+            document.getElementById('idSolicitudEditar').value = solicitud.id;
+            document.getElementById('nombreProyectoEditar').value = solicitud.nombre_proyecto;
+            document.getElementById('estadoSolicitudEditar').value = solicitud.estado;
+            document.getElementById('montoAprobadoEditar').value = solicitud.monto_aprobado || '';
+            document.getElementById('entidadFinancieraEditar').value = solicitud.entidad_financiera || '';
+        }
+    };
+
+    const formEditarSolicitud = document.getElementById('formEditarSolicitud');
+    if (formEditarSolicitud) {
+        formEditarSolicitud.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('idSolicitudEditar').value;
+            const estado = document.getElementById('estadoSolicitudEditar').value;
+            const monto = document.getElementById('montoAprobadoEditar').value;
+            const entidad = document.getElementById('entidadFinancieraEditar').value;
+
+            const updateData = {
+                estado: estado,
+                monto_aprobado: monto ? Number(monto) : null,
+                entidad_financiera: entidad || null
+            };
+
+            try {
+                await patchSolicitudesFinanciamiento(updateData, id);
+                Swal.fire('Actualizado', 'La solicitud ha sido actualizada', 'success');
+                modalEditarSolicitud.classList.add('oculto');
+                cargarSolicitudesAdmin();
+            } catch (error) {
+                console.error("Error al actualizar:", error);
+                Swal.fire('Error', `No se pudo actualizar: ${error.message}`, 'error');
+            }
+        });
+    }
+
+    window.confirmarEliminarSolicitud = function (id) {
+        Swal.fire({
+            title: '¿Eliminar solicitud?',
+            text: "Se eliminará permanentemente.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            confirmButtonText: 'Sí, eliminar'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await deleteSolicitudesFinanciamiento(id);
+                    Swal.fire('Eliminado', 'Solicitud eliminada', 'success');
+                    cargarSolicitudesAdmin();
+                } catch (error) {
+                    console.error(error);
+                    Swal.fire('Error', 'No se pudo eliminar', 'error');
+                }
+            }
+        });
+    };
+
+
 
     // Buscador de Usuarios
     if (buscadorUsuarios) {

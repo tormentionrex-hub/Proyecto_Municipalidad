@@ -363,14 +363,21 @@ async function postSolicitudesFinanciamiento(solicitud) {
 
 async function patchSolicitudesFinanciamiento(solicitud, id) {
     try {
-        const respuesta = await fetch("http://localhost:3001/solicitud_financiamiento/" + id, {
+        const url = `http://localhost:3001/solicitud_financiamiento/${id}`;
+        const respuesta = await fetch(url, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(solicitud)
         });
+
+        if (!respuesta.ok) {
+            throw new Error(`Error en PATCH: ${respuesta.status} ${respuesta.statusText}`);
+        }
+
         return await respuesta.json();
     } catch (error) {
         console.error("Error al actualizar la solicitud de financiamiento", error);
+        throw error; // Re-throw to handle in the UI
     }
 }
 

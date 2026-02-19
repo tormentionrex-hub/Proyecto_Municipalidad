@@ -40,6 +40,8 @@
                 <li id="navReportes"><a href="#"><i class="iconoMapaReportes"></i> <span>Reportes</span></a></li>
                 <li id="navUsuarios"><a href="#"><i class="iconoUsuarios"></i> <span>Usuarios</span></a></li>
                 <li id="navPlanillas"><a href="#"><i class="iconoPlanillas"></i> <span>Planillas</span></a></li>
+                <li id="navSolicitudes"><a href="#"><i class="fas fa-hand-holding-usd"></i> <span>Solicitudes</span></a>
+                </li>
             </ul>
 
         </nav>
@@ -449,6 +451,56 @@
             </div>
         </div>
 
+        <!-- VISTA SOLICITUDES FINANCIAMIENTO (Nueva) -->
+        <div id="vistaSolicitudes" class="oculto">
+            <header class="encabezadoUsuarios">
+                <div class="infoEncabezado">
+                    <div class="iconoEncabezadoUsuario"><i class="fas fa-hand-holding-usd"></i></div>
+                    <div>
+                        <h1>Gestión de Solicitudes</h1>
+                        <p>Administre las solicitudes de financiamiento de los ciudadanos.</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Pestañas Solicitudes -->
+            <div class="contenedorPestanasTramites" style="margin-top: 20px; margin-bottom: 20px;">
+                <button class="tabTramite activo" id="tabSolicitudesPendientes"><i class="fas fa-clock"></i>
+                    Pendientes</button>
+                <button class="tabTramite" id="tabSolicitudesTodas"><i class="fas fa-list"></i> Todas</button>
+            </div>
+
+            <div class="contenedorHerramientas">
+                <div class="barraBusqueda">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="buscadorSolicitudes" placeholder="Buscar por proyecto...">
+                </div>
+                <div class="infoResultados">
+                    <span id="contadorSolicitudes">0 solicitudes</span>
+                </div>
+            </div>
+
+            <!-- Tabla de Solicitudes -->
+            <div class="contenedorTabla">
+                <table class="tablaUsuarios">
+                    <thead>
+                        <tr>
+                            <th>Proyecto</th>
+                            <th>Ubicación</th>
+                            <th>Monto Solicitado</th>
+                            <th>Monto Aprobado</th>
+                            <th>Estado</th>
+                            <th>Entidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaSolicitudes">
+                        <!-- Se llena con JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- VISTA DETALLE PLANILLA (Nueva) -->
         <div id="vistaDetallePlanilla" class="oculto">
             <header class="encabezadoUsuarios">
@@ -596,6 +648,91 @@
                     <button class="botonGuardar" id="btnCerrarVer"
                         style="width: auto; padding: 10px 25px;">Cerrar</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Modal Gestionar Solicitud (Pendientes) -->
+        <div id="modalGestionarSolicitud" class="modal oculto">
+            <div class="contenidoModal modalDetalle">
+                <span class="cerrarModal" id="cerrarModalGestionar">&times;</span>
+                <h2 style="margin-bottom: 20px; color: var(--moradoPrincipal);">Gestionar Solicitud</h2>
+
+                <div id="infoSolicitudGestionar"
+                    style="margin-bottom: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px;">
+                    <!-- Detalles read-only se llenan con JS -->
+                </div>
+
+                <form id="formGestionarSolicitud">
+                    <input type="hidden" id="idSolicitudGestionar">
+                    <div class="grupoInput">
+                        <label>Monto Aprobado <span class="asterisco">*</span></label>
+                        <input type="number" id="montoAprobadoGestion" placeholder="Monto a aprobar" required>
+                    </div>
+                    <div class="grupoInput">
+                        <label>Entidad Financiera <span class="asterisco">*</span></label>
+                        <select id="entidadFinancieraGestion" class="selectFiltro fullWidth" required>
+                            <option value="" disabled selected>Seleccione una entidad...</option>
+                            <option value="Banco Nacional de Costa Rica (BNCR)">Banco Nacional de Costa Rica (BNCR)
+                            </option>
+                            <option value="Banco de Costa Rica (BCR)">Banco de Costa Rica (BCR)</option>
+                            <option value="Banco Popular y de Desarrollo Comunal">Banco Popular y de Desarrollo Comunal
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="accionesFormulario" style="justify-content: space-between; margin-top: 20px;">
+                        <button type="button" class="botonBorrar" id="btnRechazarSolicitud"
+                            style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Rechazar</button>
+                        <button type="submit" class="botonGuardar" id="btnAprobarSolicitud">Aprobar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal Editar Solicitud (Todas) -->
+        <div id="modalEditarSolicitud" class="modal oculto">
+            <div class="contenidoModal modalDetalle">
+                <span class="cerrarModal" id="cerrarModalEditarSolicitud">&times;</span>
+                <h2 style="margin-bottom: 20px; color: var(--moradoPrincipal);">Editar Solicitud</h2>
+
+                <form id="formEditarSolicitud">
+                    <input type="hidden" id="idSolicitudEditar">
+
+                    <div class="grupoInput">
+                        <label>Nombre del Proyecto</label>
+                        <input type="text" id="nombreProyectoEditar" disabled style="background-color: #e9ecef;">
+                    </div>
+
+                    <div class="grupoInput">
+                        <label>Estado <span class="asterisco">*</span></label>
+                        <select id="estadoSolicitudEditar" class="selectFiltro fullWidth" required>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="aprobado">Aprobado</option>
+                            <option value="rechazado">Rechazado</option>
+                        </select>
+                    </div>
+
+                    <div class="grupoInput">
+                        <label>Monto Aprobado</label>
+                        <input type="number" id="montoAprobadoEditar" placeholder="Monto aprobado">
+                    </div>
+
+                    <div class="grupoInput">
+                        <label>Entidad Financiera</label>
+                        <select id="entidadFinancieraEditar" class="selectFiltro fullWidth">
+                            <option value="">Ninguna / Pendiente</option>
+                            <option value="Banco Nacional de Costa Rica (BNCR)">Banco Nacional de Costa Rica (BNCR)
+                            </option>
+                            <option value="Banco de Costa Rica (BCR)">Banco de Costa Rica (BCR)</option>
+                            <option value="Banco Popular y de Desarrollo Comunal">Banco Popular y de Desarrollo Comunal
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="accionesFormulario" style="margin-top: 20px; text-align: right;">
+                        <button type="submit" class="botonGuardar">Guardar Cambios</button>
+                    </div>
+                </form>
             </div>
         </div>
 
