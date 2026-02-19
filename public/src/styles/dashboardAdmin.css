@@ -128,6 +128,25 @@ body.cuerpoDashboard {
     position: fixed;
     height: 100vh;
     z-index: 100;
+    overflow-y: auto; /* Permite scroll vertical */
+}
+
+/* Scrollbar personalizado para la barra lateral (Estilo gris transparente) */
+.barraLateral::-webkit-scrollbar {
+    width: 6px;
+}
+
+.barraLateral::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.barraLateral::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1); /* Gris muy transparente */
+    border-radius: 10px;
+}
+
+.barraLateral::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.2); /* Gris un poco más visible al hacer hover */
 }
 
 .logoBarraLateral {
